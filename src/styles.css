@@ -1,0 +1,40 @@
+
+
+:root{--bg-main:rgb(17,20,24);
+  --text-main:white;
+}
+
+body{
+  overflow: hidden;
+}
+.main-con{
+  height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  display: flex;
+}
+.sidebar{
+ width: 375px;
+ min-width: 375px;
+}
+.card-swipe{
+  width: 100%;
+  text-align: center;
+
+
+}
+.card-top{
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-bottom{
+height: 10vh;
+}
+.card-con{
+  width: 375px;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 670px;
+}
