@@ -2,6 +2,9 @@
 
 :root{--bg-main:rgb(17,20,24);
   --text-main:white;
+  --accent:black;
+  --gray:#939ba7;
+  --red:red;
 }
 
 body{
