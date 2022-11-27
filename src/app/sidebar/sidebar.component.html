@@ -1,0 +1,35 @@
+<div class="con">
+  <div class="sidebar-top">
+    <div class="profile-con">
+      <img src="../../assets/images/user1/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg">
+      <span>mikolaj</span>
+    </div>
+  </div>
+  <div class="sidebar-bottom">
+    <nav>
+      <ul>
+        <li class="active" (click)="matches=true" [class.active]="matches">Matches</li>
+        <li (click)="matches=false" [class.active]="!matches">Messages</li>
+      </ul>
+    </nav>
+    <div class="matches-con">
+
+        <div class="matches" *ngIf="matches">
+          <div class="user-item" *ngFor="let user of usersMatch" (click)="setCurrentUser(user)" [class.inactive]="currUser && currUser!=user">
+            <img src="{{user.photos[0]}}" alt="User {{user.name}} photo">
+            <span class="name">{{user.name}}</span>
+          </div>
+        </div>
+        <div class="messages" *ngIf="!matches">
+          <div class="user-message-item" *ngFor="let user of usersMessage" (click)="setCurrentUser(user)" [class.inactive]="currUser && currUser!=user" [class.active]="currUser && currUser==user">
+            <img src="{{user.photos[0]}}">
+            <div class="item-right">
+              <span class="name">{{user.name}}</span>
+              <span class="last-message">{{user.messanges[0].messange.content}}</span>
+            </div>
+        </div>
+
+
+    </div>
+  </div>
+</div>

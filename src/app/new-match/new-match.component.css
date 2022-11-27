@@ -1,0 +1,221 @@
+.con{
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999999999999;
+}
+.card-drag-con{
+  height: 100%;
+ overflow: hidden;
+ background-color: black;
+position: relative;
+}
+
+.card-top{
+  width: 100%;
+  height: 100%;
+background-position: center;
+display: flex;
+align-items: flex-end;
+flex-direction: row;
+  border-radius: 10px 10px 0 0 ;
+  padding: 20px;  cursor: pointer;
+  position: relative;
+}
+
+
+
+.card-overlay{
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.card-page-con{
+  height: 12px;
+  width: 100%;
+  gap: 5px;
+  padding: 0px  8px;
+  display: flex;
+  flex-direction: row;
+}
+.card-page{
+  background-color: var(--accent);
+  opacity: 0.4;
+  border-radius: 5px;
+ flex-grow: 1;
+ z-index: 2;
+ margin: 4px 0;
+}
+.card-page.active{
+  background-color: white;
+  opacity: 1;
+}
+
+
+.card-change{
+  position: absolute;
+  top:0;
+  bottom: 120px;
+  z-index: 2;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+
+}
+.card-change>div{
+  width: 100%;
+  height: 100%;
+}
+
+
+
+.card-arrows{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  opacity: 0;
+  width: 100%;
+  transition: opacity 0.3s;
+  margin: 70% 0;
+  padding: 0 20px;
+}
+
+.arrow-left{
+  width: 20px;
+  height: 20px;
+  transform: rotate(45deg);
+  justify-self: flex-start;
+  border-left: 4px solid white;
+  border-bottom: 4px solid white;
+}
+.arrow-right{
+  width: 20px;
+  height: 20px;
+  transform: rotate(45deg);
+  justify-self: flex-end;
+
+  border-right: 4px solid white;
+  border-top: 4px solid white;
+}
+.card-top:hover .card-arrows{
+  opacity: 1;
+ }
+ .close-btn{
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 3px solid var(--gray);
+  box-shadow: -1px 0px 14px 0px var(--accent);
+  display: flex;
+   z-index: 3;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+.close-btn>svg{
+  fill: var(--gray);
+}
+.close-btn:hover{
+
+  transform: rotate(-90deg);
+}
+
+.message{
+  position: absolute;
+  top: 65%;
+  left: 30px;
+  right: 30px;
+  display: flex;
+  z-index: 5;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.message>svg{
+  width: 30px;
+  height: 30px;
+  fill: var(--green);
+}
+.user-name{
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+form{
+  width: 100%;
+  height: 50px;
+  margin-bottom: 10px;
+}
+input{
+  width: 80%;
+  color: var(--text-main);
+  background-color: black;
+  border: none;
+  padding: 13px 8px;
+}
+form>button:disabled{
+  background: black;
+  color: var(--gray);
+
+}
+form>button{
+  background: var(--red-gradient);
+  height: 100%;
+  border: none;
+
+
+  color: white;
+  width: 20%;
+}
+.chess-btns{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.chess-btns>button{
+  margin: 5px;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 1.1rem;
+  font-weight: 700;
+  backdrop-filter: blur(10px);
+}
+input:focus{
+  outline: none;
+}
+
+.new-match-text-con{
+  position: absolute;
+  top: 20%;
+  left: 10px;
+  height: 123px;
+  right: 10px;
+  display: flex;
+  flex-direction: column;
+  background-image: var(--green-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  align-items: center;
+  justify-content: center;
+}
+.text-top{
+  font-weight: 700;
+  font-size: 2rem;
+}
+.text-bottom{
+  font-size: 4rem;
+  font-size: 5.5rem;
+  line-height: 4rem;
+  font-weight: 900;
+}

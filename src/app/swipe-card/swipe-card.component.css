@@ -1,5 +1,7 @@
 .card-con{
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 .card-drag-con{
   height: 100%;
@@ -36,6 +38,7 @@ padding: 5px;
 
 .disable-pointer-event>*{
   pointer-events: none;
+
 }
 .card-2{
   z-index: 0;
@@ -136,7 +139,6 @@ flex-direction: row;
   background-color: green;
   border-radius: 50%;
   margin-right: 5px;
-
 }
 
 
@@ -159,19 +161,17 @@ flex-direction: row;
   cursor: pointer;
   width: 70px;
   height: 70px;
-  background: transparent;
+
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .icon-nope{
-  fill: red;
-  border: 1px solid red;
+ background: var(--red-gradient);
 }
 .icon-yeah{
-  fill: green;
-  border: 1px solid green;
+  background: var(--green-gradient);
 }
 svg{
   transition: transform 0.3s;
@@ -266,114 +266,3 @@ svg{
   height: 20%;
 }
 
-.user-info{
-  background-color: black;
-  padding-bottom: 400px;
-  color: var(--gray);
-  overflow: hidden;
-}
-.user-info>section{
-  padding: 15px;
-  border-bottom: var(--gray) solid 1px;
-}
-section>p{
-  text-align: left;
-}
-.white{
-  color: white;
-}
-.tags{
-  display: flex;
-  flex-direction: row;
-  gap: 5px;
-  margin-bottom: 5px;
-}
-.tag{
-  font-size: 0.9rem;
-  border: 1px var(--gray) solid;
-  border-radius: 15px;
-
-  padding: 3px 8px;
-}
-.tag.active{
-  color: var(--red);
-  border-color: var(--red);
-}
-.sectionTitle{
-  text-align: left;
-  display: block;
-  margin-bottom: 20px;
-}
-
-h5{
-
-  width: 100%;
-}
-
-.game-top{
-  display: flex;
-  flex-direction: row;
-}
-.game-nav{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 24px;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.nav-dot{
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background-color: var(--gray);
-  transition: all .3s ease-in-out;
-  cursor: pointer;
-}
-
-.game-arrow{
-  fill: var(--gray);
-  cursor: pointer;
-  min-width: 24px;
-  transition: all .3s ease-out;
-}
-
-.nav-dot:hover{
-  background-color: var(--red);
-}
-.game-arrow:hover{
-  fill: var(--red);
-}
-.fav-games-con{
-  display: flex;
-  flex-direction: row;
-  transition: transform .3s ease-in-out;
-}
-
-.fav-games-card{
-  min-width: 343px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-.game-board{
-  width: 9rem;
-  height: 9rem;
-  border: 1px solid var(--gray);
-  background-color: antiquewhite;
-  position: relative;
-  cursor: pointer;
-}
-.game-board:hover h6{
-  opacity: 1;
-}
-.game-board>h6{
-  transition: opacity 0.3s;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1.5rem;
-  opacity: .5;
-  background: black;
-}

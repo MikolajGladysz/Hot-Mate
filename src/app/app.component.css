@@ -1,0 +1,81 @@
+.main-con {
+  height: 100vh;
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  display: flex;
+}
+.sidebar {
+  width: 375px;
+  min-width: 375px;
+}
+.card-swipe {
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.card-top > * {
+  width: 100%;
+  height: 100%;
+}
+.card-top {
+  height: 670px;
+  width: 375px;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+}
+.card-bottom {
+  height: 10vh;
+}
+.card-con {
+  width: 375px;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 670px;
+}
+.messange-con {
+  width: calc(100% - 375px);
+  height: 100%;
+  display: flex;
+}
+.messange-window {
+  width: 65%;
+  height: 100%;
+}
+.detail-window {
+  width: 35%;
+  height: 100%;
+  border-left: var(--bg-border) 1px solid;
+}
+.detail {
+  height: 90%;
+}
+.remove-btn {
+  height: 10%;
+}
+.remove-btn > div {
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border-top: var(--bg-border) 1px solid;
+  display: flex;
+  color: var(--bg-border);
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.4rem;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+.remove-btn > div:hover {
+  color: white;
+  border-color: transparent;
+  background-color: var(--red);
+}
+
+.new-match {
+  background-color: var(--gray);
+}

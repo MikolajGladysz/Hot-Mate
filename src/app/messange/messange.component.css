@@ -1,0 +1,166 @@
+.con{
+  background-color: black;
+}
+
+/* =============TOP======== */
+
+.top-bar{
+  padding: 15px 20px;
+  color: var(--gray);
+  font-weight: 500;
+  height: 10vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: var(--bg-border) 1px solid;
+  border-top: none;
+  border-right: none;
+
+}
+
+img{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: white 2px solid;
+margin-right: 20px;}
+
+.close-btn{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: transparent;
+  border: 3px solid var(--gray);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+.close-btn>svg{
+  fill: var(--gray);
+}
+.close-btn:hover{
+  transform: rotate(-90deg);
+}
+
+/* ========Main========== */
+.main-con{
+  border-left: solid 1px var(--bg-border);
+  overflow: hidden;
+  overflow-y: scroll;
+  margin-right: -20px;
+ height: 80vh;
+}
+.no-messages{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  font-size: 1.2rem;
+  height: 100%;
+}
+.no-messages>img{
+ width: 220px;
+ height: 220px;
+ border-radius: 50%;
+ margin: 25px 0;
+}
+.bold{
+  font-weight: bold;
+}
+.chess-btns>*{
+  padding: 5px 10px;
+  border-radius: 15px;
+
+}
+.play-black{
+  margin-left: 10px;
+  background-color: var(--gray);
+}
+
+.messages{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 20px;
+}
+.message{
+  width: 100%;
+}
+.user,.pair{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.reaction{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pair span{
+  display: block;
+  padding: 8px 15px;
+  max-width: 80%;
+  border-radius: 21px;
+  background-color: var(--message-gray);
+  border-bottom-left-radius: 4px;
+}
+.pair>div{
+  display: flex;
+  align-items: center;
+  justify-content: start;
+}
+
+.user span{
+  background-color: var(--message-blue);
+  padding: 8px 15px;
+  border-radius: 21px;
+  border-bottom-right-radius: 4px;
+  max-width: 80%;
+}
+
+
+.date{
+  font-size: .8rem;
+  color: var(--gray);
+  margin: 10px;
+}
+
+/* =========Bottom========== */
+.bottom-bar{
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 1px var(--bg-border);
+  border-bottom: none;
+  border-right: none;
+}
+input{
+  width: 80%;
+  margin-right: 10px;
+  background-color: transparent;
+  color: white;
+  border: none;
+}
+input:focus{
+  outline: none;
+}
+.bottom-bar>button{
+  border-radius: 30px;
+  padding: 10px 30px;
+ background-color: var(--red);
+ color: white;
+  text-transform: uppercase;
+
+}
+.bottom-bar>button:disabled{
+  border: none;
+  background-color: var(--bg-main);
+  color: var(--bg-border);
+}

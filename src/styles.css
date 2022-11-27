@@ -1,43 +1,28 @@
 
-
 :root{--bg-main:rgb(17,20,24);
   --text-main:white;
   --accent:black;
-  --gray:#939ba7;
+  --gray:rgb(141, 156, 172);
   --red:red;
+  --red-gradient:linear-gradient(32deg, rgba(233,17,80,1) 0%, rgba(240,93,93,1) 48%, rgba(228,59,21,1) 100%);
+
+  --green-gradient:linear-gradient(90deg, rgba(39,195,70,1) 0%, rgba(133,255,147,1) 75%, rgba(255,255,255,1) 100%);
+  --green:green;
+  --bg-border:rgb(141, 156, 172);
+  --message-blue:#106bd5;
+  --message-gray:#21262e;
 }
 
 body{
   overflow: hidden;
 }
-.main-con{
-  height: 100vh;
-  background-color: var(--bg-main);
-  color: var(--text-main);
-  display: flex;
-}
-.sidebar{
- width: 375px;
- min-width: 375px;
-}
-.card-swipe{
-  width: 100%;
-  text-align: center;
 
+/*
+green
+background: rgb(39,195,70);
+background: linear-gradient(90deg, rgba(39,195,70,1) 0%, rgba(133,255,147,1) 75%, rgba(255,255,255,1) 100%);
+red
+background: rgb(233,17,80);
+background: linear-gradient(32deg, rgba(233,17,80,1) 0%, rgba(240,93,93,1) 48%, rgba(228,59,21,1) 100%);
 
-}
-.card-top{
-  height: 90vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.card-bottom{
-height: 10vh;
-}
-.card-con{
-  width: 375px;
-  border: 1px solid black;
-  border-radius: 10px;
-  height: 670px;
-}
+*/

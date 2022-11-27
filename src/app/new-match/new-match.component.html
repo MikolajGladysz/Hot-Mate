@@ -1,0 +1,93 @@
+<div class="con">
+  <div class="card-drag-con card-1">
+    <div
+      class="card-top"
+      style="background-image:url({{ user.photos[currPhoto - 1] }}) ;"
+    >
+      <div class="card-overlay">
+        <div class="card-change" *ngIf="user.photos.length > 1">
+          <div (click)="_changePhoto(-1)"></div>
+          <div (click)="_changePhoto(1)"></div>
+        </div>
+        <div class="card-page-con" *ngIf="user.photos.length > 1">
+          <div
+            class="card-page"
+            *ngFor="let photo of user.photos; let i = index"
+            [class.active]="i + 1 == currPhoto"
+            (click)="_goToPage(i)"
+          ></div>
+        </div>
+        <div class="card-arrows" *ngIf="user.photos.length > 1">
+          <div class="arrow-left" *ngIf="currPhoto > 1"></div>
+
+          <div class="arrow-right" *ngIf="currPhoto < user.photos.length"></div>
+        </div>
+
+        <button class="close-btn" (click)="_closeWindow()">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            version="1.1"
+            id="Layer_1"
+            x="0px"
+            y="0px"
+            width="121.31px"
+            height="122.876px"
+            viewBox="0 0 121.31 122.876"
+            enable-background="new 0 0 121.31 122.876"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M90.914,5.296c6.927-7.034,18.188-7.065,25.154-0.068 c6.961,6.995,6.991,18.369,0.068,25.397L85.743,61.452l30.425,30.855c6.866,6.978,6.773,18.28-0.208,25.247 c-6.983,6.964-18.21,6.946-25.074-0.031L60.669,86.881L30.395,117.58c-6.927,7.034-18.188,7.065-25.154,0.068 c-6.961-6.995-6.992-18.369-0.068-25.397l30.393-30.827L5.142,30.568c-6.867-6.978-6.773-18.28,0.208-25.247 c6.983-6.963,18.21-6.946,25.074,0.031l30.217,30.643L90.914,5.296L90.914,5.296z"
+              />
+            </g>
+          </svg>
+        </button>
+        <div class="message">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            version="1.1"
+            id="Capa_1"
+            x="0px"
+            y="0px"
+            viewBox="0 0 472.7 472.7"
+            style="enable-background: new 0 0 472.7 472.7"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                id="XMLID_810_"
+                d="M433.5,67c-25.3-25.3-59-39.3-94.8-39.3s-69.6,14-94.9,39.4l-7.3,7.3l-7.5-7.5   c-25.4-25.4-59.1-39.4-95-39.4c-35.8,0-69.4,13.9-94.7,39.3C13.9,92.2,0,125.9,0,161.7s14,69.5,39.4,94.8l182.7,182.7   c3.8,3.8,9,6,14.5,6c5.4,0,10.6-2.2,14.5-6l182.2-182.4c25.4-25.4,39.3-59.1,39.4-94.9S458.8,92.4,433.5,67z M132.5,117.2   c-23.9,0-43.4,19.5-43.4,43.4c0,11-8.9,19.9-19.9,19.9s-19.9-8.9-19.9-19.9c0-45.8,37.3-83.1,83.1-83.1c11,0,19.9,8.9,19.9,19.9   C152.4,108.4,143.5,117.2,132.5,117.2z"
+              />
+            </g>
+          </svg>
+          <span class="user-name"> {{ user.name }} likes you too! </span>
+          <form (ngSubmit)="_sendMessage()">
+            <input
+              type="text"
+              placeholder="Say something nice!"
+              type="text"
+              name="input"
+              [(ngModel)]="messageInput"
+              #input
+              autocomplete="off"
+            />
+            <button type="submit " [disabled]="!messageInput">SEND</button>
+          </form>
+          <div class="chess-btns">
+            <button class="play-white">Make a first move</button>
+            <button class="play-black">Invite them to move first</button>
+          </div>
+        </div>
+        <div class="new-match-text-con">
+          <span class="text-top">It's a</span>
+          <span class="text-bottom">MATCH!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
