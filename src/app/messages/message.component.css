@@ -1,10 +1,19 @@
-.con{
+.con {
   background-color: black;
+  min-width: 1000px;
 }
-
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.detail-con {
+  width: calc(100% - 1000px);
+}
 /* =============TOP======== */
 
-.top-bar{
+.top-bar {
   padding: 15px 20px;
   color: var(--gray);
   font-weight: 500;
@@ -15,17 +24,17 @@
   border: var(--bg-border) 1px solid;
   border-top: none;
   border-right: none;
-
 }
 
-img{
+img {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   border: white 2px solid;
-margin-right: 20px;}
+  margin-right: 20px;
+}
 
-.close-btn{
+.close-btn {
   width: 30px;
   height: 30px;
   border-radius: 50%;
@@ -36,22 +45,22 @@ margin-right: 20px;}
   justify-content: center;
   transition: transform 0.3s;
 }
-.close-btn>svg{
+.close-btn > svg {
   fill: var(--gray);
 }
-.close-btn:hover{
+.close-btn:hover {
   transform: rotate(-90deg);
 }
 
 /* ========Main========== */
-.main-con{
+.main-con {
   border-left: solid 1px var(--bg-border);
   overflow: hidden;
   overflow-y: scroll;
   margin-right: -20px;
- height: 80vh;
+  height: 80vh;
 }
-.no-messages{
+.no-messages {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,26 +68,25 @@ margin-right: 20px;}
   font-size: 1.2rem;
   height: 100%;
 }
-.no-messages>img{
- width: 220px;
- height: 220px;
- border-radius: 50%;
- margin: 25px 0;
+.no-messages > img {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  margin: 25px 0;
 }
-.bold{
+.bold {
   font-weight: bold;
 }
-.chess-btns>*{
+.chess-btns > * {
   padding: 5px 10px;
   border-radius: 15px;
-
 }
-.play-black{
+.play-black {
   margin-left: 10px;
   background-color: var(--gray);
 }
 
-.messages{
+.messages {
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -86,23 +94,24 @@ margin-right: 20px;}
   width: 100%;
   padding: 20px;
 }
-.message{
+.message {
   width: 100%;
 }
-.user,.pair{
+.user,
+.pair {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 15px;
 }
 
-.reaction{
+.reaction {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.pair span{
+.pair span {
   display: block;
   padding: 8px 15px;
   max-width: 80%;
@@ -110,13 +119,13 @@ margin-right: 20px;}
   background-color: var(--message-gray);
   border-bottom-left-radius: 4px;
 }
-.pair>div{
+.pair > div {
   display: flex;
   align-items: center;
   justify-content: start;
 }
 
-.user span{
+.user span {
   background-color: var(--message-blue);
   padding: 8px 15px;
   border-radius: 21px;
@@ -124,15 +133,14 @@ margin-right: 20px;}
   max-width: 80%;
 }
 
-
-.date{
-  font-size: .8rem;
+.date {
+  font-size: 0.8rem;
   color: var(--gray);
   margin: 10px;
 }
 
 /* =========Bottom========== */
-.bottom-bar{
+.bottom-bar {
   height: 10vh;
   display: flex;
   align-items: center;
@@ -141,25 +149,24 @@ margin-right: 20px;}
   border-bottom: none;
   border-right: none;
 }
-input{
+input {
   width: 80%;
   margin-right: 10px;
   background-color: transparent;
   color: white;
   border: none;
 }
-input:focus{
+input:focus {
   outline: none;
 }
-.bottom-bar>button{
+.bottom-bar > button {
   border-radius: 30px;
   padding: 10px 30px;
- background-color: var(--red);
- color: white;
+  background-color: var(--red);
+  color: white;
   text-transform: uppercase;
-
 }
-.bottom-bar>button:disabled{
+.bottom-bar > button:disabled {
   border: none;
   background-color: var(--bg-main);
   color: var(--bg-border);

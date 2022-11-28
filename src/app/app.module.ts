@@ -5,9 +5,10 @@ import { AppComponent } from './app.component';
 import { SwipeCardComponent } from './swipe-card/swipe-card.component';
 import { DetailComponent } from './detail/detail.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
-import { MessangeComponent } from './messange/messange.component';
+import { MessageComponent } from './messages/message.component';
 import { FormsModule } from '@angular/forms';
 import { NewMatchComponent } from './new-match/new-match.component';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -15,14 +16,11 @@ import { NewMatchComponent } from './new-match/new-match.component';
     SwipeCardComponent,
     DetailComponent,
     SidebarComponent,
-    MessangeComponent,
-    NewMatchComponent
+    MessageComponent,
+    NewMatchComponent,
   ],
-  imports: [
-    BrowserModule,
-    FormsModule
-  ],
+  imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

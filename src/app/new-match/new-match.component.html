@@ -1,8 +1,9 @@
-<div class="con">
+<div class="new-match-con">
   <div class="card-drag-con card-1">
+    <!-- prettier-ignore -->
     <div
       class="card-top"
-      style="background-image:url({{ user.photos[currPhoto - 1] }}) ;"
+      style="background-image:url({{user.photos[currPhoto-1]}}) ;"
     >
       <div class="card-overlay">
         <div class="card-change" *ngIf="user.photos.length > 1">
@@ -17,6 +18,7 @@
             (click)="_goToPage(i)"
           ></div>
         </div>
+
         <div class="card-arrows" *ngIf="user.photos.length > 1">
           <div class="arrow-left" *ngIf="currPhoto > 1"></div>
 

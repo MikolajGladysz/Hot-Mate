@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CardService } from '../shared/card.service';
 import { User } from '../shared/user.model';
 
@@ -8,13 +8,21 @@ import { User } from '../shared/user.model';
   styleUrls: ['./new-match.component.css'],
 })
 export class NewMatchComponent implements OnInit {
-  @Input() user: User;
+  user: User;
   currPhoto = 1;
   messageInput;
 
   constructor(private cardService: CardService) {}
+  @HostListener('document:click', ['$event'])
+  closeWindow(e) {
+    if (!e.target.closest('.new-match-con')) {
+      this._closeWindow();
+    }
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.user = this.cardService.users[this.cardService.users.length - 1];
+  }
   _changePhoto(i: number) {
     if (
       this.currPhoto + i > 0 &&
@@ -30,12 +38,12 @@ export class NewMatchComponent implements OnInit {
     this.cardService.newMatch(null);
   }
   _sendMessage() {
-    if (!this.user.messanges) {
-      this.user.messanges = [];
+    if (!this.user.messages) {
+      this.user.messages = [];
     }
-    this.user.messanges.push({
+    this.user.messages.push({
       fromUser: true,
-      messange: {
+      message: {
         content: this.messageInput,
         date: '123',
       },

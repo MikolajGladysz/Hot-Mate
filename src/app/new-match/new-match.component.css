@@ -1,81 +1,78 @@
-.con{
-  position: absolute;
-  top:0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  z-index: 999999999999;
+.new-match-con {
+  width: 375px;
+  height: 670px;
 }
-.card-drag-con{
-  height: 100%;
- overflow: hidden;
- background-color: black;
-position: relative;
-}
-
-.card-top{
+:host {
   width: 100%;
   height: 100%;
-background-position: center;
-display: flex;
-align-items: flex-end;
-flex-direction: row;
-  border-radius: 10px 10px 0 0 ;
-  padding: 20px;  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card-drag-con {
+  height: 100%;
+  overflow: hidden;
+  background-color: black;
   position: relative;
 }
 
+.card-top {
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  border-radius: 10px 10px 0 0;
+  padding: 20px;
+  cursor: pointer;
+  position: relative;
+}
 
-
-.card-overlay{
+.card-overlay {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
 }
-.card-page-con{
+.card-page-con {
   height: 12px;
   width: 100%;
   gap: 5px;
-  padding: 0px  8px;
+  padding: 0px 8px;
   display: flex;
   flex-direction: row;
 }
-.card-page{
+.card-page {
   background-color: var(--accent);
   opacity: 0.4;
   border-radius: 5px;
- flex-grow: 1;
- z-index: 2;
- margin: 4px 0;
+  flex-grow: 1;
+  z-index: 2;
+  margin: 4px 0;
 }
-.card-page.active{
+.card-page.active {
   background-color: white;
   opacity: 1;
 }
 
-
-.card-change{
+.card-change {
   position: absolute;
-  top:0;
+  top: 0;
   bottom: 120px;
   z-index: 2;
   left: 0;
   right: 0;
   display: flex;
   flex-direction: row;
-
 }
-.card-change>div{
+.card-change > div {
   width: 100%;
   height: 100%;
 }
 
-
-
-.card-arrows{
-
+.card-arrows {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -86,7 +83,7 @@ flex-direction: row;
   padding: 0 20px;
 }
 
-.arrow-left{
+.arrow-left {
   width: 20px;
   height: 20px;
   transform: rotate(45deg);
@@ -94,7 +91,7 @@ flex-direction: row;
   border-left: 4px solid white;
   border-bottom: 4px solid white;
 }
-.arrow-right{
+.arrow-right {
   width: 20px;
   height: 20px;
   transform: rotate(45deg);
@@ -103,10 +100,10 @@ flex-direction: row;
   border-right: 4px solid white;
   border-top: 4px solid white;
 }
-.card-top:hover .card-arrows{
+.card-top:hover .card-arrows {
   opacity: 1;
- }
- .close-btn{
+}
+.close-btn {
   width: 30px;
   height: 30px;
   position: absolute;
@@ -117,20 +114,19 @@ flex-direction: row;
   border: 3px solid var(--gray);
   box-shadow: -1px 0px 14px 0px var(--accent);
   display: flex;
-   z-index: 3;
+  z-index: 3;
   align-items: center;
   justify-content: center;
   transition: transform 0.3s;
 }
-.close-btn>svg{
+.close-btn > svg {
   fill: var(--gray);
 }
-.close-btn:hover{
-
+.close-btn:hover {
   transform: rotate(-90deg);
 }
 
-.message{
+.message {
   position: absolute;
   top: 65%;
   left: 30px;
@@ -141,48 +137,46 @@ flex-direction: row;
   justify-content: center;
   align-items: center;
 }
-.message>svg{
+.message > svg {
   width: 30px;
   height: 30px;
   fill: var(--green);
 }
-.user-name{
+.user-name {
   font-size: 1.3rem;
   font-weight: 700;
   margin-bottom: 12px;
 }
-form{
+form {
   width: 100%;
   height: 50px;
   margin-bottom: 10px;
 }
-input{
+input {
   width: 80%;
   color: var(--text-main);
   background-color: black;
   border: none;
   padding: 13px 8px;
 }
-form>button:disabled{
+form > button:disabled {
   background: black;
   color: var(--gray);
-
 }
-form>button{
+form > button {
   background: var(--red-gradient);
   height: 100%;
   border: none;
 
-
   color: white;
   width: 20%;
 }
-.chess-btns{
+.chess-btns {
   width: 100%;
   display: flex;
   flex-direction: row;
 }
-.chess-btns>button{
+.chess-btns > button {
   margin: 5px;
   border-radius: 10px;
   background: transparent;
@@ -190,11 +184,11 @@ form>button{
   font-weight: 700;
   backdrop-filter: blur(10px);
 }
-input:focus{
+input:focus {
   outline: none;
 }
 
-.new-match-text-con{
+.new-match-text-con {
   position: absolute;
   top: 20%;
   left: 10px;
@@ -209,11 +203,11 @@ input:focus{
   align-items: center;
   justify-content: center;
 }
-.text-top{
+.text-top {
   font-weight: 700;
   font-size: 2rem;
 }
-.text-bottom{
+.text-bottom {
   font-size: 4rem;
   font-size: 5.5rem;
   line-height: 4rem;

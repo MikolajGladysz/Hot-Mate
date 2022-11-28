@@ -1,36 +1,9 @@
-<div class="main-con" [class.new-match]="newUser">
+<div class="con" [class.new-match]="newUser">
   <div class="sidebar">
     <app-sidebar></app-sidebar>
   </div>
-  <div class="card-swipe" *ngIf="!currUser || detail">
-    <div class="card-top">
-      <app-swipe-card
-        *ngIf="!detail && !newUser"
-        (detailUpdate)="detailUpdate($event)"
-        #swipeCard
-      ></app-swipe-card>
-      <app-detail
-        *ngIf="detail && !newUser"
-        (detailUpdate)="detailUpdate($event)"
-        [currUser]="currUser"
-        [detail]="detail"
-      ></app-detail>
-      <app-new-match *ngIf="newUser" [user]="newUser"></app-new-match>
-    </div>
-    <div class="card-bottom"></div>
-  </div>
-  <div class="messange-con" *ngIf="currUser && !detail">
-    <div class="messange-window">
-      <app-messange [currUser]="currUser"></app-messange>
-    </div>
-
-    <div class="detail-window">
-      <div class="detail">
-        <app-detail [currUser]="currUser" [detail]="detail"></app-detail>
-      </div>
-      <div class="remove-btn">
-        <div>Unmatch</div>
-      </div>
-    </div>
+  <div class="main-con">
+    <router-outlet *ngIf="!newUser"></router-outlet>
+    <app-new-match *ngIf="newUser"></app-new-match>
   </div>
 </div>
