@@ -1,10 +1,8 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
   HostListener,
-  Input,
   OnInit,
   Output,
   ViewChild,
@@ -25,7 +23,7 @@ export class SwipeCardComponent implements OnInit {
 
   @Output() detailUpdate = new EventEmitter<boolean>();
 
-  //control card drag funcionality
+  //control card drag functionality
   rotate: number;
   mouseDown: boolean = false;
   swipeYeah: boolean = false;
@@ -235,10 +233,7 @@ export class SwipeCardComponent implements OnInit {
     this.currPhoto = i + 1;
   }
 
-  updateDetail(detail: boolean) {
-    this.cardService.setCurrentUser(this.dummy[0]);
-    this.detailUpdate.emit(detail);
-  }
+  _updateCurrentUser(user: User) {}
 
   mousedown(e) {
     //reset transition value to prevent drag lag
