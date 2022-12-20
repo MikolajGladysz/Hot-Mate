@@ -1,16 +1,18 @@
 import { EventEmitter, Injectable, Output } from '@angular/core';
-import { single } from 'rxjs';
-import { User } from './user.model';
+import { MessageService } from './message.service';
+import { User } from './models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class CardService {
   users: User[] = [];
+  currentUser: User;
   @Output() usersObs = new EventEmitter<boolean>();
   @Output() newMatchObs = new EventEmitter<User>();
 
   dummyUser: User[] = [];
   swipe: number;
 
+  constructor(private messageService: MessageService) {}
   addUser(user: User) {
     this.users.push(user);
     this.emitUsersObs();
@@ -37,9 +39,9 @@ export class CardService {
 
   //ONLY IN PRODUCTION
   generateUsers(num: number, newUser?: boolean) {
+    const random = (min: number, max: number) =>
+      Math.trunc(Math.random() * max) + min;
     for (let i = 0; i < num; i++) {
-      const random = (min: number, max: number) =>
-        Math.trunc(Math.random() * max) + min;
       const tags = [
         'Quick chess',
         'Bullet',
@@ -132,22 +134,6 @@ export class CardService {
       const id = Math.random().toString(36).slice(2, 10);
 
       const description = lorem.slice(0, random(3, lorem.length - 1)).join(' ');
-      let messangeArr: User['messages'] = [];
-      if (!newUser) {
-        Array(random(1, 8))
-          .fill('')
-          .forEach(() => {
-            messangeArr.push({
-              fromUser: random(0, 2) ? true : false,
-              message: {
-                date: '10.11.22',
-                content: lorem.slice(0, random(3, lorem.length - 1)).join(' '),
-              },
-            });
-          });
-      } else {
-        messangeArr = undefined;
-      }
 
       let tag = new Set();
       Array(random(1, 8))
@@ -187,8 +173,7 @@ export class CardService {
           favOpening,
           favGamesArr,
           city,
-          chessTitle,
-          random(0, 2) ? messangeArr : undefined
+          chessTitle
         );
       }
       this.users.push(
@@ -203,11 +188,30 @@ export class CardService {
           favOpening,
           favGamesArr,
           city,
-          chessTitle,
-          random(0, 2) ? messangeArr : undefined
+          chessTitle
         )
       );
     }
+    this.currentUser = this.users[0];
+    this.users.forEach((user, index) => {
+      user.messagesId = [];
+      const ids = new Set<string>();
+      //i - amount of messages threads
+      for (let i = 0; i < 15; i++) {
+        ids.add(
+          this.users[
+            random(2, this.users.length) != index
+              ? random(2, this.users.length)
+              : null
+          ]?.id
+        );
+      }
+      user.messagesId = Array.from(ids).filter((val) => val != undefined);
+      user.messagesId.forEach((id) => {
+        this.messageService.generateFakeMessages([id, user.id]);
+      });
+    });
+
     return null;
   }
 }
