@@ -1,0 +1,85 @@
+:host {
+  aspect-ratio: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+* {
+  user-select: none;
+}
+.board {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  background: rgb(240, 156, 100);
+}
+.chess-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+}
+.chess-tile.active {
+  background-color: rgb(231, 83, 57);
+}
+.chess-tile > * {
+  transition: width height 1s;
+  z-index: 2;
+  width: 50px;
+  height: 50px;
+}
+.dark {
+  background-color: rgb(71, 32, 0);
+}
+svg {
+  display: none !important;
+}
+.arrow {
+  background-color: green;
+  opacity: 0.5;
+  position: absolute;
+  width: 20px !important;
+  bottom: 40%;
+  left: calc(50% - 10px);
+  /* max-width: 10px; */
+  transform-origin: bottom;
+  pointer-events: none;
+  z-index: 2;
+}
+.arrow::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  top: -45px;
+  height: 52px;
+  left: -17px;
+  width: 55px;
+  background: green;
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+.overlay {
+  display: flex;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  position: absolute;
+  pointer-events: none;
+  align-items: center;
+  justify-content: center;
+  color: darkslateblue;
+}
+.attackedB {
+  background-color: yellow;
+}
+.attackedW {
+  background-color: blue;
+}
+.attackedB.attackedW {
+  background-color: violet;
+}

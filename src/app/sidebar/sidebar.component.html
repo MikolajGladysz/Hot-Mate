@@ -1,10 +1,8 @@
 <div class="con">
   <div class="sidebar-top">
     <div class="profile-con">
-      <img
-        src="../../assets/images/user1/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
-      />
-      <span>mikolaj</span>
+      <img [src]="currentUser.photos[0]" />
+      <span>{{ currentUser.name }}</span>
     </div>
   </div>
   <div class="sidebar-bottom">
@@ -41,9 +39,7 @@
           <img src="{{ user.photos[0] }}" />
           <div class="item-right">
             <span class="name">{{ user.name }}</span>
-            <span class="last-message">{{
-              user.messages[0].message.content
-            }}</span>
+            <span class="last-message">{{ _getLastMessage(user.id) }}</span>
           </div>
         </div>
       </div>

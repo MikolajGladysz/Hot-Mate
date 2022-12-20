@@ -1,0 +1,121 @@
+.con {
+  background-color: black;
+  min-width: 1000px;
+
+  height: 100vh;
+  padding: 50px;
+}
+:host {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+.detail-con {
+  width: calc(100% - 1000px);
+}
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.chess-board {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 30px;
+}
+.player-con {
+  display: flex;
+  width: 100%;
+  height: 3rem;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.player-info {
+  display: flex;
+}
+.img-small {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+.nickname {
+  color: var(--gray);
+}
+.timer {
+  height: 3.5rem;
+  width: 8rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-weight: 500;
+  border-radius: 10px;
+  font-size: 2rem;
+  padding-right: 10px;
+}
+.timer.white {
+  color: var(--gray);
+  background-color: white;
+}
+.timer.black {
+  color: white;
+  background-color: black;
+}
+.side-bar {
+  min-width: 15%;
+  height: 80%;
+}
+
+.moves-con {
+  width: 100%;
+  padding: 30px 0;
+  border-radius: 10px 10px 0 0;
+
+  background-color: var(--message-gray);
+  height: 80%;
+}
+.move:nth-child(2n) {
+  background-color: #373944;
+}
+.move {
+  display: flex;
+  justify-content: space-evenly;
+}
+.move > span {
+  cursor: pointer;
+}
+.side-bar-bottom {
+  width: 100%;
+  background-color: #09090c;
+  border-radius: 0 0 10px 10px;
+  padding: 20px;
+  height: 20%;
+}
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.buttons > button {
+  width: 100%;
+  background-color: #373944;
+  margin: 0 10px;
+  color: white;
+  border-radius: 10px;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  height: 3rem;
+  transition: background 0.3s;
+}
+.buttons > button:hover {
+  background-color: #636572;
+}

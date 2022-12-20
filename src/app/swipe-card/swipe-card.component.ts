@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 
 import { CardService } from '../shared/card.service';
-import { User } from '../shared/user.model';
+import { User } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-swipe-card',

@@ -7,7 +7,8 @@
     >
       <div class="card-overlay">
         <div class="card-change" *ngIf="user.photos.length > 1">
-          <div (click)="_changePhoto(-1)"></div>
+          <div (click)="_changePhoto(-1)" ></div>
+
           <div (click)="_changePhoto(1)"></div>
         </div>
         <div class="card-page-con" *ngIf="user.photos.length > 1">
@@ -21,7 +22,7 @@
 
         <div class="card-arrows" *ngIf="user.photos.length > 1">
           <div class="arrow-left" *ngIf="currPhoto > 1"></div>
-
+          <div></div>
           <div class="arrow-right" *ngIf="currPhoto < user.photos.length"></div>
         </div>
 
@@ -80,9 +81,11 @@
             />
             <button type="submit " [disabled]="!messageInput">SEND</button>
           </form>
+          <span *ngIf="this.activeBtn || this.move" class="invitation-text">Invitation sent!</span>
+
           <div class="chess-btns">
-            <button class="play-white">Make a first move</button>
-            <button class="play-black">Invite them to move first</button>
+            <button class="play-white" [class.active]="move" (click)="displayBoard=true">Make a first move</button>
+            <button class="play-black"  [class.active]="!move && activeBtn" (click)="_createGame('b'); move = ''; activeBtn=!activeBtn">Invite them to move first</button>
           </div>
         </div>
         <div class="new-match-text-con">
@@ -90,6 +93,30 @@
           <span class="text-bottom">MATCH!</span>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="backdrop" *ngIf="displayBoard"></div>
+  <div class="chess-board" *ngIf="displayBoard">
+    <app-chess-board
+      [fenCode]="'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'"
+      [firstMove]="true"
+      [nextMove]="move"
+      (newFirstMove)="move = $event"
+    ></app-chess-board>
+    <div class="buttons">
+      <button
+        class="approve"
+        [disabled]="!move"
+        (click)="_createGame('w'); displayBoard = false; activeBtn = false"
+      >
+        Confirm
+      </button>
+      <button
+        class="close"
+        (click)="displayBoard = false; move = ''; activeBtn = false"
+      >
+        Close
+      </button>
     </div>
   </div>
 </div>

@@ -11,6 +11,10 @@
 .detail-con {
   width: calc(100% - 1000px);
 }
+.con.chess-game {
+  min-width: 0;
+  width: 100%;
+}
 /* =============TOP======== */
 
 .top-bar {
@@ -77,13 +81,38 @@ img {
 .bold {
   font-weight: bold;
 }
-.chess-btns > * {
-  padding: 5px 10px;
-  border-radius: 15px;
-}
+
 .play-black {
   margin-left: 10px;
   background-color: var(--gray);
+}
+.play-white.active {
+  background: var(--green-gradient) !important;
+  color: black !important;
+}
+.play-black.active {
+  background: var(--red-gradient) !important;
+  color: black !important;
+}
+.chess-btns {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.chess-btns > button {
+  margin: 5px;
+  border-radius: 10px;
+  background: var(--bg-main);
+  color: var(--bg-border);
+  font-size: 1.1rem;
+  border: none;
+  font-weight: 600;
+  padding: 11px;
+  transition: transform 0.3s;
+}
+.chess-btns > button:hover {
+  transform: scale(1.1);
 }
 
 .messages {
@@ -109,11 +138,13 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .pair span {
   display: block;
   padding: 8px 15px;
+  position: relative;
   max-width: 80%;
   border-radius: 21px;
   background-color: var(--message-gray);
@@ -126,17 +157,43 @@ img {
 }
 
 .user span {
+  position: relative;
   background-color: var(--message-blue);
   padding: 8px 15px;
   border-radius: 21px;
   border-bottom-right-radius: 4px;
-  max-width: 80%;
+  display: block;
+  overflow-wrap: anywhere;
 }
-
-.date {
+.message-text {
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.pair .message-text {
+  align-items: flex-start;
+}
+.reaction-window {
+  margin-bottom: -18px;
+  background: var(--bs-body-color);
+  padding: 4px 10px;
+  height: 45px;
+  color: var(--bg-border);
+  font-size: 0.9rem;
+  width: max-content;
+  border-radius: 10px;
+}
+.info-message {
   font-size: 0.8rem;
   color: var(--gray);
+  width: 100%;
   margin: 10px;
+  display: block;
+  text-align: center;
+}
+.message-link {
+  cursor: pointer;
 }
 
 /* =========Bottom========== */
@@ -147,6 +204,7 @@ img {
   justify-content: center;
   border: solid 1px var(--bg-border);
   border-bottom: none;
+  position: relative;
   border-right: none;
 }
 input {
@@ -170,4 +228,23 @@ input:focus {
   border: none;
   background-color: var(--bg-main);
   color: var(--bg-border);
+}
+.react-to {
+  position: absolute;
+  top: -50px;
+  background-color: var(--bg-main);
+  left: 0;
+  display: flex;
+  padding: 5px 20px;
+  justify-content: space-between;
+  right: 0;
+  align-items: center;
+}
+.react-message {
+  display: flex;
+  flex-direction: column;
+}
+.react-message > span {
+  margin: 0;
+  text-align: start;
 }

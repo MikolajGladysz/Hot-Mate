@@ -32,6 +32,7 @@
 .card-overlay {
   position: absolute;
   top: 0;
+  background: rgba(0, 0, 0, 0.6);
   left: 0;
   right: 0;
   bottom: 0;
@@ -179,10 +180,25 @@ form > button {
 .chess-btns > button {
   margin: 5px;
   border-radius: 10px;
-  background: transparent;
+  background: black;
+  color: var(--bg-border);
   font-size: 1.1rem;
-  font-weight: 700;
-  backdrop-filter: blur(10px);
+  border: none;
+  font-weight: 600;
+  padding: 5px;
+  transition: transform 0.3s;
+}
+.chess-btns > button:hover {
+  transform: scale(1.1);
+}
+
+.play-white.active {
+  background: var(--green-gradient) !important;
+  color: black !important;
+}
+.play-black.active {
+  background: var(--red-gradient) !important;
+  color: black !important;
 }
 input:focus {
   outline: none;
@@ -212,4 +228,63 @@ input:focus {
   font-size: 5.5rem;
   line-height: 4rem;
   font-weight: 900;
+}
+.chess-board {
+  position: fixed;
+  top: 15vh;
+  left: calc(60vw - 230px);
+  z-index: 99999;
+  background: var(--bg-main);
+  border-radius: 10px;
+  padding: 30px;
+}
+.chess-board > .buttons {
+  width: 100%;
+  margin: 10px 0;
+  height: 3rem;
+  display: flex;
+}
+.buttons > button {
+  width: 100%;
+  margin: 0 15px;
+  border-radius: 10px;
+  font-weight: 500;
+  font-size: 1.6rem;
+  border: none;
+  color: var(--accent);
+}
+.buttons > button.approve:disabled {
+  background: none;
+  background-color: var(--bg-main);
+  border: 3px solid var(--bg-border);
+  color: var(--bg-border);
+}
+.approve {
+  background: var(--green-gradient);
+}
+.close {
+  background: var(--red-gradient);
+}
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.invitation-text {
+  position: absolute;
+  color: var(--gray);
+
+  bottom: -40px;
+
+  font-size: 1.4rem;
+  color: white;
+  font-weight: 600;
+  z-index: 9;
+  padding: 7px;
+  border-radius: 10px;
 }

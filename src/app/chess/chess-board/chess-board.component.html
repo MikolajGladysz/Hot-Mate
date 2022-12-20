@@ -1,0 +1,26 @@
+<div class="board">
+  <div
+    class="chess-tile"
+    *ngFor="let tile of _boardInfo; let i = index"
+    [class.dark]="tile.darkTile"
+    [class.active]="_legalMoves.indexOf(i) != -1"
+    [attr.data-index]="i"
+  >
+    <img
+      *ngIf="tile.pieceUrl"
+      [src]="tile.pieceUrl"
+      alt="Chess Piece"
+      draggable="true"
+    />
+    <div
+      class="arrow"
+      *ngIf="tile.arrow"
+      [style.height]="tile.arrow.arrowHeight"
+      [style.transform]="tile.arrow.arrowTransform"
+    ></div>
+    <div class="overlay">
+      {{ tile.row + " , " + tile.column }}<br />
+      {{ i }}
+    </div>
+  </div>
+</div>

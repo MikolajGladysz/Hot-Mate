@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { CardService } from '../shared/card.service';
-import { User } from '../shared/user.model';
+import { User } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-detail',

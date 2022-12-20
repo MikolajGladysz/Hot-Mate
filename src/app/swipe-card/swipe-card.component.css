@@ -91,6 +91,7 @@
 .card-info {
   width: 90%;
   text-align: left;
+  z-index: 999;
   line-height: 0.9rem;
 }
 .iconBtn {

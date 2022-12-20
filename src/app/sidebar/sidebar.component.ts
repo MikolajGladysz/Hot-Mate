@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  ActivatedRoute,
-  Router,
-  Event,
-  NavigationStart,
-} from '@angular/router';
+import { Router, Event, NavigationStart } from '@angular/router';
 import { CardService } from '../shared/card.service';
-import { User } from '../shared/user.model';
+import { MessageService } from '../shared/message.service';
+import { User } from '../shared/models/user.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,6 +12,7 @@ import { User } from '../shared/user.model';
 export class SidebarComponent implements OnInit {
   matches: boolean = true;
   users: User[];
+  currentUser: User;
   usersMatch: User[] = [];
   usersMessage: User[] = [];
 
@@ -23,13 +20,13 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private cardService: CardService,
-    private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
     this.users = this.cardService.users;
-
+    this.currentUser = this.cardService.currentUser;
     this.router.events.subscribe((ev: Event) => {
       if (ev instanceof NavigationStart) {
         if (!ev.url.startsWith('/messages')) {
@@ -50,11 +47,17 @@ export class SidebarComponent implements OnInit {
     this.usersMessage = [];
 
     this.users.forEach((user) => {
-      if (user.messages) {
+      if (this.messageService.findMessage([this.currentUser.id, user.id])) {
         this.usersMessage.push(user);
       } else {
         this.usersMatch.push(user);
       }
     });
+  }
+  _getLastMessage(id: string) {
+    return this.messageService.findMessage([id, this.currentUser.id]).content[
+      this.messageService.findMessage([id, this.currentUser.id]).content
+        .length - 1
+    ].text;
   }
 }

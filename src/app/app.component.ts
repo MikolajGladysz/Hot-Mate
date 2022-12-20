@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CardService } from './shared/card.service';
-import { User } from './shared/user.model';
+import { User } from './shared/models/user.model';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   constructor(private cardService: CardService) {}
 
   ngOnInit() {
-    this.cardService.generateUsers(20);
+    this.cardService.generateUsers(10);
 
     this.cardService.newMatchObs.subscribe((user) => {
       if (user) {
