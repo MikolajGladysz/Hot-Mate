@@ -1,7 +1,5 @@
 import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CardService } from '../shared/card.service';
-import { Game } from '../shared/models/game.model';
-import { GameService } from '../shared/game.service';
 import { User } from '../shared/models/user.model';
 import { MessageService } from '../shared/message.service';
 
@@ -16,14 +14,14 @@ export class NewMatchComponent implements OnInit, OnDestroy {
   messageInput;
   displayBoard = false;
   move: string = '';
-  game: Game;
+  game;
 
   activeBtn: boolean = false;
 
   private _gameSent = false;
   constructor(
     private cardService: CardService,
-    private gameService: GameService,
+
     private messageService: MessageService
   ) {}
   @HostListener('document:click', ['$event'])
@@ -76,23 +74,30 @@ export class NewMatchComponent implements OnInit, OnDestroy {
     this._closeWindow();
   }
   _createGame(color: string) {
-    const whiteId = color == 'w' ? 'current User' : this.user.id;
-    const blackId = color == 'w' ? this.user.id : 'current User';
-    this.game = {
-      id: Math.random().toString(36).slice(2, 10),
-      whiteId: whiteId,
-      blackId: blackId,
-      moves: this.move,
-    };
+    const whiteId =
+      color == 'w' ? this.cardService.currentUser.id : this.user.id;
+    const blackId =
+      color == 'w' ? this.user.id : this.cardService.currentUser.id;
+    this.game = [whiteId, blackId];
   }
   ngOnDestroy(): void {
     if ((this.activeBtn || this.move) && !this._gameSent) {
-      this.gameService.addGame(this.game);
       this.messageService.createMessage(
         [this.user.id, this.cardService.currentUser.id],
         'system',
         this.cardService.currentUser.name + ' invited you to chess match!'
       );
+      this.messageService.createGame(this.game[0], this.game[1]);
+      console.log(this.move);
+
+      if (this.move) {
+        this.messageService.updateGame(
+          [this.user.id, this.cardService.currentUser.id],
+          this.move
+        );
+      }
+
+      this.cardService.emitUsersObs();
     }
   }
 }

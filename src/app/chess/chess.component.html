@@ -13,7 +13,10 @@
         <div class="timer black">10:00</div>
       </div>
       <app-chess-board
-        [fenCode]="'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'"
+        [fenCode]="
+          fenCode ? fenCode : 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
+        "
+        (move)="_addMoveToGame($event)"
       ></app-chess-board>
       <div class="player-con">
         <div class="player-info">
@@ -30,25 +33,18 @@
     </div>
     <div class="side-bar">
       <div class="moves-con">
-        <div class="move">
-          <span class="turn">1.</span>
-          <span (click)="sendReaction($event)" data-id="1">e4e6 </span>
-          <span (click)="sendReaction($event)" data-id="2">e5e8</span>
-        </div>
-        <div class="move">
-          <span class="turn">2.</span>
-          <span>e4e6 </span>
-          <span>e5e8</span>
-        </div>
-        <div class="move">
-          <span class="turn">3.</span>
-          <span>e4e6 </span>
-          <span>e5e8</span>
-        </div>
-        <div class="move">
-          <span class="turn">4.</span>
-          <span>e4e6 </span>
-          <span>e5e8</span>
+        <div
+          class="move"
+          *ngFor="
+            let a of moves | slice : 0 : moves.length / 2 + 0.5;
+            let i = index
+          "
+        >
+          <span class="turn">{{ i + 1 }}.</span>
+          <span (click)="sendReaction($event)">{{ moves[i * 2] }} </span>
+          <span (click)="sendReaction($event)" *ngIf="moves[i + 1]">{{
+            moves[i * 2 + 1]
+          }}</span>
         </div>
       </div>
       <div class="side-bar-bottom">

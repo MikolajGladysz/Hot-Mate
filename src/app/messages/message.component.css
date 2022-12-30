@@ -175,13 +175,14 @@ img {
   align-items: flex-start;
 }
 .reaction-window {
-  margin-bottom: -18px;
+  margin-bottom: -20px;
   background: var(--bs-body-color);
-  padding: 4px 10px;
-  height: 45px;
+  padding: 11px 10px;
+  min-height: 55px;
   color: var(--bg-border);
   font-size: 0.9rem;
-  width: max-content;
+  width: fit-content;
+  overflow-wrap: anywhere;
   border-radius: 10px;
 }
 .info-message {

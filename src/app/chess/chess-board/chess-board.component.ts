@@ -3,6 +3,7 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnDestroy,
   OnInit,
   Output,
 } from '@angular/core';
@@ -14,7 +15,7 @@ import { Tile } from '../tile-info';
   templateUrl: './chess-board.component.html',
   styleUrls: ['./chess-board.component.css'],
 })
-export class ChessBoardComponent implements OnInit {
+export class ChessBoardComponent implements OnInit, OnDestroy {
   @Input() fenCode: string;
   @Input() flipBoard: number = 0;
   @Input() nextMove: string;
@@ -22,11 +23,12 @@ export class ChessBoardComponent implements OnInit {
   @Input() firstMove: boolean = false;
 
   @Output() newFirstMove = new EventEmitter<string>();
+  @Output() move = new EventEmitter<string>();
 
   _boardInfo: Tile[];
   _legalMoves: number[] = [];
 
-  private initialBoardState = 'rnbq1bnr/pppkpppp/8/5P2/8/8/PPP1PPPP/R3K2R';
+  private initialBoardState = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 
   private mouseDown: boolean = false;
   private selectedPieceImg: HTMLElement;
@@ -43,6 +45,10 @@ export class ChessBoardComponent implements OnInit {
       this.fenCode ? this.fenCode : this.initialBoardState,
       this.nextMove ? this.nextMove : ''
     );
+    this.turn = this.chessRulesService.turn;
+  }
+  ngOnDestroy(): void {
+    this.chessRulesService.move = '';
   }
 
   @HostListener('dragstart', ['$event.target'])
@@ -77,7 +83,7 @@ export class ChessBoardComponent implements OnInit {
 
       //check legal moves for selected piece
       this._legalMoves = this.chessRulesService.checkLegalMoves(
-        this._boardInfo[+event.closest('.chess-tile').dataset['index']]
+        +event.closest('.chess-tile').dataset['index']
       );
     }
   }
@@ -92,7 +98,7 @@ export class ChessBoardComponent implements OnInit {
       this._boardInfo[+event.closest('.chess-tile').dataset['index']]['piece']
     ) {
       this._legalMoves = this.chessRulesService.checkLegalMoves(
-        this._boardInfo[+event.closest('.chess-tile').dataset['index']]
+        +event.closest('.chess-tile').dataset['index']
       );
     }
 
@@ -117,26 +123,27 @@ export class ChessBoardComponent implements OnInit {
   placePiece() {
     this.mouseDown = false;
 
-    // if (this.firstMove && this.turn > 0) {
-    // }
     //check if piece was placed on legal tile
-    if (this._legalMoves.indexOf(+this.currentTile?.dataset['index']) != -1) {
-      this._boardInfo = this.chessRulesService.movePiece(
-        +this.selectedPieceTile.dataset['index'],
-        +this.currentTile.dataset['index']
-      );
+    // if (this._legalMoves.indexOf(+this.currentTile?.dataset['index']) != -1) {
+    this._boardInfo = this.chessRulesService.movePiece(
+      +this.selectedPieceTile.dataset['index'],
+      +this.currentTile.dataset['index']
+    );
 
-      this.turn++;
-      if (this.firstMove) {
-        this._legalMoves = [];
-        this.chessRulesService.moves = [this.chessRulesService.moves.at(-1)];
-        this.chessRulesService.generateArrow(this.chessRulesService.moves[0]);
-        this.newFirstMove.emit(this.chessRulesService.moves[0]);
-        return;
-      }
-    } else {
-      this._resetPieceImg(this.selectedPieceImg);
+    this.turn++;
+    this.move.emit(this.chessRulesService.move);
+
+    if (this.firstMove) {
+      this._legalMoves = [];
+      this.chessRulesService.generateArrow(this.chessRulesService.move);
+      this.newFirstMove.emit(this.chessRulesService.move);
+      return;
     }
+    // } else {
+    //   this.chessRulesService.move = '';
+    //   this._resetPieceImg(this.selectedPieceImg);
+    // }
+
     this._legalMoves = [];
   }
 

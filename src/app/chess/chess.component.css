@@ -85,9 +85,11 @@
 .move {
   display: flex;
   justify-content: space-evenly;
+  padding: 0 10px;
 }
 .move > span {
   cursor: pointer;
+  width: 100%;
 }
 .side-bar-bottom {
   width: 100%;

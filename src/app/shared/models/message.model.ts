@@ -6,6 +6,12 @@ export class Messages {
       text: string;
       date: number;
       reactionTo?: string;
+    }[],
+    public games?: {
+      whiteId: string;
+      blackId: string;
+      moves?: string[];
+      fenCode?: string;
     }[]
   ) {}
 }

@@ -7,8 +7,8 @@ import { Tile } from './tile-info';
 export class ChessRulesService implements OnInit {
   private flipBoard: number = 0;
   private boardInfo: Tile[];
-
-  moves = [];
+  turn: number = 0;
+  move: string;
   private legalMoves: number[] = [];
   private enPassant: number;
   private attackedSquaresW = new Set();
@@ -70,7 +70,7 @@ export class ChessRulesService implements OnInit {
       }
 
       //check for all other pieces
-      this.checkLegalMoves(tile, true).forEach((val) => {
+      this.checkLegalMoves(+tile['index'], true).forEach((val) => {
         this._addToSet(val, tile.piece[0]);
       });
     });
@@ -81,9 +81,11 @@ export class ChessRulesService implements OnInit {
     };
   }
 
-  checkLegalMoves(tileDataSet: Tile, futureMove = false) {
+  checkLegalMoves(tileIndex: number, futureMove = false) {
     this.legalMoves = [];
     let newLegalMoves = [];
+    const tileDataSet = this.boardInfo[tileIndex];
+
     const currentPieceColor = tileDataSet['piece'][0];
 
     const isKing = tileDataSet['piece'].includes('King');
@@ -298,6 +300,12 @@ export class ChessRulesService implements OnInit {
     const oldTile = this.boardInfo[oldTileIndex];
     const newTile = this.boardInfo[newTileIndex];
 
+    console.log(this.legalMoves);
+    console.log(newTile['index']);
+    if (!this.legalMoves.includes(newTile['index'])) {
+      return this.boardInfo;
+    }
+
     //TODO: add check and checkmate
     if (newTile['piece']?.includes('King')) {
       this.resetBoard();
@@ -336,12 +344,12 @@ export class ChessRulesService implements OnInit {
       this.enPassant = +newTile['index'];
     }
     const tileNames = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    this.moves.push(
+
+    this.move =
       tileNames[+oldTile['column']] +
-        (8 - oldTile['row']) +
-        tileNames[+newTile['column']] +
-        (8 - newTile['row'])
-    );
+      (8 - oldTile['row']) +
+      tileNames[+newTile['column']] +
+      (8 - newTile['row']);
 
     this._resetTile(oldTile['index']);
     newTile['moved'] = true;
@@ -486,7 +494,43 @@ export class ChessRulesService implements OnInit {
       console.log('invalid fen code');
     }
 
+    console.log(this.boardInfo);
+
     return this.boardInfo;
+  }
+
+  generateFenCode() {
+    let fenCode = [];
+
+    for (let x = 0; x < 8; x++) {
+      let fenWord = '';
+      let fenNumber = 0;
+
+      for (let y = 0; y < 8; y++) {
+        let piece = this.boardInfo[y + 8 * x]['piece'];
+        if (piece) {
+          const fenLetter = piece.includes('Knight') ? 'n' : piece[1];
+
+          if (fenNumber > 0) {
+            fenWord += fenNumber.toString();
+            fenNumber = 0;
+          }
+
+          fenWord +=
+            piece[0] == 'w' ? fenLetter.toUpperCase() : fenLetter.toLowerCase();
+        } else {
+          fenNumber++;
+
+          if (fenNumber == 8 || y == 7) fenWord += fenNumber;
+        }
+      }
+      fenCode.push(fenWord);
+    }
+    return fenCode.join('/');
+  }
+
+  previewMove(moves: string[]) {
+    moves.forEach((move) => {});
   }
 
   _tileColumn(tileIndex: number) {

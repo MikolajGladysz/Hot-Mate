@@ -10,7 +10,6 @@ import {
 import { CardService } from '../shared/card.service';
 import { User } from '../shared/models/user.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { GameService } from '../shared/game.service';
 import { MessageService } from '../shared/message.service';
 import { Messages } from '../shared/models/message.model';
 
@@ -30,7 +29,6 @@ export class MessageComponent implements OnInit, OnChanges {
     private cardService: CardService,
     private route: ActivatedRoute,
     private router: Router,
-    private gameService: GameService,
     private messageService: MessageService
   ) {}
 
@@ -56,8 +54,7 @@ export class MessageComponent implements OnInit, OnChanges {
   }
 
   _createGame(whiteId: string, blackId: string) {
-    this.gameService.createGame(whiteId, blackId);
-    // this.router.navigate(['game']);
+    this.messageService.createGame(whiteId, blackId);
   }
   _getDate(date: number) {
     return new Date(date).toDateString();

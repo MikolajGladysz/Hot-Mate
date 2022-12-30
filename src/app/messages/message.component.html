@@ -92,7 +92,7 @@
             />
             <div class="message-text">
               <div class="reaction-window" *ngIf="message.reactionTo">
-                {{ currentUser.name }} reacted to {{ message["reactionTo"] }}
+                {{ message["reactionTo"] }}
               </div>
               <span> {{ message.text }}</span>
             </div>
@@ -104,7 +104,7 @@
           <div class="reaction" (click)="_reactToMessage(i)">Reaction</div>
           <div class="message-text">
             <div class="reaction-window" *ngIf="message.reactionTo">
-              {{ currentUser.name }} reacted to {{ message["reactionTo"] }}
+              {{ message["reactionTo"] }}
             </div>
             <span> {{ message.text }}</span>
           </div>
@@ -112,13 +112,27 @@
 
         <span class="info-message" *ngIf="message.from == 'system'">
           {{ message.text }}
-          <a class="message-link">Open chess board</a>
+          <a class="message-link" routerLink="game">Open chess board</a>
         </span>
       </div>
     </div>
   </div>
 
   <form class="bottom-bar" (ngSubmit)="sendMessage(messageInput)">
+    <button type="button" routerLink="game">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24px"
+        height="24px"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <path
+          d="M2 2h20v20H2V2zm2 2v4h4v4H4v4h4v4h4v-4h4v4h4v-4h-4v-4h4V8h-4V4h-4v4H8V4H4zm8 8H8v4h4v-4zm0-4v4h4V8h-4z"
+          fill="currentColor"
+        />
+      </svg>
+    </button>
     <input
       type="text"
       name="input"

@@ -42,6 +42,29 @@ export class MessageService {
         JSON.stringify(userId.sort()) === JSON.stringify(message.usersId.sort())
     );
   }
+  public updateGame(userId: [string, string], move: string) {
+    const messageThread = this.findMessage(userId);
+    const game = messageThread.games[messageThread.games.length - 1];
+    if (!game.moves) game.moves = [];
+    game.moves.push(move);
+  }
+
+  public createGame(whiteId: string, blackId: string) {
+    const messageThread = this.findMessage([whiteId, blackId]);
+
+    if (!messageThread.games) messageThread.games = [];
+
+    messageThread.games.push({ whiteId, blackId });
+  }
+
+  public getCurrentGame(userId: [string, string]) {
+    const messageThread = this.findMessage(userId);
+
+    if (!messageThread.games) this.createGame(userId[0], userId[1]);
+    // console.log(messageThread.games);
+
+    return messageThread.games[messageThread.games.length - 1];
+  }
 
   public generateFakeMessages(usersId: [string, string]) {
     this.createNewMessageThread(usersId);

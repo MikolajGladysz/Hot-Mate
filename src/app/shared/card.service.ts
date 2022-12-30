@@ -17,6 +17,9 @@ export class CardService {
     this.users.push(user);
     this.emitUsersObs();
   }
+  findUser(userId: string) {
+    return this.users.find((user) => user.id == userId);
+  }
   get swipeOnInit() {
     return this.swipe;
   }
