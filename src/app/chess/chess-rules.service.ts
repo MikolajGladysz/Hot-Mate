@@ -1,4 +1,5 @@
 import { Injectable, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Tile } from './tile-info';
 
 @Injectable({
@@ -7,8 +8,14 @@ import { Tile } from './tile-info';
 export class ChessRulesService implements OnInit {
   private flipBoard: number = 0;
   private boardInfo: Tile[];
-  turn: number = 0;
   move: string;
+  subject: Subject<{ fenCode: string; move?: string }> = new Subject<{
+    fenCode: string;
+    move?: string;
+  }>();
+
+  kingChecked: boolean;
+
   private legalMoves: number[] = [];
   private enPassant: number;
   private attackedSquaresW = new Set();
@@ -32,13 +39,15 @@ export class ChessRulesService implements OnInit {
     }
   }
 
-  _resetTile(tileIndex: number) {
-    this.boardInfo[tileIndex]['piece'] = null;
-    this.boardInfo[tileIndex]['pieceUrl'] = null;
-    delete this.boardInfo[tileIndex]['moved'];
+  _resetTile(tileIndex: number, resetTarget) {
+    if (!tileIndex && tileIndex != 0) return;
+
+    resetTarget[tileIndex]['piece'] = null;
+    resetTarget[tileIndex]['pieceUrl'] = null;
+    delete resetTarget[tileIndex]['moved'];
   }
 
-  _addToSet(num: number, color: string) {
+  private _addToSet(num: number, color: string) {
     if (color == 'w') {
       this.attackedSquaresW.add(num);
     } else {
@@ -46,12 +55,12 @@ export class ChessRulesService implements OnInit {
     }
   }
 
-  _checkAllAttackedSquares() {
+  private _checkAllAttackedSquares(boardInfo: Tile[]) {
     this.attackedSquaresB = new Set();
     this.attackedSquaresW = new Set();
 
     //for each piece on board
-    this.boardInfo.forEach((tile) => {
+    boardInfo.forEach((tile) => {
       if (!tile.piece) return;
 
       //check for pawns attacked tiles.
@@ -70,7 +79,7 @@ export class ChessRulesService implements OnInit {
       }
 
       //check for all other pieces
-      this.checkLegalMoves(+tile['index'], true).forEach((val) => {
+      this.checkLegalMoves(+tile['index'], boardInfo, true).forEach((val) => {
         this._addToSet(val, tile.piece[0]);
       });
     });
@@ -81,17 +90,26 @@ export class ChessRulesService implements OnInit {
     };
   }
 
-  checkLegalMoves(tileIndex: number, futureMove = false) {
-    this.legalMoves = [];
+  checkLegalMoves(
+    tileIndex: number,
+    InputBoardInfo: Tile[],
+    futureMove = false
+  ) {
+    let boardInfo = [];
+    InputBoardInfo.forEach((tile) => {
+      boardInfo.push(Object.assign({}, tile));
+    });
+
     let newLegalMoves = [];
-    const tileDataSet = this.boardInfo[tileIndex];
+    const tileDataSet = boardInfo[tileIndex];
 
     const currentPieceColor = tileDataSet['piece'][0];
 
     const isKing = tileDataSet['piece'].includes('King');
+
     const startPosition = +tileDataSet['index'];
-    const row = +this.boardInfo[startPosition]['row'];
-    const column = +this.boardInfo[startPosition]['column'];
+    const row = +boardInfo[startPosition]['row'];
+    const column = +boardInfo[startPosition]['column'];
 
     // top, right, bottom, left, top-left, bottom-left, bottom-right, top-right : those direction can be achieved by this offset
     const moveSet = [-8, 1, 8, -1, -7, 9, 7, -9];
@@ -123,7 +141,7 @@ export class ChessRulesService implements OnInit {
           }
 
           const targetSquare =
-            this.boardInfo[startPosition + moveSet[directionIndex] * (n + 1)];
+            boardInfo[startPosition + moveSet[directionIndex] * (n + 1)];
 
           if (
             targetSquare['piece'] &&
@@ -156,24 +174,24 @@ export class ChessRulesService implements OnInit {
 
       //Check castle possibility
       //king side
-      if (isKing && !tileDataSet['moved']) {
+      if (isKing && tileDataSet['column'] == 4 && !futureMove) {
         if (
-          !this.boardInfo[startPosition + 1]['piece'] &&
-          !this.boardInfo[startPosition + 2]['piece'] &&
-          this.boardInfo[startPosition + 3]['piece'] &&
-          this.boardInfo[startPosition + 3]['piece']?.includes('Rook') &&
-          !this.boardInfo[startPosition + 3]['moved']
+          !boardInfo[startPosition + 1]['piece'] &&
+          !boardInfo[startPosition + 2]['piece'] &&
+          boardInfo[startPosition + 3]['piece'] &&
+          boardInfo[startPosition + 3]['piece']?.includes('Rook') &&
+          !boardInfo[startPosition + 3]['moved']
         ) {
           newLegalMoves.push(startPosition + 2);
         }
         //queen side
         if (
-          !this.boardInfo[startPosition - 1]['piece'] &&
-          !this.boardInfo[startPosition - 2]['piece'] &&
-          !this.boardInfo[startPosition - 3]['piece'] &&
-          this.boardInfo[startPosition - 4]['piece'] &&
-          this.boardInfo[startPosition - 4]['piece']?.includes('Rook') &&
-          !this.boardInfo[startPosition - 4]['moved']
+          !boardInfo[startPosition - 1]['piece'] &&
+          !boardInfo[startPosition - 2]['piece'] &&
+          !boardInfo[startPosition - 3]['piece'] &&
+          boardInfo[startPosition - 4]['piece'] &&
+          boardInfo[startPosition - 4]['piece']?.includes('Rook') &&
+          !boardInfo[startPosition - 4]['moved']
         ) {
           newLegalMoves.push(startPosition - 2);
         }
@@ -194,7 +212,7 @@ export class ChessRulesService implements OnInit {
         )
           break;
         //there is piece on target square
-        if (this.boardInfo[startPosition + direction * n]['piece']) {
+        if (boardInfo[startPosition + direction * n]['piece']) {
           break;
         }
 
@@ -204,19 +222,18 @@ export class ChessRulesService implements OnInit {
       // check capturing pieces to the side if there is enemy piece on target square
       //right side: pawn is not standing on h column
       if (
-        this.boardInfo[startPosition + (direction == 8 ? 9 : -7)]['piece'] &&
-        this.boardInfo[startPosition + (direction == 8 ? 9 : -7)]['piece'][0] !=
+        boardInfo[startPosition + (direction == 8 ? 9 : -7)]['piece'] &&
+        boardInfo[startPosition + (direction == 8 ? 9 : -7)]['piece'][0] !=
           currentPieceColor &&
         column != 7
       ) {
         newLegalMoves.push(startPosition + (direction == 8 ? 9 : -7));
       }
       //left side: pawn is not standing on a column
-      if (this.boardInfo[startPosition + (direction == 8 ? 7 : -9)]['piece']) {
+      if (boardInfo[startPosition + (direction == 8 ? 7 : -9)]['piece']) {
         if (
-          this.boardInfo[startPosition + (direction == 8 ? 7 : -9)][
-            'piece'
-          ][0] == (direction == 8 ? 'w' : 'b') &&
+          boardInfo[startPosition + (direction == 8 ? 7 : -9)]['piece'][0] ==
+            (direction == 8 ? 'w' : 'b') &&
           column != 0
         ) {
           newLegalMoves.push(startPosition + (direction == 8 ? 7 : -9));
@@ -225,9 +242,10 @@ export class ChessRulesService implements OnInit {
 
       //Google en Passant
       //if piece on left or right is en passantable
+
       if (
-        this?.enPassant + 1 == startPosition ||
-        this?.enPassant - 1 == startPosition
+        this.enPassant + 1 == startPosition ||
+        this.enPassant - 1 == startPosition
       ) {
         newLegalMoves.push(
           this.enPassant + (currentPieceColor == 'w' ? -8 : 8)
@@ -240,7 +258,7 @@ export class ChessRulesService implements OnInit {
       const knightMoves = [-15, -6, 10, 17, 15, 6, -10, -17];
 
       for (let n = 0; n < 8; n++) {
-        const targetSquare = this.boardInfo[startPosition + knightMoves[n]];
+        const targetSquare = boardInfo[startPosition + knightMoves[n]];
         if (!targetSquare) continue;
         //target square exist, and target square is on other side of the board due to knight being on edge of the board
         if (
@@ -280,15 +298,18 @@ export class ChessRulesService implements OnInit {
         break;
     }
 
-    //check attacked square for king
-    if (isKing && !futureMove) {
-      const attackedSquares =
-        this._checkAllAttackedSquares()[currentPieceColor == 'w' ? 'b' : 'w'];
-
-      newLegalMoves = newLegalMoves.filter((val) => {
-        return attackedSquares.indexOf(val) == -1;
-      });
+    if (futureMove) {
+      return [...newLegalMoves];
     }
+
+    newLegalMoves = newLegalMoves.filter((move) => {
+      const returnVal = this.movePiece(
+        tileDataSet.index,
+        move,
+        tileDataSet.piece[0]
+      );
+      return returnVal;
+    });
 
     this.legalMoves = [];
     this.legalMoves.push(...newLegalMoves);
@@ -296,45 +317,37 @@ export class ChessRulesService implements OnInit {
     return this.legalMoves;
   }
 
-  movePiece(oldTileIndex: number, newTileIndex: number) {
-    const oldTile = this.boardInfo[oldTileIndex];
-    const newTile = this.boardInfo[newTileIndex];
+  movePiece(
+    oldTileIndex: number,
+    newTileIndex: number,
+    checkFutureMoveColor = null
+  ): Tile[] | boolean {
+    let newBoardInfo = [];
 
-    console.log(this.legalMoves);
-    console.log(newTile['index']);
-    if (!this.legalMoves.includes(newTile['index'])) {
-      return this.boardInfo;
-    }
+    this.boardInfo.forEach((tile) => {
+      newBoardInfo.push(Object.assign({}, tile));
+    });
 
-    //TODO: add check and checkmate
-    if (newTile['piece']?.includes('King')) {
-      this.resetBoard();
-      return null;
+    const oldTile = newBoardInfo[oldTileIndex];
+    const newTile = newBoardInfo[newTileIndex];
+
+    if (!this.legalMoves.includes(newTile['index']) && !checkFutureMoveColor) {
+      return newBoardInfo;
     }
 
     newTile['piece'] = oldTile['piece'];
     newTile['pieceUrl'] = oldTile['pieceUrl'];
-
-    //check for castle and move the rooks
-    if (
-      oldTile['piece']?.includes('King') &&
-      Math.abs(+oldTile['column'] - +newTile['column']) == 2
-    ) {
-      if (+newTile['column'] > +oldTile['column']) {
-        this.movePiece(+oldTile['index'] + 3, +oldTile['index'] + 1);
-      } else {
-        this.movePiece(+oldTile['index'] - 4, +oldTile['index'] - 1);
-      }
-    }
 
     //en Passant
     if (
       +newTile['index'] ==
       this.enPassant + (oldTile['piece'][0] == 'w' ? -8 : 8)
     ) {
-      this._resetTile(this.enPassant);
+      this._resetTile(this.enPassant, newBoardInfo);
     }
-    this.enPassant = null;
+    if (!checkFutureMoveColor) {
+      this.enPassant = null;
+    }
 
     //check for pawn 2 move forward and set en Passantable pice
     if (
@@ -351,10 +364,49 @@ export class ChessRulesService implements OnInit {
       tileNames[+newTile['column']] +
       (8 - newTile['row']);
 
-    this._resetTile(oldTile['index']);
+    this._resetTile(oldTile['index'], newBoardInfo);
     newTile['moved'] = true;
 
+    //check for castle and move the rooks
+    if (
+      newTile['piece']?.includes('King') &&
+      Math.abs(+oldTile['column'] - +newTile['column']) == 2 &&
+      !checkFutureMoveColor
+    ) {
+      newTile['moved'] = true;
+
+      if (+newTile['column'] > +oldTile['column']) {
+        newBoardInfo[+oldTile['index'] + 1]['piece'] =
+          newBoardInfo[+oldTile['index'] + 3]['piece'];
+        newBoardInfo[+oldTile['index'] + 3]['piece'] = null;
+        newBoardInfo[+oldTile['index'] + 3]['pieceUrl'] = null;
+      } else {
+        newBoardInfo[+oldTile['index'] - 1]['piece'] =
+          newBoardInfo[+oldTile['index'] + 3]['piece'];
+        newBoardInfo[+oldTile['index'] - 4]['pieceUrl'] = null;
+      }
+    }
+
+    //promote to queen
+    if (
+      newTile['piece'].includes('Pawn') &&
+      newTile['row'] == (newTile['piece'][0] == 'w' ? 0 : 7)
+    ) {
+      newTile['piece'] = newTile['piece'][0] + 'Queen';
+    }
+
     this.legalMoves = [];
+
+    //Prevents from moving into check
+    if (checkFutureMoveColor) {
+      if (this.check(newBoardInfo, checkFutureMoveColor)) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+
+    this.boardInfo = newBoardInfo;
 
     return this.boardInfo;
   }
@@ -494,9 +546,28 @@ export class ChessRulesService implements OnInit {
       console.log('invalid fen code');
     }
 
-    console.log(this.boardInfo);
+    return new Object(this.boardInfo) as Tile[];
+  }
+  movesToFenCode(moves: string[]) {
+    let returnMoves: string[] = [];
+    const allLegalMoves = Array(64)
+      .fill('')
+      .map((val, i) => i);
+    this.boardInfo = this.generateBoard();
+    moves.forEach((move) => {
+      this.legalMoves = allLegalMoves;
+      const tiles = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+      const startPosition =
+        (8 - Number.parseInt(move[1])) * 8 + tiles.indexOf(move[0]);
+      const endPosition =
+        (8 - Number.parseInt(move[3])) * 8 + tiles.indexOf(move[2]);
 
-    return this.boardInfo;
+      this.movePiece(startPosition, endPosition);
+
+      returnMoves.push(this.generateFenCode());
+    });
+
+    return returnMoves;
   }
 
   generateFenCode() {
@@ -529,22 +600,31 @@ export class ChessRulesService implements OnInit {
     return fenCode.join('/');
   }
 
-  previewMove(moves: string[]) {
-    moves.forEach((move) => {});
-  }
-
-  _tileColumn(tileIndex: number) {
+  private _tileColumn(tileIndex: number) {
     return tileIndex - Math.floor(tileIndex / 8) * 8;
   }
-  _tileRow(tileIndex: number) {
+  private _tileRow(tileIndex: number) {
     return Math.floor(tileIndex / 8);
   }
-  _tileColor(n: number) {
+  private _tileColor(n: number) {
     return (
       (Math.floor(n / 8) + (n - Math.floor(n / 8) * 8)) % 2 == this.flipBoard
     );
   }
-  _getPiece(pieceName: string) {
+  private _getPiece(pieceName: string) {
     return `../../assets/images/chessPieces/${pieceName}.png`;
+  }
+  check(boardInfo: Tile[], pieceColor: 'w' | 'b') {
+    //[0] - white king, [1] - black king
+    const kingsPosition = ['w', 'b'].map(
+      (kingColor) =>
+        boardInfo.find((tile) => tile?.piece == kingColor + 'King')['index']
+    );
+
+    const attackedSquares = this._checkAllAttackedSquares(boardInfo);
+
+    return attackedSquares[pieceColor == 'w' ? 'b' : 'w'].includes(
+      kingsPosition[pieceColor == 'w' ? 0 : 1]
+    );
   }
 }

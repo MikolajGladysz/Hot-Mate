@@ -1,11 +1,16 @@
-<div class="board">
+<div class="board" [class.flip]="flipBoard">
   <div
     class="chess-tile"
     *ngFor="let tile of _boardInfo; let i = index"
     [class.dark]="tile.darkTile"
-    [class.active]="_legalMoves.indexOf(i) != -1"
+    [class.active]="_legalMoves.includes(i)"
     [attr.data-index]="i"
+    [class.flip]="flipBoard"
   >
+    <!-- <div class="overlay">
+      {{ i }}
+    </div> -->
+
     <img
       *ngIf="tile.pieceUrl"
       [src]="tile.pieceUrl"
@@ -18,9 +23,5 @@
       [style.height]="tile.arrow.arrowHeight"
       [style.transform]="tile.arrow.arrowTransform"
     ></div>
-    <div class="overlay">
-      {{ tile.row + " , " + tile.column }}<br />
-      {{ i }}
-    </div>
   </div>
 </div>

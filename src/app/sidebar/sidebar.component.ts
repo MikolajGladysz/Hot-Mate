@@ -47,7 +47,11 @@ export class SidebarComponent implements OnInit {
     this.usersMessage = [];
 
     this.users.forEach((user) => {
-      if (this.messageService.findMessage([this.currentUser.id, user.id])) {
+      const message = this.messageService.findMessage([
+        this.currentUser.id,
+        user.id,
+      ]);
+      if (message && message?.content.length > 0) {
         this.usersMessage.push(user);
       } else {
         this.usersMatch.push(user);

@@ -18,6 +18,7 @@ export class DetailComponent implements OnInit {
   currCard = 1;
   //amount of fav games card
   gamesCards;
+  gamePreview: { fenCode: string; gameTitle: string; moves: string[] };
 
   constructor(
     private cardService: CardService,
@@ -42,6 +43,8 @@ export class DetailComponent implements OnInit {
     }
   }
   _goToGame(i: number) {
+    console.log(this.gamesCards);
+
     this.currCard = i + 1;
   }
   _detailSwipe(direction: number) {
@@ -54,7 +57,6 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.currUser = this.cardService.dummyUser[0];
       this.currPhoto = 1;
       this.currCard = 1;
       if (Object.keys(params).length !== 0) {
@@ -62,11 +64,15 @@ export class DetailComponent implements OnInit {
         this.currUser = this.cardService.users.find(
           (user) => user.id === params['id']
         );
+      } else {
+        this.currUser = this.cardService.dummyUser[0];
       }
+      this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
     });
     if (!this.currUser) {
       this.router.navigate(['/']);
     }
-    // this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
+
+    this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
   }
 }

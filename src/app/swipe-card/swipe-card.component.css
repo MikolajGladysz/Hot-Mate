@@ -254,6 +254,7 @@ svg {
   position: absolute;
   bottom: 0;
   left: 0;
+  z-index: 999999;
   right: 0;
   height: 20%;
 }

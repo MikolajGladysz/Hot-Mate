@@ -233,8 +233,6 @@ export class SwipeCardComponent implements OnInit {
     this.currPhoto = i + 1;
   }
 
-  _updateCurrentUser(user: User) {}
-
   mousedown(e) {
     //reset transition value to prevent drag lag
     this.cardCon.nativeElement.style.transition = 'transform 0s';

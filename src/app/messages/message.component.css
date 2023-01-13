@@ -1,6 +1,6 @@
 .con {
   background-color: black;
-  min-width: 1000px;
+  width: 1000px;
 }
 :host {
   width: 100%;
@@ -117,6 +117,7 @@ img {
 
 .messages {
   display: flex;
+
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
@@ -124,14 +125,21 @@ img {
   padding: 20px;
 }
 .message {
+  display: flex;
   width: 100%;
+  flex-direction: column;
+}
+.message:has(.user) {
+  align-items: end;
 }
 .user,
 .pair {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
   margin-top: 15px;
+  max-width: 80%;
+}
+.user .reaction {
+  flex-direction: row-reverse;
 }
 
 .reaction {
@@ -140,12 +148,32 @@ img {
   justify-content: center;
   cursor: pointer;
 }
+.reaction > button {
+  background: transparent;
+  border: none;
+  width: 27px;
+  display: flex;
+  height: 27px;
+  align-items: center;
+  margin: 0 auto;
+  border-radius: 50%;
+  justify-content: center;
 
+  transition: background 0.2s;
+}
+
+.reaction > button:hover {
+  background: var(--bg-border);
+}
+.reaction svg {
+  width: 25px;
+  height: 25px;
+  stroke: white;
+}
 .pair span {
   display: block;
   padding: 8px 15px;
   position: relative;
-  max-width: 80%;
   border-radius: 21px;
   background-color: var(--message-gray);
   border-bottom-left-radius: 4px;
@@ -163,10 +191,11 @@ img {
   border-radius: 21px;
   border-bottom-right-radius: 4px;
   display: block;
+
   overflow-wrap: anywhere;
 }
+
 .message-text {
-  max-width: 80%;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -189,7 +218,8 @@ img {
   font-size: 0.8rem;
   color: var(--gray);
   width: 100%;
-  margin: 10px;
+  margin-top: 32px;
+  margin-bottom: -6px;
   display: block;
   text-align: center;
 }
@@ -222,6 +252,7 @@ input:focus {
   border-radius: 30px;
   padding: 10px 30px;
   background-color: var(--red);
+  position: relative;
   color: white;
   text-transform: uppercase;
 }
@@ -232,7 +263,7 @@ input:focus {
 }
 .react-to {
   position: absolute;
-  top: -50px;
+  bottom: 100%;
   background-color: var(--bg-main);
   left: 0;
   display: flex;
@@ -248,4 +279,67 @@ input:focus {
 .react-message > span {
   margin: 0;
   text-align: start;
+}
+
+.games-window {
+  position: fixed;
+  top: 20vh;
+  left: 35vw;
+  right: 30vw;
+  background: var(--bg-main);
+  bottom: 20vh;
+  overflow: hidden;
+  z-index: 300;
+  border-radius: 10px;
+}
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+.games-window > .close-btn {
+  z-index: 400;
+  position: fixed;
+  top: 21vh;
+  right: 31vw;
+}
+.top-bar-left {
+  transition: background 0.3s;
+  cursor: pointer;
+  padding: 5px 15px;
+  border-radius: 14px;
+}
+
+.top-bar-left:hover {
+  background: var(--bg-main);
+}
+.new-game-con {
+  position: absolute;
+  inset: 0;
+  z-index: 99;
+  top: -55px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+}
+.new-game-con > button {
+  background: var(--bg-border);
+  padding: 0 16px;
+  transition: transform 0.1s;
+}
+.new-game-con > button:hover {
+  transform: scale(1.1);
+}
+.new-game-con svg {
+  width: 35px;
+  height: 35px;
+}
+.button-white {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+.button-black {
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
 }

@@ -10,7 +10,7 @@ export class User {
     public description?: string,
     public tags?: string[],
     public favOpening?: { openingName: string; opening: string },
-    public favGames?: { gameTitle: string; game: string }[],
+    public favGames?: { gameTitle: string; fenCode: string; moves: string[] }[],
     public city?: string,
     public chessTitle?: string,
     public messagesId?: string[]

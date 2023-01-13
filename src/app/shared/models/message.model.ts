@@ -10,8 +10,9 @@ export class Messages {
     public games?: {
       whiteId: string;
       blackId: string;
+      status: number;
+      date: number;
       moves?: string[];
-      fenCode?: string;
     }[]
   ) {}
 }

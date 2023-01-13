@@ -11,6 +11,7 @@ import { NewMatchComponent } from './new-match/new-match.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ChessComponent } from './chess/chess.component';
 import { ChessBoardComponent } from './chess/chess-board/chess-board.component';
+import { GamesWindowComponent } from './games-window/games-window.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ChessBoardComponent } from './chess/chess-board/chess-board.component';
     NewMatchComponent,
     ChessComponent,
     ChessBoardComponent,
+    GamesWindowComponent,
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],

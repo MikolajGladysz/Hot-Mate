@@ -8,17 +8,16 @@ import { MessageService } from '../shared/message.service';
   templateUrl: './new-match.component.html',
   styleUrls: ['./new-match.component.css'],
 })
-export class NewMatchComponent implements OnInit, OnDestroy {
+export class NewMatchComponent implements OnInit {
   user: User;
   currPhoto = 1;
   messageInput;
   displayBoard = false;
   move: string = '';
   game;
-
+  i = 0;
   activeBtn: boolean = false;
 
-  private _gameSent = false;
   constructor(
     private cardService: CardService,
 
@@ -36,6 +35,10 @@ export class NewMatchComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.user = this.cardService.users[this.cardService.users.length - 1];
+    this.messageService.createNewMessageThread([
+      this.cardService.currentUser.id,
+      this.user.id,
+    ]);
   }
   _changePhoto(i: number) {
     if (
@@ -49,19 +52,28 @@ export class NewMatchComponent implements OnInit, OnDestroy {
     this.currPhoto = i + 1;
   }
   _closeWindow() {
-    this.cardService.newMatch(null);
-  }
-  _sendMessage() {
-    console.log(this.messageInput);
-
     if (this.activeBtn || this.move) {
       this.messageService.createMessage(
         [this.user.id, this.cardService.currentUser.id],
         'system',
         this.cardService.currentUser.name + ' invited you to chess match!'
       );
-      this._gameSent = true;
+      this.messageService.createGame(this.game[0], this.game[1]);
+
+      if (this.move) {
+        this.i++;
+
+        this.messageService.updateGame(
+          [this.user.id, this.cardService.currentUser.id],
+          this.move
+        );
+      }
+
+      this.cardService.emitUsersObs();
     }
+    this.cardService.newMatch(null);
+  }
+  _sendMessage() {
     if (this.messageInput) {
       this.messageService.createMessage(
         [this.user.id, this.cardService.currentUser.id],
@@ -79,25 +91,5 @@ export class NewMatchComponent implements OnInit, OnDestroy {
     const blackId =
       color == 'w' ? this.user.id : this.cardService.currentUser.id;
     this.game = [whiteId, blackId];
-  }
-  ngOnDestroy(): void {
-    if ((this.activeBtn || this.move) && !this._gameSent) {
-      this.messageService.createMessage(
-        [this.user.id, this.cardService.currentUser.id],
-        'system',
-        this.cardService.currentUser.name + ' invited you to chess match!'
-      );
-      this.messageService.createGame(this.game[0], this.game[1]);
-      console.log(this.move);
-
-      if (this.move) {
-        this.messageService.updateGame(
-          [this.user.id, this.cardService.currentUser.id],
-          this.move
-        );
-      }
-
-      this.cardService.emitUsersObs();
-    }
   }
 }

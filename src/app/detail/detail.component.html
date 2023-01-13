@@ -112,7 +112,7 @@
         </div>
       </section>
 
-      <section>
+      <section *ngIf="gamesCards.length > 0">
         <div class="game-top">
           <h5 class="white sectionTitle">My Top Games</h5>
           <div class="game-nav">
@@ -133,13 +133,15 @@
                 ></path>
               </svg>
             </div>
+
             <div
               class="nav-dot"
               *ngFor="let n of gamesCards; let i = index"
               [style.background]="i + 1 == currCard ? 'var(--red)' : ''"
+              [style.display]="gamesCards.length > 1 ? 'block' : 'none'"
               (click)="_goToGame(i)"
             ></div>
-            <!-- <div class="game-arrow" (click)="_changeGameCard(1)">
+            <div class="game-arrow" (click)="_changeGameCard(1)">
               <svg
                 *ngIf="currCard < gamesCards.length"
                 style="transform: rotate(180deg) translateY(1.5px)"
@@ -156,19 +158,27 @@
                   d="M13.98 20.717a1.79 1.79 0 0 0 2.685 0 1.79 1.79 0 0 0 0-2.684l-7.158-6.62 7.158-6.8a1.79 1.79 0 0 0 0-2.684 1.79 1.79 0 0 0-2.684 0L5.929 9.98a1.79 1.79 0 0 0 0 2.684l8.052 8.052z"
                 ></path>
               </svg>
-            </div> -->
+            </div>
           </div>
         </div>
         <div
+          #con
           class="fav-games-con"
-          [style.transform]="'translateX(' + -(currCard - 1) * 343 + 'px)'"
+          [style.transform]="
+            'translateX(' + -(currCard - 1) * con.offsetWidth + 'px)'
+          "
         >
           <div
             class="fav-games-card"
-            *ngFor="let n of currUser.favGames; let i = index"
+            *ngFor="let game of currUser.favGames; let i = index"
           >
             <div class="game-board">
               <h6 class="gameTitle">{{ currUser.favGames[i].gameTitle }}</h6>
+              <app-chess-board
+                [fenCode]="[game['fenCode'], game['moves'].at(-1)]"
+                (click)="gamePreview = game"
+                [gamePreview]="true"
+              ></app-chess-board>
             </div>
           </div>
         </div>
@@ -215,4 +225,13 @@
       </svg>
     </div>
   </div>
+</div>
+
+<div
+  class="game-chess-preview-overlay"
+  *ngIf="gamePreview"
+  (click)="gamePreview = null"
+></div>
+<div class="chess-game-preview" *ngIf="gamePreview">
+  <app-chess [gamePreviewMoves]="gamePreview.moves"></app-chess>
 </div>

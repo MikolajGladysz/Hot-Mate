@@ -1,0 +1,125 @@
+:host {
+  width: 100%;
+  /* overflow-y: auto; */
+  /* margin-right: -185px; */
+  overflow: hidden;
+  height: 100%;
+}
+.con {
+  width: calc(100% + 17px);
+  overflow-y: scroll;
+  /* margin-right: 173px; */
+  height: 100%;
+  padding: 30px;
+}
+h3 {
+  border-bottom: 2px solid var(--bg-border);
+  margin-bottom: 10px;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+svg {
+  width: 27px;
+  height: 27px;
+}
+li {
+  list-style: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 110px;
+  transition: max-height 0.3s;
+  align-items: center;
+  justify-content: center;
+}
+li.bright {
+  background-color: var(--bs-dark);
+}
+.triangle {
+  transform: rotate(270deg);
+  fill: white;
+  width: 14px;
+  margin: 0 5px;
+}
+.game-info {
+  width: 100%;
+  transition: all 0.3s;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
+.game-result {
+  margin: 5px 0;
+  margin-right: 2px;
+}
+.game-moves {
+  width: 100%;
+  text-overflow: ellipsis;
+  flex-wrap: wrap;
+  white-space: nowrap;
+  overflow: hidden;
+  display: flex;
+  align-self: flex-end;
+}
+.moves {
+  width: calc(100% - 80px);
+}
+.moves span {
+  margin-right: 2px;
+}
+.game-preview-btn {
+  display: none;
+  transition: transform 0.3s;
+}
+.game-preview-btn:hover {
+  transform: scale(1.1);
+}
+.expand-btn {
+  background-color: transparent;
+  border: none;
+  transition: transform 0.6s;
+}
+
+/* when active */
+li.active {
+  max-height: 500px;
+}
+li.active .game-info {
+  font-size: 1.3rem;
+}
+li.active .game-moves {
+  margin-top: 1rem;
+  text-overflow: unset;
+  overflow-wrap: break-word;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+li.active .moves {
+  display: flex;
+  flex-wrap: wrap;
+}
+li.active .game-preview-btn {
+  display: block;
+  border-radius: 10px;
+  border: none;
+  background-color: var(--bs-gray);
+  margin: 20px 0;
+  font-size: large;
+  color: white;
+  font-weight: 700;
+  padding: 5px 10px;
+}
+li.active .expand-btn {
+  transform: rotate(180deg);
+}
+li.current-game {
+  border: var(--bg-border) 1px solid;
+}
+span.current-game {
+  padding: 0 8px;
+  background-color: var(--bg-border);
+}

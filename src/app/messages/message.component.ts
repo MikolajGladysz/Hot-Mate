@@ -1,9 +1,12 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -22,8 +25,13 @@ export class MessageComponent implements OnInit, OnChanges {
   matchedUser: User;
   currentUser: User;
   messages: Messages;
+  gamesWindow: boolean = false;
+  newGameWindow: boolean = false;
   @Input() chessGame: boolean = false;
   @Input() reaction;
+
+  @Output() loadGamePreview = new EventEmitter<number>();
+
   reactTo: { target: string; id: string };
   constructor(
     private cardService: CardService,
@@ -36,6 +44,7 @@ export class MessageComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
+      this.newGameWindow = false;
       this.matchedUser = this.cardService.users.find(
         (user) => user.id === params['id']
       );
@@ -52,8 +61,17 @@ export class MessageComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     this.reactTo = changes['reaction'].currentValue;
   }
+  @HostListener('click', ['$event.target'])
+  hideNewGameWindow(click) {
+    if (!click.closest('.btn-new-game')) this.newGameWindow = false;
+  }
 
-  _createGame(whiteId: string, blackId: string) {
+  createGame(whiteId: string, blackId: string) {
+    if (!this.messages)
+      this.messages = this.messageService.createNewMessageThread([
+        this.currentUser.id,
+        this.matchedUser.id,
+      ]);
     this.messageService.createGame(whiteId, blackId);
   }
   _getDate(date: number) {
@@ -87,6 +105,26 @@ export class MessageComponent implements OnInit, OnChanges {
       this.currentUser.id,
       this.matchedUser.id,
     ]);
-    console.log(this.messages);
+  }
+  openGamesWindow() {
+    this.gamesWindow = true;
+  }
+  showGame(
+    gamePreview = true,
+    gameId = this.messages?.games?.length ? this.messages.games.length - 1 : -2
+  ) {
+    if (
+      (gameId == -2 || this.messages?.games?.at(-1).status != 0) &&
+      !gamePreview
+    ) {
+      this.newGameWindow = true;
+      return;
+    }
+
+    if (!this.router.url.includes('game'))
+      this.router.navigate(['game'], { relativeTo: this.route });
+
+    this.loadGamePreview.emit(gameId);
+    this.gamesWindow = false;
   }
 }

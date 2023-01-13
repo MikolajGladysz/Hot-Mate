@@ -97,12 +97,12 @@
   </div>
   <div class="backdrop" *ngIf="displayBoard"></div>
   <div class="chess-board" *ngIf="displayBoard">
-    <app-chess-board
-      [fenCode]="'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'"
+    <app-chess
       [firstMove]="true"
       [nextMove]="move"
-      (newFirstMove)="move = $event"
-    ></app-chess-board>
+      [userMatch]="user"
+      (newFirstMove)="move = $event ? $event[0] : null"
+    ></app-chess>
     <div class="buttons">
       <button
         class="approve"

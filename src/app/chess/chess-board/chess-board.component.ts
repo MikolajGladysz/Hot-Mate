@@ -3,10 +3,13 @@ import {
   EventEmitter,
   HostListener,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ChessRulesService } from '../chess-rules.service';
 import { Tile } from '../tile-info';
 
@@ -16,106 +19,90 @@ import { Tile } from '../tile-info';
   styleUrls: ['./chess-board.component.css'],
 })
 export class ChessBoardComponent implements OnInit, OnDestroy {
-  @Input() fenCode: string;
-  @Input() flipBoard: number = 0;
-  @Input() nextMove: string;
-  //Only true in new match window
-  @Input() firstMove: boolean = false;
+  @Input() flipBoard: boolean = false;
+  @Input() fenCode: [string, string];
+  @Input() gamePreview: boolean = false;
 
-  @Output() newFirstMove = new EventEmitter<string>();
-  @Output() move = new EventEmitter<string>();
+  @Input()
+  set tilesToHighlight(value: number[]) {
+    this._legalMoves = value;
+  }
 
-  _boardInfo: Tile[];
+  @Output() pieceInfo = new EventEmitter<number>();
+  @Output() moveInfo = new EventEmitter<[number, number]>();
+
+  //=======================
+  _boardInfo: Tile[] = [];
+
   _legalMoves: number[] = [];
-
-  private initialBoardState = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
 
   private mouseDown: boolean = false;
   private selectedPieceImg: HTMLElement;
   private selectedPieceTile: HTMLElement;
   private currentTile: HTMLElement;
-  private turn: number = 0;
 
-  // 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR';
-  constructor(private chessRulesService: ChessRulesService) {}
+  private copySubscription;
+
+  private _startOffset: number[];
+
+  constructor(private chessRulesService: ChessRulesService) {
+    this._legalMoves = [];
+
+    this.copySubscription = this.chessRulesService.subject.subscribe((data) => {
+      if (!this.gamePreview) {
+        this._boardInfo = chessRulesService.generateBoard(
+          data.fenCode,
+          data.move
+        );
+      }
+    });
+
+    if (this.gamePreview) {
+      this.chessRulesService.subject.unsubscribe();
+    }
+  }
 
   ngOnInit(): void {
-    //generate board with fenCode provided by parent or initial board state
-    this._boardInfo = this.chessRulesService.generateBoard(
-      this.fenCode ? this.fenCode : this.initialBoardState,
-      this.nextMove ? this.nextMove : ''
-    );
-    this.turn = this.chessRulesService.turn;
+    if (this.fenCode) {
+      this._boardInfo = this.chessRulesService.generateBoard(
+        this.fenCode[0],
+        this.fenCode[1]
+      );
+    }
   }
   ngOnDestroy(): void {
-    this.chessRulesService.move = '';
+    this.copySubscription.unsubscribe();
+    this._boardInfo = [];
+    this._legalMoves = [];
+    this.fenCode = null;
   }
 
-  @HostListener('dragstart', ['$event.target'])
+  @HostListener('dragstart', ['$event'])
   selectPiece(event) {
-    this._legalMoves = [];
-
-    //Check if appropriate piece is selected
-    //If first move is true, move only white piece
+    this.pieceInfo.emit(+event.target.closest('.chess-tile').dataset['index']);
 
     if (
-      this._boardInfo[+event.closest('.chess-tile')?.dataset['index']][
+      this._boardInfo[+event.target.closest('.chess-tile')?.dataset['index']][
         'piece'
-      ][0] == (this.turn % 2 == 0 || this.firstMove ? 'w' : 'b')
+      ]
     ) {
       this.mouseDown = true;
-      this.selectedPieceImg = event.closest('img');
-      this.selectedPieceTile = event.closest('.chess-tile');
-
-      if (this.firstMove) {
-        this.chessRulesService.generateBoard();
-      }
-
-      //check if piece is moved only once if first move is true
-      if (
-        this._boardInfo[+event.closest('.chess-tile').dataset['index']]['row'] <
-          6 &&
-        this.firstMove
-      ) {
-        this.turn = 0;
-        return;
-      }
-
-      //check legal moves for selected piece
-      this._legalMoves = this.chessRulesService.checkLegalMoves(
-        +event.closest('.chess-tile').dataset['index']
-      );
+      this.selectedPieceImg = event.target.closest('img');
+      this.selectedPieceTile = event.target.closest('.chess-tile');
+      this._startOffset = [event.pageX, event.pageY];
     }
   }
 
-  @HostListener('document:click', ['$event.target'])
+  @HostListener('document:click', ['$event.target.closest(".chess-tile")'])
   highlightTile(event) {
-    this._legalMoves = [];
-    if (!event.closest('.chess-tile')) return;
+    if (!event) return;
 
-    //Show possible moves if piece is selected
-    if (
-      this._boardInfo[+event.closest('.chess-tile').dataset['index']]['piece']
-    ) {
-      this._legalMoves = this.chessRulesService.checkLegalMoves(
-        +event.closest('.chess-tile').dataset['index']
-      );
-    }
-
-    //Highlight current tile
-    this._legalMoves.push(
-      +(event.closest('.chess-tile') as HTMLElement).dataset['index']
-    );
+    this.pieceInfo.emit(+event.dataset['index']);
   }
 
   _resetPieceImg(pieceImg: HTMLElement) {
-    pieceImg.style.position = 'static';
     pieceImg.style.pointerEvents = 'all';
-    pieceImg.style.width = '50px';
-    pieceImg.style.height = '50px';
-    pieceImg.style.top = 'unset';
-    pieceImg.style.left = 'unset';
-
+    pieceImg.style.transform = 'unset';
     return pieceImg;
   }
 
@@ -123,39 +110,25 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   placePiece() {
     this.mouseDown = false;
 
-    //check if piece was placed on legal tile
-    // if (this._legalMoves.indexOf(+this.currentTile?.dataset['index']) != -1) {
-    this._boardInfo = this.chessRulesService.movePiece(
+    this._resetPieceImg(this.selectedPieceImg);
+    this.moveInfo.emit([
       +this.selectedPieceTile.dataset['index'],
-      +this.currentTile.dataset['index']
-    );
-
-    this.turn++;
-    this.move.emit(this.chessRulesService.move);
-
-    if (this.firstMove) {
-      this._legalMoves = [];
-      this.chessRulesService.generateArrow(this.chessRulesService.move);
-      this.newFirstMove.emit(this.chessRulesService.move);
-      return;
-    }
-    // } else {
-    //   this.chessRulesService.move = '';
-    //   this._resetPieceImg(this.selectedPieceImg);
-    // }
+      +this.currentTile.dataset['index'],
+    ]);
 
     this._legalMoves = [];
   }
 
   @HostListener('drag', ['$event'])
   movePiece(event: DragEvent) {
-    if (this.mouseDown) {
-      this.selectedPieceImg.style.position = 'fixed';
-      this.selectedPieceImg.style.width = '60px';
-      this.selectedPieceImg.style.height = '60px';
+    if (this.mouseDown && event.clientY != 0) {
       this.selectedPieceImg.style.pointerEvents = 'none';
-      this.selectedPieceImg.style.top = event.clientY - 25 + 'px';
-      this.selectedPieceImg.style.left = event.clientX - 25 + 'px';
+      this.selectedPieceImg.style.transform =
+        'translate(' +
+        (event.pageX - this._startOffset[0]) +
+        'px,' +
+        (event.pageY - this._startOffset[1]) +
+        'px)';
     }
   }
   @HostListener('dragover', ['$event'])

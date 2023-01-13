@@ -231,8 +231,9 @@ input:focus {
 }
 .chess-board {
   position: fixed;
-  top: 15vh;
-  left: calc(60vw - 230px);
+  top: 7vh;
+  width: 60rem;
+  left: 35rem;
   z-index: 99999;
   background: var(--bg-main);
   border-radius: 10px;
@@ -243,6 +244,10 @@ input:focus {
   margin: 10px 0;
   height: 3rem;
   display: flex;
+}
+.chess-board > * {
+  max-height: 43rem;
+  overflow: hidden;
 }
 .buttons > button {
   width: 100%;

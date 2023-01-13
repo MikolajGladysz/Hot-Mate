@@ -1,0 +1,72 @@
+<div class="con">
+  <h3>Games Archive</h3>
+  <div *ngIf="games.length == 0">
+    <span>No games archived</span>
+  </div>
+  <ul>
+    <li
+      *ngFor="let game of games; let even = even; let i = index"
+      [class.bright]="even"
+      [class.current-game]="!game.status"
+      (click)="toggleWindow($event)"
+    >
+      <div class="game-info">
+        <span class="game-date">{{ getDate(game.date) }}</span>
+        <span class="game-result" [class.current-game]="!game.status">{{
+          getGameResultString(game.status)
+        }}</span>
+      </div>
+      <div class="game-moves">
+        <span *ngIf="game.moves"> Moves </span>
+
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          fill="#000000"
+          height="800px"
+          width="800px"
+          class="triangle"
+          version="1.1"
+          id="Capa_1"
+          viewBox="0 0 490 490"
+          xml:space="preserve"
+          *ngIf="game.moves"
+        >
+          <polygon points="245,456.701 490,33.299 0,33.299 " />
+        </svg>
+        <div class="moves">
+          <span
+            *ngFor="
+              let move of game.moves
+                | slice : 0 : (game.moves ? game.moves.length : 0 / 2 + 0.5);
+              let i = index
+            "
+          >
+            <span class="turn" *ngIf="game.moves[i * 2]">{{ i + 1 }}. </span>
+            <span>{{ game.moves[i * 2] }} </span>
+
+            <span *ngIf="game.moves[i * 2 + 1]"
+              >, {{ game.moves[i * 2 + 1] }} |
+            </span>
+          </span>
+        </div>
+
+        <button class="game-preview-btn" (click)="gamePreview(i)">
+          {{ !game.status ? "Go To Game" : "Game Preview" }}
+        </button>
+      </div>
+      <button class="expand-btn">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="800px"
+          height="800px"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path d="M18 12L12 18L6 12" stroke="#33363F" stroke-width="2" />
+          <path d="M18 6L12 12L6 6" stroke="#33363F" stroke-width="2" />
+        </svg>
+      </button>
+    </li>
+  </ul>
+</div>

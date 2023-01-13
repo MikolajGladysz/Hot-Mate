@@ -1,6 +1,6 @@
 <div class="con" [class.chess-game]="chessGame">
   <div class="top-bar">
-    <div class="top-bar-left">
+    <div class="top-bar-left" (click)="openGamesWindow()">
       <img
         src="{{ matchedUser.photos[0] }}"
         alt="{{ matchedUser.name }} profile picture"
@@ -32,7 +32,7 @@
     </button>
   </div>
   <div class="main-con">
-    <div class="no-messages" *ngIf="!messages">
+    <div class="no-messages" *ngIf="!messages || messages?.content.length == 0">
       <span
         >You Matched with <span class="bold">{{ matchedUser.name }}</span></span
       >
@@ -49,7 +49,7 @@
               currentUser.name + ' invited you to a chess match! ',
               'system'
             );
-            _createGame(currentUser.id, matchedUser.id)
+            createGame(currentUser.id, matchedUser.id)
           "
           routerLink="game"
         >
@@ -62,7 +62,7 @@
               currentUser.name + ' invited you to a chess match! ',
               'system'
             );
-            _createGame(matchedUser.id, currentUser.id)
+            createGame(matchedUser.id, currentUser.id)
           "
           routerLink="game"
         >
@@ -97,11 +97,97 @@
               <span> {{ message.text }}</span>
             </div>
           </div>
-          <div class="reaction" (click)="_reactToMessage(i)">Reaction</div>
+          <div class="reaction" (click)="_reactToMessage(i)">
+            <button type="button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" y1="9" x2="9.01" y2="9" />
+                <line x1="15" y1="9" x2="15.01" y2="9" />
+              </svg>
+            </button>
+            <button type="button">
+              <svg
+                _ngcontent-eyv-c52=""
+                _ngcontent-dbd-c52=""
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                id="_x32_"
+                viewBox="0 0 512 512"
+                xml:space="preserve"
+                height="25px"
+                width="25px"
+              >
+                <g _ngcontent-eyv-c52="" _ngcontent-dbd-c52="">
+                  <path
+                    _ngcontent-eyv-c52=""
+                    _ngcontent-dbd-c52=""
+                    d="M448.115,240.956c-39.306-39.389-94.166-63.913-154.235-63.885h-51.026V86.142   c0-8.058-4.506-15.439-11.674-19.125c-7.172-3.677-15.8-3.047-22.352,1.64L8.983,211.746C3.343,215.784,0,222.295,0,229.232   s3.343,13.448,8.983,17.486l199.844,143.088c6.552,4.687,15.18,5.316,22.352,1.64c7.169-3.686,11.674-11.068,11.674-19.125v-90.929   h51.026c31.59,0.019,59.708,12.651,80.467,33.331c20.676,20.755,33.305,48.882,33.332,80.473c0,28.803,23.353,52.16,52.16,52.16   S512,424,512,395.196C512.028,335.127,487.508,280.271,448.115,240.956z"
+                    class="st0"
+                    style="fill: white"
+                  ></path>
+                </g>
+              </svg>
+            </button>
+          </div>
         </div>
 
         <div class="user" *ngIf="message.from == currentUser.id">
-          <div class="reaction" (click)="_reactToMessage(i)">Reaction</div>
+          <div class="reaction" (click)="_reactToMessage(i)">
+            <button type="button">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#000000"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                <line x1="9" y1="9" x2="9.01" y2="9" />
+                <line x1="15" y1="9" x2="15.01" y2="9" />
+              </svg>
+            </button>
+            <button type="button">
+              <svg
+                _ngcontent-eyv-c52=""
+                _ngcontent-dbd-c52=""
+                xmlns="http://www.w3.org/2000/svg"
+                xmlns:xlink="http://www.w3.org/1999/xlink"
+                version="1.1"
+                id="_x32_"
+                viewBox="0 0 512 512"
+                xml:space="preserve"
+                height="25px"
+                width="25px"
+              >
+                <g _ngcontent-eyv-c52="" _ngcontent-dbd-c52="">
+                  <path
+                    _ngcontent-eyv-c52=""
+                    _ngcontent-dbd-c52=""
+                    d="M448.115,240.956c-39.306-39.389-94.166-63.913-154.235-63.885h-51.026V86.142   c0-8.058-4.506-15.439-11.674-19.125c-7.172-3.677-15.8-3.047-22.352,1.64L8.983,211.746C3.343,215.784,0,222.295,0,229.232   s3.343,13.448,8.983,17.486l199.844,143.088c6.552,4.687,15.18,5.316,22.352,1.64c7.169-3.686,11.674-11.068,11.674-19.125v-90.929   h51.026c31.59,0.019,59.708,12.651,80.467,33.331c20.676,20.755,33.305,48.882,33.332,80.473c0,28.803,23.353,52.16,52.16,52.16   S512,424,512,395.196C512.028,335.127,487.508,280.271,448.115,240.956z"
+                    class="st0"
+                    style="fill: white"
+                  ></path>
+                </g>
+              </svg>
+            </button>
+          </div>
           <div class="message-text">
             <div class="reaction-window" *ngIf="message.reactionTo">
               {{ message["reactionTo"] }}
@@ -119,7 +205,80 @@
   </div>
 
   <form class="bottom-bar" (ngSubmit)="sendMessage(messageInput)">
-    <button type="button" routerLink="game">
+    <button
+      type="button"
+      class="btn-new-game"
+      (click)="showGame(false)"
+      *ngIf="!chessGame"
+    >
+      <div class="new-game-con" *ngIf="newGameWindow">
+        <button
+          class="button-white"
+          type="button"
+          (click)="
+            sendMessage(
+              currentUser.name + ' invited you to a chess match! ',
+              'system'
+            );
+            createGame(currentUser.id, matchedUser.id);
+            showGame(false)
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="800px"
+            height="800px"
+            viewBox="0 -0.5 17 17"
+            version="1.1"
+            class="si-glyph si-glyph-pawn"
+          >
+            <title>1044</title>
+
+            <defs></defs>
+            <g stroke="none" stroke-width="1" fill-rule="evenodd">
+              <path
+                d="M3,16 L15,16 L12,12 L12,5 L14,3 L14,0 L12.062,0 L12.062,1 L9.937,1 L9.937,0 L8.062,0 L8.062,1 L5.937,1 L5.937,0 L4,0 L4,3 L6,5 L6,12 L3,16 L3,16 Z M10,5 L11,5 L11,12 L10,12 L10,5 L10,5 Z"
+                fill="#fff"
+                class="si-glyph-fill"
+              ></path>
+            </g>
+          </svg>
+        </button>
+        <button
+          class="button-black"
+          type="button"
+          (click)="
+            sendMessage(
+              currentUser.name + ' invited you to a chess match! ',
+              'system'
+            );
+            createGame(matchedUser.id, currentUser.id);
+            showGame(false)
+          "
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            width="800px"
+            height="800px"
+            viewBox="0 -0.5 17 17"
+            version="1.1"
+            class="si-glyph si-glyph-pawn"
+          >
+            <title>1044</title>
+
+            <defs></defs>
+            <g stroke="none" stroke-width="1" fill-rule="evenodd">
+              <path
+                d="M3,16 L15,16 L12,12 L12,5 L14,3 L14,0 L12.062,0 L12.062,1 L9.937,1 L9.937,0 L8.062,0 L8.062,1 L5.937,1 L5.937,0 L4,0 L4,3 L6,5 L6,12 L3,16 L3,16 Z M10,5 L11,5 L11,12 L10,12 L10,5 L10,5 Z"
+                fill="#000"
+                class="si-glyph-fill"
+              ></path>
+            </g>
+          </svg>
+        </button>
+      </div>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24px"
@@ -176,4 +335,34 @@
 </div>
 <div class="detail-con" *ngIf="!chessGame">
   <app-detail></app-detail>
+</div>
+<div class="backdrop" *ngIf="gamesWindow" (click)="gamesWindow = false"></div>
+<div class="games-window" *ngIf="gamesWindow">
+  <app-games-window
+    [games]="messages?.games ? messages.games : []"
+    (showGame)="showGame(true, $event)"
+  ></app-games-window>
+  <button class="close-btn" (click)="gamesWindow = false">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+      version="1.1"
+      id="Layer_1"
+      x="0px"
+      y="0px"
+      width="121.31px"
+      height="122.876px"
+      viewBox="0 0 121.31 122.876"
+      enable-background="new 0 0 121.31 122.876"
+      xml:space="preserve"
+    >
+      <g>
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M90.914,5.296c6.927-7.034,18.188-7.065,25.154-0.068 c6.961,6.995,6.991,18.369,0.068,25.397L85.743,61.452l30.425,30.855c6.866,6.978,6.773,18.28-0.208,25.247 c-6.983,6.964-18.21,6.946-25.074-0.031L60.669,86.881L30.395,117.58c-6.927,7.034-18.188,7.065-25.154,0.068 c-6.961-6.995-6.992-18.369-0.068-25.397l30.393-30.827L5.142,30.568c-6.867-6.978-6.773-18.28,0.208-25.247 c6.983-6.963,18.21-6.946,25.074,0.031l30.217,30.643L90.914,5.296L90.914,5.296z"
+        />
+      </g>
+    </svg>
+  </button>
 </div>
