@@ -6,6 +6,7 @@ export class Messages {
       text: string;
       date: number;
       reactionTo?: string;
+      emojiId?: number;
     }[],
     public games?: {
       whiteId: string;

@@ -5,6 +5,10 @@
   height: 100vh;
   padding: 50px;
 }
+.edit {
+  height: auto;
+  background: none;
+}
 :host {
   width: 100%;
   display: flex;

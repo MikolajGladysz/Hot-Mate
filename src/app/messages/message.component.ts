@@ -1,6 +1,5 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   HostListener,
   Input,
@@ -8,7 +7,6 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewChild,
 } from '@angular/core';
 import { CardService } from '../shared/card.service';
 import { User } from '../shared/models/user.model';
@@ -27,6 +25,7 @@ export class MessageComponent implements OnInit, OnChanges {
   messages: Messages;
   gamesWindow: boolean = false;
   newGameWindow: boolean = false;
+  showEmojiOffset: [number, number];
   @Input() chessGame: boolean = false;
   @Input() reaction;
 
@@ -40,6 +39,7 @@ export class MessageComponent implements OnInit, OnChanges {
     private messageService: MessageService
   ) {}
 
+  currentMessageEmoji;
   messageInput;
 
   ngOnInit(): void {
@@ -64,6 +64,7 @@ export class MessageComponent implements OnInit, OnChanges {
   @HostListener('click', ['$event.target'])
   hideNewGameWindow(click) {
     if (!click.closest('.btn-new-game')) this.newGameWindow = false;
+    if (!click.closest('.show-emoji-button')) this.showEmojiOffset = null;
   }
 
   createGame(whiteId: string, blackId: string) {
@@ -126,5 +127,21 @@ export class MessageComponent implements OnInit, OnChanges {
 
     this.loadGamePreview.emit(gameId);
     this.gamesWindow = false;
+  }
+  test(ev: MouseEvent, message) {
+    const rect = (ev.target as HTMLElement)
+      .closest('button')
+      .getBoundingClientRect();
+    this.showEmojiOffset = [rect.top - 46, rect.left - 513];
+
+    this.currentMessageEmoji = message;
+  }
+  sendEmoji(ev) {
+    const emojiBtn = ev.target.closest('button');
+    if (!emojiBtn) return;
+
+    const emojiId = emojiBtn.dataset.emojiid;
+    this.currentMessageEmoji.emojiId = emojiId;
+    console.log(this.currentMessageEmoji);
   }
 }

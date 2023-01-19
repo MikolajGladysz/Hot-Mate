@@ -138,6 +138,10 @@ img {
   margin-top: 15px;
   max-width: 80%;
 }
+.user {
+  flex-direction: row-reverse;
+}
+
 .user .reaction {
   flex-direction: row-reverse;
 }
@@ -148,6 +152,7 @@ img {
   justify-content: center;
   cursor: pointer;
 }
+
 .reaction > button {
   background: transparent;
   border: none;
@@ -158,10 +163,48 @@ img {
   margin: 0 auto;
   border-radius: 50%;
   justify-content: center;
-
+  position: relative;
   transition: background 0.2s;
 }
+.emotes {
+  display: flex;
+  position: absolute;
+  top: -45px;
+  padding: 5px 10px;
+  z-index: 9;
+  background-color: var(--bg-border);
+  border-radius: 20px;
+}
+.emotes button {
+  background: transparent;
+  padding: 0;
+  border: none;
+  margin: 0 3px;
+  transition: transform 0.1s;
+}
+.emotes button:hover {
+  transform: scale(1.1);
+}
+.emotes button img {
+  width: 35px;
+  height: 35px;
+  margin: 0;
+}
+.emotes button.active {
+  transform: scale(1.25);
+}
 
+img.emoji-window {
+  width: 35px;
+  height: 35px;
+  margin: 0;
+  margin-top: -16px;
+  margin-right: -12px;
+  z-index: 9;
+}
+.pair img.emoji-window {
+  align-self: flex-end;
+}
 .reaction > button:hover {
   background: var(--bg-border);
 }
@@ -170,6 +213,10 @@ img {
   height: 25px;
   stroke: white;
 }
+
+/* .user .reaction-window {
+  align-self: flex-start;
+} */
 .pair span {
   display: block;
   padding: 8px 15px;

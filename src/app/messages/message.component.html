@@ -31,7 +31,7 @@
       </svg>
     </button>
   </div>
-  <div class="main-con">
+  <div class="main-con" (scroll)="showEmojiOffset = null">
     <div class="no-messages" *ngIf="!messages || messages?.content.length == 0">
       <span
         >You Matched with <span class="bold">{{ matchedUser.name }}</span></span
@@ -83,22 +83,35 @@
           "
           >{{ _getDate(message.date) }}</span
         >
-        <div class="pair" *ngIf="message.from == matchedUser.id">
+        <div [ngClass]="message.from == matchedUser.id ? 'pair' : 'user'">
           <div>
             <img
               class="profile-picture"
               src="{{ matchedUser.photos[0] }}"
               alt="profile picture"
+              *ngIf="message.from == matchedUser.id"
             />
             <div class="message-text">
               <div class="reaction-window" *ngIf="message.reactionTo">
                 {{ message["reactionTo"] }}
               </div>
               <span> {{ message.text }}</span>
+              <img
+                [src]="
+                  '../../assets/images/emoji/emoji' + message.emojiId + '.png'
+                "
+                alt="Emoji"
+                *ngIf="message.emojiId"
+                class="emoji-window"
+              />
             </div>
           </div>
-          <div class="reaction" (click)="_reactToMessage(i)">
-            <button type="button">
+          <div class="reaction">
+            <button
+              type="button"
+              (click)="test($event, message)"
+              class="show-emoji-button"
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -116,7 +129,7 @@
                 <line x1="15" y1="9" x2="15.01" y2="9" />
               </svg>
             </button>
-            <button type="button">
+            <button type="button" (click)="_reactToMessage(i)">
               <svg
                 _ngcontent-eyv-c52=""
                 _ngcontent-dbd-c52=""
@@ -140,59 +153,6 @@
                 </g>
               </svg>
             </button>
-          </div>
-        </div>
-
-        <div class="user" *ngIf="message.from == currentUser.id">
-          <div class="reaction" (click)="_reactToMessage(i)">
-            <button type="button">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="#000000"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-                <line x1="9" y1="9" x2="9.01" y2="9" />
-                <line x1="15" y1="9" x2="15.01" y2="9" />
-              </svg>
-            </button>
-            <button type="button">
-              <svg
-                _ngcontent-eyv-c52=""
-                _ngcontent-dbd-c52=""
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
-                version="1.1"
-                id="_x32_"
-                viewBox="0 0 512 512"
-                xml:space="preserve"
-                height="25px"
-                width="25px"
-              >
-                <g _ngcontent-eyv-c52="" _ngcontent-dbd-c52="">
-                  <path
-                    _ngcontent-eyv-c52=""
-                    _ngcontent-dbd-c52=""
-                    d="M448.115,240.956c-39.306-39.389-94.166-63.913-154.235-63.885h-51.026V86.142   c0-8.058-4.506-15.439-11.674-19.125c-7.172-3.677-15.8-3.047-22.352,1.64L8.983,211.746C3.343,215.784,0,222.295,0,229.232   s3.343,13.448,8.983,17.486l199.844,143.088c6.552,4.687,15.18,5.316,22.352,1.64c7.169-3.686,11.674-11.068,11.674-19.125v-90.929   h51.026c31.59,0.019,59.708,12.651,80.467,33.331c20.676,20.755,33.305,48.882,33.332,80.473c0,28.803,23.353,52.16,52.16,52.16   S512,424,512,395.196C512.028,335.127,487.508,280.271,448.115,240.956z"
-                    class="st0"
-                    style="fill: white"
-                  ></path>
-                </g>
-              </svg>
-            </button>
-          </div>
-          <div class="message-text">
-            <div class="reaction-window" *ngIf="message.reactionTo">
-              {{ message["reactionTo"] }}
-            </div>
-            <span> {{ message.text }}</span>
           </div>
         </div>
 
@@ -364,5 +324,62 @@
         />
       </g>
     </svg>
+  </button>
+</div>
+<div
+  class="emotes"
+  *ngIf="showEmojiOffset"
+  [style.top]="showEmojiOffset[0] + 'px'"
+  [style.left]="showEmojiOffset[1] + 'px'"
+  (click)="sendEmoji($event)"
+>
+  <button
+    type="button"
+    data-emojiid="0"
+    [class.active]="currentMessageEmoji.emojiId == 0"
+  >
+    <img src="../../assets/images/emoji/emoji0.png" alt="emoji" />
+  </button>
+  <button
+    type="button"
+    [class.active]="currentMessageEmoji.emojiId == 1"
+    data-emojiid="1"
+  >
+    <img src="../../assets/images/emoji/emoji1.png" alt="emoji" />
+  </button>
+  <button
+    type="button"
+    [class.active]="currentMessageEmoji.emojiId == 2"
+    data-emojiid="2"
+  >
+    <img src="../../assets/images/emoji/emoji2.png" alt="emoji" />
+  </button>
+  <button
+    type="button"
+    [class.active]="currentMessageEmoji.emojiId == 3"
+    data-emojiid="3"
+  >
+    <img src="../../assets/images/emoji/emoji3.png" alt="emoji" />
+  </button>
+  <button
+    type="button"
+    [class.active]="currentMessageEmoji.emojiId == 4"
+    data-emojiid="4"
+  >
+    <img src="../../assets/images/emoji/emoji4.png" alt="emoji" />
+  </button>
+  <button
+    type="button"
+    [class.active]="currentMessageEmoji.emojiId == 5"
+    data-emojiid="5"
+  >
+    <img src="../../assets/images/emoji/emoji5.png" alt="emoji" />
+  </button>
+  <button
+    type="button"
+    [class.active]="currentMessageEmoji.emojiId == 6"
+    data-emojiid="6"
+  >
+    <img src="../../assets/images/emoji/emoji6.png" alt="emoji" />
   </button>
 </div>

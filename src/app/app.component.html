@@ -1,10 +1,12 @@
 <div class="con" [class.new-match]="newUser">
-  <div class="sidebar">
+  <div class="sidebar" *ngIf="showSidebar">
     <app-sidebar></app-sidebar>
   </div>
   <div class="main-con">
     <router-outlet *ngIf="!newUser"></router-outlet>
     <app-new-match *ngIf="newUser"></app-new-match>
+
     <!-- <app-chess></app-chess> -->
   </div>
+  <!-- <app-create-account></app-create-account> -->
 </div>

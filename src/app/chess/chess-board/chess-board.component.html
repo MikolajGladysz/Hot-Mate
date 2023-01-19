@@ -2,7 +2,7 @@
   <div
     class="chess-tile"
     *ngFor="let tile of _boardInfo; let i = index"
-    [class.dark]="tile.darkTile"
+    [class.dark]="tile.darkTile ? false : true"
     [class.active]="_legalMoves.includes(i)"
     [attr.data-index]="i"
     [class.flip]="flipBoard"
@@ -19,7 +19,7 @@
     />
     <div
       class="arrow"
-      *ngIf="tile.arrow"
+      *ngIf="tile.arrow && !flipBoard"
       [style.height]="tile.arrow.arrowHeight"
       [style.transform]="tile.arrow.arrowTransform"
     ></div>

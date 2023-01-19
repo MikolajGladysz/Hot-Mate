@@ -1,0 +1,71 @@
+<div
+  class="backdrop"
+  (click)="selectedItems = selectedItemsInput; emitAndClose()"
+></div>
+<div class="con" [class.chess]="chessModal">
+  <h2 *ngIf="!chessModal">Select up to five tags:</h2>
+  <div *ngIf="chessModal">
+    <h2>Game Name:</h2>
+    <div class="input-field">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#000000"
+        width="800px"
+        height="800px"
+        viewBox="-32 0 512 512"
+      >
+        <path
+          d="M400 448H48a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h352a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm16-288H256v-48h40a8 8 0 0 0 8-8V56a8 8 0 0 0-8-8h-40V8a8 8 0 0 0-8-8h-48a8 8 0 0 0-8 8v40h-40a8 8 0 0 0-8 8v48a8 8 0 0 0 8 8h40v48H32a32 32 0 0 0-30.52 41.54L74.56 416h298.88l73.08-214.46A32 32 0 0 0 416 160z"
+        />
+      </svg>
+      <input
+        type="text"
+        name="name"
+        placeholder="Game Name"
+        class="input-text"
+        maxlength="20"
+        [value]="selectedItems.name"
+        #inputText
+      />
+    </div>
+  </div>
+  <div class="flex-row" *ngIf="!chessModal">
+    <button
+      type="button"
+      *ngFor="let item of dataToDisplay.tagsNames; let i = index"
+      (click)="addSelectedItem(i)"
+      [class.active]="selectedItems && selectedItems?.tagsId?.includes(i)"
+    >
+      {{ item }}
+    </button>
+  </div>
+  <span *ngIf="!chessModal && selectedItems.tagsId?.length > 5" class="danger"
+    >Too many items selected</span
+  >
+  <div *ngIf="chessModal" class="chess-con">
+    <app-chess
+      [gameEdit]="true"
+      [movesInput]="moves"
+      [flipBoard]="rotate.checked"
+      (gameEditData)="addGameMoves($event)"
+    ></app-chess>
+
+    <div class="rotate-con">
+      <input
+        type="checkbox"
+        class="rotate"
+        #rotate
+        [checked]="selectedItems.playedAsBlack"
+      /><span class="text-small">Rotate board</span>
+    </div>
+  </div>
+
+  <div class="flex-row">
+    <button class="add" (click)="emitAndClose()" [disabled]="invalid">
+      Add
+    </button>
+    <button class="cancel" (click)="selectedItems = null; emitAndClose()">
+      Cancel
+    </button>
+  </div>
+</div>

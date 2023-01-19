@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AccountData } from '../shared/account-data.service';
 import { CardService } from '../shared/card.service';
 import { User } from '../shared/models/user.model';
 
@@ -18,10 +19,11 @@ export class DetailComponent implements OnInit {
   currCard = 1;
   //amount of fav games card
   gamesCards;
-  gamePreview: { fenCode: string; gameTitle: string; moves: string[] };
+  gamePreview: { fenCode?: string; name?: string; moves?: string[] };
 
   constructor(
     private cardService: CardService,
+    private accountData: AccountData,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -74,5 +76,8 @@ export class DetailComponent implements OnInit {
     }
 
     this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
+  }
+  getOpenings(ids: number[]) {
+    return this.accountData.GET_FAVORITE_OPENINGS(ids);
   }
 }

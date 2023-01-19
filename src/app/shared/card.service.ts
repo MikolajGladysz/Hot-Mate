@@ -384,16 +384,13 @@ export class CardService {
       Array(random(1, 8))
         .fill('')
         .forEach(() => {
-          tag.add(tags[random(0, tags.length - 1)]);
+          tag.add(random(0, 5));
         });
-      const tagArr: string[] = <string[]>Array.from(tag);
-      const favOpening = {
-        openingName: openings[random(0, openings.length - 1)],
-        opening: 'laldaj',
-      };
+      const tagArr: number[] = <number[]>Array.from(tag);
+      const favOpening = tagArr;
 
       const favGamesArr: {
-        gameTitle: string;
+        name: string;
         fenCode: string;
         moves: string[];
       }[] = Array(random(0, 8))
@@ -401,7 +398,7 @@ export class CardService {
         .map(() => {
           const game = favGame[random(0, 8)];
           return {
-            gameTitle: tags[random(0, tags.length - 1)],
+            name: tags[random(0, tags.length - 1)],
             fenCode: game['fenCode'],
             moves: game['moves'],
           };
@@ -441,7 +438,6 @@ export class CardService {
         )
       );
     }
-    this.currentUser = this.users[0];
     this.users.forEach((user, index) => {
       user.messagesId = [];
       const ids = new Set<string>();

@@ -174,7 +174,18 @@ export class ChessRulesService implements OnInit {
 
       //Check castle possibility
       //king side
-      if (isKing && tileDataSet['column'] == 4 && !futureMove) {
+      if (
+        isKing &&
+        tileDataSet['column'] == 4 &&
+        !futureMove &&
+        !tileDataSet['moved']
+      ) {
+        const attackedSquares = Array.from(
+          currentPieceColor == 'w'
+            ? this.attackedSquaresB
+            : this.attackedSquaresW
+        );
+
         if (
           !boardInfo[startPosition + 1]['piece'] &&
           !boardInfo[startPosition + 2]['piece'] &&
@@ -182,7 +193,13 @@ export class ChessRulesService implements OnInit {
           boardInfo[startPosition + 3]['piece']?.includes('Rook') &&
           !boardInfo[startPosition + 3]['moved']
         ) {
-          newLegalMoves.push(startPosition + 2);
+          if (
+            !(
+              attackedSquares.includes(startPosition + 1) ||
+              attackedSquares.includes(startPosition + 2)
+            )
+          )
+            newLegalMoves.push(startPosition + 2);
         }
         //queen side
         if (
@@ -193,7 +210,13 @@ export class ChessRulesService implements OnInit {
           boardInfo[startPosition - 4]['piece']?.includes('Rook') &&
           !boardInfo[startPosition - 4]['moved']
         ) {
-          newLegalMoves.push(startPosition - 2);
+          if (
+            !(
+              attackedSquares.includes(startPosition - 1) ||
+              attackedSquares.includes(startPosition - 2)
+            )
+          )
+            newLegalMoves.push(startPosition - 2);
         }
       }
     };
@@ -373,8 +396,6 @@ export class ChessRulesService implements OnInit {
       Math.abs(+oldTile['column'] - +newTile['column']) == 2 &&
       !checkFutureMoveColor
     ) {
-      newTile['moved'] = true;
-
       if (+newTile['column'] > +oldTile['column']) {
         newBoardInfo[+oldTile['index'] + 1]['piece'] =
           newBoardInfo[+oldTile['index'] + 3]['piece'];
@@ -382,8 +403,9 @@ export class ChessRulesService implements OnInit {
         newBoardInfo[+oldTile['index'] + 3]['pieceUrl'] = null;
       } else {
         newBoardInfo[+oldTile['index'] - 1]['piece'] =
-          newBoardInfo[+oldTile['index'] + 3]['piece'];
+          newBoardInfo[+oldTile['index'] - 4]['piece'];
         newBoardInfo[+oldTile['index'] - 4]['pieceUrl'] = null;
+        newBoardInfo[+oldTile['index'] - 4]['piece'] = null;
       }
     }
 

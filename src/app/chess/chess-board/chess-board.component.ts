@@ -3,13 +3,10 @@ import {
   EventEmitter,
   HostListener,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { ChessRulesService } from '../chess-rules.service';
 import { Tile } from '../tile-info';
 
@@ -79,6 +76,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
   @HostListener('dragstart', ['$event'])
   selectPiece(event) {
+    if (this.gamePreview) return;
+
     this.pieceInfo.emit(+event.target.closest('.chess-tile').dataset['index']);
 
     if (
@@ -108,8 +107,9 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
   @HostListener('document:dragend', ['$event'])
   placePiece() {
-    this.mouseDown = false;
+    if (this.gamePreview) return;
 
+    this.mouseDown = false;
     this._resetPieceImg(this.selectedPieceImg);
     this.moveInfo.emit([
       +this.selectedPieceTile.dataset['index'],
@@ -121,6 +121,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
   @HostListener('drag', ['$event'])
   movePiece(event: DragEvent) {
+    if (this.gamePreview) return;
+
     if (this.mouseDown && event.clientY != 0) {
       this.selectedPieceImg.style.pointerEvents = 'none';
       this.selectedPieceImg.style.transform =
@@ -133,6 +135,8 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   }
   @HostListener('dragover', ['$event'])
   currentTileDrag(event: DragEvent) {
+    if (this.gamePreview) return;
+
     this.currentTile = (event.target as HTMLElement).closest('.chess-tile');
   }
 }

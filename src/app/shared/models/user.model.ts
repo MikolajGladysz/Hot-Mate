@@ -1,5 +1,3 @@
-import { Messages } from './message.model';
-
 export class User {
   constructor(
     public id: string,
@@ -8,9 +6,14 @@ export class User {
     public photos: string[],
     public distance?: number,
     public description?: string,
-    public tags?: string[],
-    public favOpening?: { openingName: string; opening: string },
-    public favGames?: { gameTitle: string; fenCode: string; moves: string[] }[],
+    public tags?: number[],
+    public favOpening?: number[],
+    public favGames?: {
+      fenCode?: string;
+      moves: string[];
+      name?: string;
+      playedAsBlack?: boolean;
+    }[],
     public city?: string,
     public chessTitle?: string,
     public messagesId?: string[]

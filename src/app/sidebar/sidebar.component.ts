@@ -64,4 +64,8 @@ export class SidebarComponent implements OnInit {
         .length - 1
     ].text;
   }
+  removeUserTest() {
+    localStorage.removeItem('localUser');
+    console.log(localStorage.getItem('localUser'));
+  }
 }

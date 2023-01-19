@@ -1,17 +1,6 @@
-<div class="con">
+<div class="con" [class.edit]="gameEdit">
   <div class="main">
     <div class="chess-board">
-      <div class="player-con">
-        <div class="player-info">
-          <img
-            src="../../assets/images/user1/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
-            class="img-small"
-            alt=""
-          />
-          <span class="nickname">Nickname</span>
-        </div>
-        <div class="timer black">10:00</div>
-      </div>
       <app-chess-board
         [style.pointerEvents]="
           gamePreviewMoves || gameResult != 0 ? 'none' : 'all'
@@ -64,18 +53,6 @@
           Rematch
         </button>
       </div>
-      <div class="player-con">
-        <div class="player-info">
-          <img
-            src="../../assets/images/user1/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg"
-            alt=""
-            class="img-small"
-          />
-
-          <span class="nickname">Nickname</span>
-        </div>
-        <div class="timer white">10:00</div>
-      </div>
     </div>
     <div class="side-bar">
       <div class="moves-con">
@@ -112,7 +89,7 @@
   </div>
 </div>
 
-<div class="detail-con" *ngIf="!userMatch && !gamePreviewMoves">
+<div class="detail-con" *ngIf="!userMatch && !gamePreviewMoves && !gameEdit">
   <app-message
     [chessGame]="true"
     [reaction]="reaction"

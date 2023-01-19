@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ChessComponent } from './chess/chess.component';
 import { ChessBoardComponent } from './chess/chess-board/chess-board.component';
 import { GamesWindowComponent } from './games-window/games-window.component';
+import { CreateAccountComponent } from './create-account/create-account.component';
+import { ModalComponent } from './create-account/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +26,8 @@ import { GamesWindowComponent } from './games-window/games-window.component';
     ChessComponent,
     ChessBoardComponent,
     GamesWindowComponent,
+    CreateAccountComponent,
+    ModalComponent,
   ],
   imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],

@@ -1,0 +1,101 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99999;
+}
+.con {
+  position: fixed;
+  z-index: 999999999;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  inset: 20%;
+  background: var(--bg-main);
+  justify-content: space-between;
+  padding: 30px;
+}
+.chess {
+  top: 5%;
+  bottom: 5%;
+}
+button {
+  background: none;
+  border: solid 2px var(--bs-body-color);
+  border-radius: 10px;
+  padding: 8px 14px;
+  margin-right: 10px;
+  transition: all 0.3s;
+  color: white;
+  margin-bottom: 10px;
+}
+.flex-row {
+  justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 85%;
+}
+button.active,
+button:hover {
+  background: var(--bs-body-color);
+  transform: scale(1.1);
+}
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  background: none;
+}
+.danger {
+  color: red;
+}
+.add {
+  background: var(--red-gradient);
+  border: none;
+}
+.chess-con > div {
+  margin-top: -20px;
+}
+svg {
+  fill: var(--bs-body-color);
+  width: 30px;
+  height: 30px;
+}
+.input-field {
+  background: none;
+  border: solid 2px var(--bs-body-color);
+  border-radius: 10px;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: center;
+  margin-right: 10px;
+  align-items: center;
+  color: white;
+}
+.input-text {
+  border-radius: 10px;
+  padding: 8px 14px;
+  display: flex;
+  justify-content: center;
+  margin-right: 10px;
+  align-items: center;
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: white;
+}
+input:focus {
+  outline: none;
+}
+.text-small {
+  color: var(--bs-gray);
+  margin-left: 10px;
+  font-size: 1.3rem;
+}
+.rotate {
+  width: 22px;
+  height: 22px;
+}
+.rotate-con {
+  display: flex;
+  align-items: center;
+}

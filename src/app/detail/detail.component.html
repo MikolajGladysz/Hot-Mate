@@ -108,7 +108,7 @@
       <section>
         <h5 class="white sectionTitle">Favorite Openings</h5>
         <div class="tags">
-          <div class="tag">{{ currUser.favOpening.openingName }}</div>
+          <div class="tag">{{ getOpenings(currUser.favOpening) }}</div>
         </div>
       </section>
 
@@ -173,7 +173,7 @@
             *ngFor="let game of currUser.favGames; let i = index"
           >
             <div class="game-board">
-              <h6 class="gameTitle">{{ currUser.favGames[i].gameTitle }}</h6>
+              <h6 class="gameTitle">{{ currUser.favGames[i].name }}</h6>
               <app-chess-board
                 [fenCode]="[game['fenCode'], game['moves'].at(-1)]"
                 (click)="gamePreview = game"
