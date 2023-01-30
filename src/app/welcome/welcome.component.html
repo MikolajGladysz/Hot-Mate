@@ -1,0 +1,26 @@
+<div class="con">
+  <div class="top-bar flex-row">
+    <div class="align">
+      <img src="../../assets/images/logo2.png" alt="Logo" />
+      <span class="app-title">Chess Mating</span>
+    </div>
+    <button class="login-btn btn" (click)="showModal = true; logIn = true">
+      Log in
+    </button>
+  </div>
+  <main>
+    <h1>Swipe Right and Mate</h1>
+    <button
+      class="create-acc-btn btn"
+      (click)="showModal = true; logIn = false"
+    >
+      Create account
+    </button>
+  </main>
+</div>
+<div *ngIf="showModal">
+  <div class="backdrop" (click)="showModal = false"></div>
+  <div class="modal-con">
+    <app-auth [login]="logIn" (onCloseModal)="showModal = false"></app-auth>
+  </div>
+</div>

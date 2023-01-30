@@ -634,7 +634,7 @@ export class ChessRulesService implements OnInit {
     );
   }
   private _getPiece(pieceName: string) {
-    return `../../assets/images/chessPieces/${pieceName}.png`;
+    return `../../assets/images/chessPieces/${pieceName}.svg`;
   }
   check(boardInfo: Tile[], pieceColor: 'w' | 'b') {
     //[0] - white king, [1] - black king

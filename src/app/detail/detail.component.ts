@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { AccountData } from '../shared/account-data.service';
 import { CardService } from '../shared/card.service';
@@ -12,6 +12,7 @@ import { User } from '../shared/models/user.model';
 export class DetailComponent implements OnInit {
   currUser: User;
   messageDetail: Boolean = false;
+  @Input() loadUserEditProfile: User = null;
   @Output() detailUpdate = new EventEmitter<boolean>();
 
   currPhoto = 1;
@@ -51,33 +52,45 @@ export class DetailComponent implements OnInit {
   }
   _detailSwipe(direction: number) {
     this.cardService.setSwipeOnInit(direction);
-    this.router.navigate(['/']);
+    this.router.navigate(['/app']);
   }
   _navigateBack() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/app']);
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe((params: Params) => {
-      this.currPhoto = 1;
-      this.currCard = 1;
-      if (Object.keys(params).length !== 0) {
-        this.messageDetail = true;
-        this.currUser = this.cardService.users.find(
-          (user) => user.id === params['id']
-        );
-      } else {
-        this.currUser = this.cardService.dummyUser[0];
+    if (this.loadUserEditProfile) {
+      console.log(this.loadUserEditProfile);
+
+      this.messageDetail = true;
+      this.currUser = this.loadUserEditProfile;
+    } else {
+      this.route.params.subscribe((params: Params) => {
+        this.currPhoto = 1;
+        this.currCard = 1;
+        if (Object.keys(params).length !== 0) {
+          this.messageDetail = true;
+          this.currUser = this.cardService.users.find(
+            (user) => user.id === params['id']
+          );
+        } else {
+          this.currUser = this.cardService.dummyUser[0];
+        }
+        this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
+      });
+      if (!this.currUser) {
+        this.router.navigate(['/app']);
       }
-      this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
-    });
-    if (!this.currUser) {
-      this.router.navigate(['/']);
     }
 
     this.gamesCards = Array(Math.ceil(this.currUser.favGames.length / 2));
   }
   getOpenings(ids: number[]) {
+    if (!ids) return null;
     return this.accountData.GET_FAVORITE_OPENINGS(ids);
+  }
+  getChessPersonalities(ids: number[]) {
+    if (!ids) return null;
+    return this.accountData.GET_CHESS_PERSONALITIES(ids);
   }
 }

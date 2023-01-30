@@ -7,6 +7,7 @@ import {
   Output,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 import { CardService } from '../shared/card.service';
 import { GameStatus } from '../shared/game-status.service';
 import { MessageService } from '../shared/message.service';
@@ -20,6 +21,7 @@ import { Tile } from './tile-info';
   styleUrls: ['./chess.component.css'],
 })
 export class ChessComponent implements OnInit, OnDestroy {
+  localUser: User;
   currentUser: User;
   messageInput;
   @Input() nextMove: string;
@@ -66,14 +68,19 @@ export class ChessComponent implements OnInit, OnDestroy {
     private messageService: MessageService,
     private cardService: CardService,
     private chessRulesService: ChessRulesService,
-    private gameStatus: GameStatus
+    private gameStatus: GameStatus,
+    private authService: AuthService
   ) {}
   turn: number;
+
   ngOnInit(): void {
+    this.localUser = this.authService.user.getValue();
+
     if (this.gameEdit) {
       this.moves = [];
       this.fenCodes = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'];
       this.turn = 0;
+
       if (this.movesInput) {
         this.moves = this.movesInput;
         this.fenCodes = this.chessRulesService.movesToFenCode(this.moves);
@@ -89,6 +96,12 @@ export class ChessComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.firstMove) {
+      this.flipBoard = false;
+      this.turn = 0;
+      if (this.nextMove) this.moves = [this.nextMove];
+    }
+
     if (!this.gamePreviewMoves) {
       if (this.userMatch) {
         this.currentUser = this.userMatch;
@@ -100,11 +113,12 @@ export class ChessComponent implements OnInit, OnDestroy {
       }
 
       this.currentGame = this.messageService.getCurrentGame([
-        this.cardService.currentUser.id,
+        this.localUser.id,
         this.currentUser.id,
       ]);
-      if (this.currentGame.whiteId == this.currentUser.id) {
+      if (this.currentGame.whiteId == this.currentUser.id && !this.firstMove) {
         this.flipBoard = true;
+
         this.playerColor = 1;
       }
 
@@ -174,6 +188,7 @@ export class ChessComponent implements OnInit, OnDestroy {
     this.moves.push(moveString);
 
     this.turn++;
+
     this.fenCodes.push(this.chessRulesService.generateFenCode());
 
     this.gameEditData.emit([this.moves, this.fenCodes.at(-1)]);
@@ -204,6 +219,10 @@ export class ChessComponent implements OnInit, OnDestroy {
   }
 
   pieceInfo(pieceIndex: number) {
+    if (this.firstMove) {
+      this.turn = 0;
+    }
+
     if (this.firstMove && this.fenCodes.length > 0) {
       this._boardInfo = this.chessRulesService.generateBoard(
         'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'
@@ -257,14 +276,14 @@ export class ChessComponent implements OnInit, OnDestroy {
     this._boardPreview = true;
   }
   _getCurrentMoves() {
-    this.moves = this.currentGame.moves;
+    if (!this.firstMove) this.moves = this.currentGame.moves;
 
     if (!this.moves) this.moves = [];
     this.turn = this.moves.length;
   }
   _addMoveToGame(move: string) {
     this.messageService.updateGame(
-      [this.currentUser.id, this.cardService.currentUser.id],
+      [this.currentUser.id, this.localUser.id],
       move
     );
 
@@ -293,12 +312,9 @@ export class ChessComponent implements OnInit, OnDestroy {
 
   newGame() {
     this.currentGame.moves = this.moves;
-    this.messageService.createGame(
-      this.cardService.currentUser.id,
-      this.currentUser.id
-    );
+    this.messageService.createGame(this.localUser.id, this.currentUser.id);
     this.currentGame = this.messageService.getCurrentGame([
-      this.cardService.currentUser.id,
+      this.localUser.id,
       this.currentUser.id,
     ]);
 
@@ -320,7 +336,7 @@ export class ChessComponent implements OnInit, OnDestroy {
   loadGamePreview(gameId: number) {
     this.currentGame = this.messageService.findMessage([
       this.currentUser.id,
-      this.cardService.currentUser.id,
+      this.localUser.id,
     ]).games[gameId];
     this._getCurrentMoves();
     this._loadGame();
@@ -328,7 +344,7 @@ export class ChessComponent implements OnInit, OnDestroy {
 
   private _loadGame() {
     this.fenCodes = this.chessRulesService.movesToFenCode(this.moves);
-    if (!this.fenCodes)
+    if (!this.fenCodes || this.fenCodes.length == 0)
       this.fenCodes = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'];
 
     this._boardInfo = this.chessRulesService.generateBoard(
@@ -338,7 +354,8 @@ export class ChessComponent implements OnInit, OnDestroy {
     this.chessRulesService.subject.next({ fenCode: this.fenCodes.at(-1) });
     this.turn = this.moves.length;
     this.gameResult = this.currentGame.status;
-    if (this.playerColor == 1 && this.turn == 0) {
+
+    if (this.turn % 2 != this.playerColor && !this.firstMove) {
       this._GMlevelChessEngine();
     }
   }
@@ -360,11 +377,6 @@ export class ChessComponent implements OnInit, OnDestroy {
       if (randomPieceLegalMoves.length == 0) selectAppropriatePiece();
       else {
         this._legalMoves = randomPieceLegalMoves;
-        console.log(
-          'i move: ',
-          randomPiece.index,
-          randomPieceLegalMoves.at(-1)
-        );
 
         this.moveInfo([randomPiece.index, randomPieceLegalMoves.at(-1)]);
       }

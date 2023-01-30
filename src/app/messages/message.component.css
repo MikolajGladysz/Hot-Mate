@@ -168,8 +168,7 @@ img {
 }
 .emotes {
   display: flex;
-  position: absolute;
-  top: -45px;
+  position: fixed;
   padding: 5px 10px;
   z-index: 9;
   background-color: var(--bg-border);

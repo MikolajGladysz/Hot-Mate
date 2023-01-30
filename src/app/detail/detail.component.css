@@ -34,6 +34,7 @@
   border-radius: 10px 10px 0 0;
   padding: 20px;
   cursor: pointer;
+  background-size: cover;
   position: relative;
 }
 .card-top:hover .card-arrows {

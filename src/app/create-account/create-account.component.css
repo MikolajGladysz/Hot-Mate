@@ -1,8 +1,15 @@
-.con {
-  width: 100vw;
-  height: 100vh;
+:host.edit {
+  width: 100%;
   display: flex;
-  overflow: auto;
+  align-items: center;
+  justify-content: center;
+}
+.con {
+  width: 100%;
+  height: 100%;
+  display: flex;
+
+  overflow: hidden;
   align-items: center;
   flex-direction: column;
 }
@@ -14,6 +21,9 @@ svg {
 .flex-row {
   display: flex;
   align-items: baseline;
+}
+.wrap {
+  flex-wrap: wrap;
 }
 section {
   margin-bottom: 20px;
@@ -27,7 +37,8 @@ input,
 .section-2 > button,
 .next-btn,
 .tag,
-.radio-label {
+.radio-label,
+textarea {
   background: none;
   border: solid 2px var(--bs-body-color);
   border-radius: 10px;
@@ -37,6 +48,7 @@ input,
   margin-right: 10px;
   align-items: center;
   color: white;
+  resize: none;
 }
 label.radio-label {
   cursor: pointer;
@@ -127,6 +139,7 @@ button:disabled {
   justify-content: flex-end;
   margin: 0;
   padding: 0;
+  border-radius: 10px;
 }
 .button-add {
   background: var(--red-gradient);
@@ -140,6 +153,10 @@ button:disabled {
   padding-bottom: 6px;
   font-size: 2rem;
   margin-right: -12px;
+  transition: transform 0.3s;
+}
+.button-add:hover {
+  transform: scale(1.1);
 }
 .text-small {
   color: var(--bs-gray);
@@ -198,6 +215,7 @@ h2 {
 }
 .tag {
   background-color: var(--bs-body-color);
+  margin-top: 5px;
 }
 .reverse {
   flex-direction: row-reverse;
@@ -269,4 +287,104 @@ input[type="number"].ng-invalid.ng-touched {
     width: 50%;
     justify-content: space-evenly;
   }
+}
+
+/* In edit mode */
+.con.edit {
+  width: 375px;
+  height: 667px;
+}
+section.flex-row > div {
+  width: 100%;
+}
+fieldset.edit {
+  justify-content: space-evenly;
+}
+fieldset.edit > input[type="number"] {
+  width: auto;
+}
+.edit-profile-info {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.edit-profile-info > * {
+  display: block;
+}
+
+.fav-games-con.edit {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.fav-games-con.edit > * {
+  margin-bottom: 20px;
+}
+.fav-games-con.edit > *:has(.game-name) {
+  margin-bottom: 45px;
+}
+.next-btn.edit {
+  position: fixed;
+  bottom: -2rem;
+}
+.btn-con {
+  width: 375px;
+  position: fixed;
+  top: 3rem;
+}
+.btn-con > button {
+  margin: 0;
+  width: 50%;
+  border-radius: 5px;
+}
+section.flex-row.edit {
+  flex-direction: column-reverse !important;
+}
+.grid.edit > .photo-con {
+  height: 130px;
+}
+
+.photo {
+  border: none;
+  border: solid 5px transparent;
+  position: relative;
+}
+.user-pfp {
+  position: absolute;
+  inset: top10px;
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+}
+.button-remove-photo {
+  background: var(--bs-gray);
+  transform: rotate(45deg);
+  padding-bottom: 8px;
+  z-index: 3;
+}
+
+.photo-input {
+  position: fixed;
+  top: 1rem;
+}
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+
+  z-index: 2;
+}
+.scroll {
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+  padding: 7px;
+  position: relative;
+  margin-right: -33px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

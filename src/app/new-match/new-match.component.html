@@ -84,7 +84,7 @@
           <span *ngIf="this.activeBtn || this.move" class="invitation-text">Invitation sent!</span>
 
           <div class="chess-btns">
-            <button class="play-white" [class.active]="move" (click)="displayBoard=true">Make a first move</button>
+            <button class="play-white" [class.active]="move" (click)="displayBoard=true; log(move)">Make a first move</button>
             <button class="play-black"  [class.active]="!move && activeBtn" (click)="_createGame('b'); move = ''; activeBtn=!activeBtn">Invite them to move first</button>
           </div>
         </div>
@@ -113,7 +113,7 @@
       </button>
       <button
         class="close"
-        (click)="displayBoard = false; move = ''; activeBtn = false"
+        (click)="displayBoard = false; move = null; activeBtn = false"
       >
         Close
       </button>

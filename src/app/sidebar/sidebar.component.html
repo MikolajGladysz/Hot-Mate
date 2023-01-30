@@ -1,8 +1,19 @@
 <div class="con">
   <div class="sidebar-top">
-    <div class="profile-con" (click)="removeUserTest()">
-      <img [src]="currentUser.photos[0]" />
-      <span>{{ currentUser.name }}</span>
+    <div
+      class="profile-con"
+      [routerLink]="editMode ? '../app' : 'edit-profile'"
+      [class.edit]="editMode"
+    >
+      <img
+        [src]="
+          editMode
+            ? '../../assets/images/logo-negative.png'
+            : localUser.photos[0]
+        "
+        [class.edit]="editMode"
+      />
+      <span *ngIf="!editMode">{{ localUser.name }}</span>
     </div>
   </div>
   <div class="sidebar-bottom">

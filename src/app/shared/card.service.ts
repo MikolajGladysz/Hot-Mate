@@ -5,7 +5,6 @@ import { User } from './models/user.model';
 @Injectable({ providedIn: 'root' })
 export class CardService {
   users: User[] = [];
-  currentUser: User;
   @Output() usersObs = new EventEmitter<boolean>();
   @Output() newMatchObs = new EventEmitter<User>();
 

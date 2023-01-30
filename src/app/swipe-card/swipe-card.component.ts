@@ -188,7 +188,9 @@ export class SwipeCardComponent implements OnInit {
         //after swipe animation end, reset 1st card posiotin, swap 2nd user in user arr with 1st, so new user is displayed TODO:get new user from server, after swap in arr
 
         if (swipe < 0) {
+          console.log('pre', this.cardService.users.length);
           this.cardService.newMatch(this.dummy[0]);
+
           // this.cardService.addUser(this.dummy[0])
         }
         this.dummy[0] = this.dummy[1];

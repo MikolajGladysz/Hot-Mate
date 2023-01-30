@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 import { AccountData } from '../shared/account-data.service';
 import { CardService } from '../shared/card.service';
 import { User } from '../shared/models/user.model';
@@ -15,9 +16,8 @@ export class CreateAccountComponent implements OnInit {
   constructor(
     private accountData: AccountData,
     private router: Router,
-    private cardService: CardService
+    private authService: AuthService
   ) {}
-  private user: User;
 
   //0 - chess personality, 1 - fav openings
   modalValue: number;
@@ -46,9 +46,39 @@ export class CreateAccountComponent implements OnInit {
     playedAsBlack?: boolean;
   }[] = [];
 
+  userEmail: string;
+  localUser: User;
+  userPhotos: string[];
+
+  editProfile: boolean = false;
+  preview: boolean = false;
+
   ngOnInit(): void {
     this.chessPersonalities = this.accountData.GET_CHESS_PERSONALITIES([-1]);
     this.favoriteOpenings = this.accountData.GET_FAVORITE_OPENINGS([-1]);
+    this.localUser = this.authService.user.getValue();
+    this.userEmail = this.localUser.email;
+    this.userPhotos = this.localUser.photos;
+    if (!this.userPhotos) {
+      this.userPhotos = [];
+    }
+
+    if (this.router.url.includes('edit-profile')) {
+      // tu tuez^
+      this.editProfile = true;
+      this.selectedChessPersonalities = this.localUser.tags;
+      this.selectedFavoriteOpenings = this.localUser.favOpening;
+      this.favoriteGames = this.localUser.favGames;
+
+      if (!this.favoriteGames) {
+        this.favoriteGames = [];
+      }
+    }
+  }
+
+  @HostBinding('class.edit')
+  get edited() {
+    return this.editProfile;
   }
 
   getSelectedItems(val: {
@@ -102,34 +132,59 @@ export class CreateAccountComponent implements OnInit {
   }
   onSubmit(formValue: {
     birthDate: { birthDay: number; birthMonth: number; birthYear: number };
-    email: string;
     gender: string;
     userName: string;
+    chessTitle?: string;
+    description?: string;
   }) {
-    const id = Math.random().toString(36).slice(2, 10);
-    const photos = [
-      '../../assets/images/user1/360_F_224869519_aRaeLneqALfPNBzg0xxMZXghtvBXkfIA.jpg',
-      '../../assets/images/user1/360_F_297245133_gBPfK0h10UM3y7vfoEiBC3ZXt559KZar.jpg',
-      '../../assets/images/user1/gettyimages-1250238624-612x612.jpg',
-      '../../assets/images/user1/istockphoto-1200677760-612x612.jpg',
-      '../../assets/images/user1/pexels-photo-2379004.jpeg',
-    ];
-    this.user = new User(
-      id,
-      formValue.userName,
-      2023 - formValue.birthDate.birthYear,
-      photos,
-      420,
-      null,
-      this.selectedChessPersonalities,
-      this.selectedFavoriteOpenings,
-      this.favoriteGames,
-      'Swidwin',
-      'GM',
-      null
-    );
-    localStorage.setItem('localUser', JSON.stringify(this.user));
-    this.cardService.currentUser = this.user;
-    this.router.navigate(['/']);
+    if (!this.userPhotos || this.userPhotos.length == 0) {
+      this.userPhotos = [' ../../assets/images/default_pfp.png'];
+    }
+    const user = this.authService.user.getValue();
+    console.log(formValue);
+
+    if (formValue.userName) user.name = formValue.userName;
+
+    if (formValue.birthDate) user.age = 2023 - formValue.birthDate.birthYear;
+
+    user.photos = this.userPhotos;
+    user.distance = 420;
+    user.tags = this.selectedChessPersonalities;
+    user.favOpening = this.selectedFavoriteOpenings;
+    user.favGames = this.favoriteGames;
+    user.city = 'Swidwin';
+    if (formValue.chessTitle) user.chessTitle = formValue.chessTitle;
+
+    if (formValue.description) user.description = formValue.description;
+
+    localStorage.setItem('userData', JSON.stringify(user));
+
+    this.router.navigate(['/app']);
+  }
+  uploadFile(id: number) {
+    console.log(id + 1);
+
+    if (id < 0) {
+      this.userPhotos.splice(-id - 1, 1);
+      return;
+    }
+    let input = document.createElement('input');
+    input.type = 'file';
+
+    input.onchange = (_) => {
+      let file = input.files[0];
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (ev) => {
+        const url = ev.target.result;
+
+        if (id > this.userPhotos.length - 1) {
+          this.userPhotos[this.userPhotos.length] = url as string;
+        } else {
+          this.userPhotos[id] = url as string;
+        }
+      };
+    };
+    input.click();
   }
 }

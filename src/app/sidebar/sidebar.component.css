@@ -1,11 +1,11 @@
-.con{
+.con {
   width: 100%;
   height: 100vh;
   background: black;
   overflow: hidden;
 }
 
-.sidebar-top{
+.sidebar-top {
   display: flex;
   align-items: center;
   height: 10vh;
@@ -14,52 +14,52 @@
   background: var(--red-gradient);
 }
 
-.profile-con{
+.profile-con {
   border-radius: 40px;
   cursor: pointer;
   padding: 5px;
   padding-right: 15px;
   transition: background 0.3s;
 }
-.profile-con:hover{
+.profile-con:hover {
   background: rgba(10, 10, 10, 0.4);
 }
-.profile-con>img{
-  width: 40px;
-  height: 40px;
+.profile-con > img {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   margin-right: 10px;
 }
-.profile-con>span{
+.profile-con > span {
   text-transform: capitalize;
   color: var(--white);
   font-weight: 700;
 }
-.sidebar-bottom{
+.sidebar-bottom {
   height: 90vh;
   overflow: hidden;
 }
-nav{
+nav {
   width: 100%;
   height: 5%;
   padding-left: 15px;
   padding-top: 5px;
 }
-ul{
+ul {
   list-style-type: none;
   display: flex;
   flex-direction: row;
   padding: 5px;
 }
-li{
+li {
   margin-right: 40px;
   font-weight: 700;
   cursor: pointer;
 }
-li.active{
+li.active {
   border-bottom: var(--red) 2px solid;
 }
-.matches{
+.matches {
   display: grid;
   grid-template-columns: auto auto auto;
   gap: 15px;
@@ -67,14 +67,14 @@ li.active{
   height: fit-content;
   padding: 15px;
 }
-.matches-con{
-height: 95%;
-overflow: hidden;
-overflow-y: auto;
-margin-right: -20px;
-padding: 10px;
+.matches-con {
+  height: 95%;
+  overflow: hidden;
+  overflow-y: auto;
+  margin-right: -20px;
+  padding: 10px;
 }
-.user-item{
+.user-item {
   overflow: hidden;
   position: relative;
   width: 100px;
@@ -84,42 +84,45 @@ padding: 10px;
   align-items: flex-end;
   justify-content: flex-start;
   transition: transform 0.2s;
-  border-radius:8px;
+  border-radius: 8px;
 }
-.user-item::after{
+.user-item::after {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   top: 70%;
-  content: '';
-  background: rgb(0,0,0);
-  background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.21612394957983194) 58%, rgba(0,0,0,0) 91%);
+  content: "";
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.21612394957983194) 58%,
+    rgba(0, 0, 0, 0) 91%
+  );
 }
-.user-item:hover{
+.user-item:hover {
   transform: scale(1.1);
 }
-.user-item>img{
-
+.user-item > img {
   position: absolute;
   object-fit: cover;
   height: 100%;
   width: 100%;
 }
-.name{
+.name {
   z-index: 10;
   margin: 10px;
   font-weight: 700;
 }
 
-
 /* ================ */
-.messages{
+.messages {
   display: flex;
   flex-direction: column-reverse;
 }
 
-.user-message-item{
+.user-message-item {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -128,29 +131,29 @@ padding: 10px;
   cursor: pointer;
   transition: border 0.1s;
 }
-.user-message-item.active{
-  border-right: 4px solid var(--red);
-
-}
-.user-message-item:hover{
+.user-message-item.active {
   border-right: 4px solid var(--red);
 }
-.user-message-item>img{
+.user-message-item:hover {
+  border-right: 4px solid var(--red);
+}
+.user-message-item > img {
   width: 70px;
-  height: 70px;    min-width: 70px;
+  height: 70px;
+  min-width: 70px;
   min-height: 70px;
   border-radius: 50%;
 }
-.item-right{
+.item-right {
   display: flex;
   flex-direction: column;
   padding-left: 20px;
 }
-.item-right>.name{
+.item-right > .name {
   font-size: 1.1rem;
   margin: 0;
 }
-.last-message{
+.last-message {
   color: var(--gray);
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -158,6 +161,21 @@ padding: 10px;
   overflow: hidden;
 }
 
-div.inactive{
+div.inactive {
   opacity: 0.5;
+}
+/* edit mode */
+.profile-con.edit {
+  padding: 0;
+  background: none !important;
+}
+
+img.edit {
+  opacity: 0.5;
+  transition: opacity, transform 0.3s;
+  margin: 0 !important;
+}
+img.edit:hover {
+  opacity: 0.7;
+  transform: scale(1.1);
 }

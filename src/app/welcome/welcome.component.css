@@ -1,0 +1,80 @@
+.con {
+  width: 100vw;
+  height: 100vh;
+  padding: 30px 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.top-bar {
+  width: 100%;
+  position: absolute;
+  display: flex;
+  top: 20px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30px;
+}
+button {
+  padding: 5px 20px;
+  transition: all 0.3s;
+  font-weight: 700;
+  border-radius: 20px;
+}
+button:hover {
+  opacity: 0.8;
+  transform: scale(1.1);
+}
+.login-btn {
+  background: white;
+  border: none;
+  color: var(--bg-main);
+  font-size: 1rem;
+  height: fit-content;
+}
+.app-title {
+  font-size: 2rem;
+}
+h1 {
+  font-weight: 700;
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+main {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.create-acc-btn {
+  background: var(--red-gradient);
+  color: white;
+  font-size: 1.4rem;
+  width: 41%;
+}
+img {
+  width: 50px;
+}
+.align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* modal */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: black;
+  opacity: 0.6;
+  z-index: 20;
+}
+.modal-con {
+  position: fixed;
+  top: 20vh;
+  left: 35%;
+  z-index: 21;
+  right: 35%;
+  background-color: var(--bg-main);
+}

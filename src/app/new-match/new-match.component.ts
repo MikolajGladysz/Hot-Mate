@@ -2,6 +2,7 @@ import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { CardService } from '../shared/card.service';
 import { User } from '../shared/models/user.model';
 import { MessageService } from '../shared/message.service';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-new-match',
@@ -18,9 +19,10 @@ export class NewMatchComponent implements OnInit {
   i = 0;
   activeBtn: boolean = false;
 
+  private localUser: User;
   constructor(
     private cardService: CardService,
-
+    private authService: AuthService,
     private messageService: MessageService
   ) {}
   @HostListener('document:click', ['$event'])
@@ -35,8 +37,9 @@ export class NewMatchComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = this.cardService.users[this.cardService.users.length - 1];
+    this.localUser = this.authService.user.getValue();
     this.messageService.createNewMessageThread([
-      this.cardService.currentUser.id,
+      this.localUser.id,
       this.user.id,
     ]);
   }
@@ -54,9 +57,9 @@ export class NewMatchComponent implements OnInit {
   _closeWindow() {
     if (this.activeBtn || this.move) {
       this.messageService.createMessage(
-        [this.user.id, this.cardService.currentUser.id],
+        [this.user.id, this.localUser.id],
         'system',
-        this.cardService.currentUser.name + ' invited you to chess match!'
+        this.localUser.name + ' invited you to chess match!'
       );
       this.messageService.createGame(this.game[0], this.game[1]);
 
@@ -64,7 +67,7 @@ export class NewMatchComponent implements OnInit {
         this.i++;
 
         this.messageService.updateGame(
-          [this.user.id, this.cardService.currentUser.id],
+          [this.user.id, this.localUser.id],
           this.move
         );
       }
@@ -76,8 +79,8 @@ export class NewMatchComponent implements OnInit {
   _sendMessage() {
     if (this.messageInput) {
       this.messageService.createMessage(
-        [this.user.id, this.cardService.currentUser.id],
-        this.cardService.currentUser.id,
+        [this.user.id, this.localUser.id],
+        this.localUser.id,
         this.messageInput
       );
     }
@@ -86,10 +89,11 @@ export class NewMatchComponent implements OnInit {
     this._closeWindow();
   }
   _createGame(color: string) {
-    const whiteId =
-      color == 'w' ? this.cardService.currentUser.id : this.user.id;
-    const blackId =
-      color == 'w' ? this.user.id : this.cardService.currentUser.id;
+    const whiteId = color == 'w' ? this.localUser.id : this.user.id;
+    const blackId = color == 'w' ? this.user.id : this.localUser.id;
     this.game = [whiteId, blackId];
+  }
+  log(e) {
+    console.log(e);
   }
 }

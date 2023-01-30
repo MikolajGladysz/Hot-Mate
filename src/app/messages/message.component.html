@@ -46,10 +46,10 @@
           class="play-white"
           (click)="
             sendMessage(
-              currentUser.name + ' invited you to a chess match! ',
+              localUser.name + ' invited you to a chess match! ',
               'system'
             );
-            createGame(currentUser.id, matchedUser.id)
+            createGame(localUser.id, matchedUser.id)
           "
           routerLink="game"
         >
@@ -59,10 +59,10 @@
           class="play-black"
           (click)="
             sendMessage(
-              currentUser.name + ' invited you to a chess match! ',
+              localUser.name + ' invited you to a chess match! ',
               'system'
             );
-            createGame(matchedUser.id, currentUser.id)
+            createGame(matchedUser.id, localUser.id)
           "
           routerLink="game"
         >
@@ -83,7 +83,10 @@
           "
           >{{ _getDate(message.date) }}</span
         >
-        <div [ngClass]="message.from == matchedUser.id ? 'pair' : 'user'">
+        <div
+          [ngClass]="message.from == matchedUser.id ? 'pair' : 'user'"
+          *ngIf="message.from != 'system'"
+        >
           <div>
             <img
               class="profile-picture"
@@ -98,7 +101,7 @@
               <span> {{ message.text }}</span>
               <img
                 [src]="
-                  '../../assets/images/emoji/emoji' + message.emojiId + '.png'
+                  '../../assets/images/emoji/emoji' + message.emojiId + '.svg'
                 "
                 alt="Emoji"
                 *ngIf="message.emojiId"
@@ -109,8 +112,8 @@
           <div class="reaction">
             <button
               type="button"
-              (click)="test($event, message)"
               class="show-emoji-button"
+              (click)="showEmoji($event, i)"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -177,10 +180,10 @@
           type="button"
           (click)="
             sendMessage(
-              currentUser.name + ' invited you to a chess match! ',
+              localUser.name + ' invited you to a chess match! ',
               'system'
             );
-            createGame(currentUser.id, matchedUser.id);
+            createGame(localUser.id, matchedUser.id);
             showGame(false)
           "
         >
@@ -210,10 +213,10 @@
           type="button"
           (click)="
             sendMessage(
-              currentUser.name + ' invited you to a chess match! ',
+              localUser.name + ' invited you to a chess match! ',
               'system'
             );
-            createGame(matchedUser.id, currentUser.id);
+            createGame(matchedUser.id, localUser.id);
             showGame(false)
           "
         >
@@ -329,8 +332,8 @@
 <div
   class="emotes"
   *ngIf="showEmojiOffset"
-  [style.top]="showEmojiOffset[0] + 'px'"
-  [style.left]="showEmojiOffset[1] + 'px'"
+  [style.top]="showEmojiOffset[1] + 'px'"
+  [style.left]="showEmojiOffset[0] + 'px'"
   (click)="sendEmoji($event)"
 >
   <button
@@ -338,48 +341,48 @@
     data-emojiid="0"
     [class.active]="currentMessageEmoji.emojiId == 0"
   >
-    <img src="../../assets/images/emoji/emoji0.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji0.svg" alt="emoji" />
   </button>
   <button
     type="button"
     [class.active]="currentMessageEmoji.emojiId == 1"
     data-emojiid="1"
   >
-    <img src="../../assets/images/emoji/emoji1.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji1.svg" alt="emoji" />
   </button>
   <button
     type="button"
     [class.active]="currentMessageEmoji.emojiId == 2"
     data-emojiid="2"
   >
-    <img src="../../assets/images/emoji/emoji2.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji2.svg" alt="emoji" />
   </button>
   <button
     type="button"
     [class.active]="currentMessageEmoji.emojiId == 3"
     data-emojiid="3"
   >
-    <img src="../../assets/images/emoji/emoji3.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji3.svg" alt="emoji" />
   </button>
   <button
     type="button"
     [class.active]="currentMessageEmoji.emojiId == 4"
     data-emojiid="4"
   >
-    <img src="../../assets/images/emoji/emoji4.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji4.svg" alt="emoji" />
   </button>
   <button
     type="button"
     [class.active]="currentMessageEmoji.emojiId == 5"
     data-emojiid="5"
   >
-    <img src="../../assets/images/emoji/emoji5.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji5.svg" alt="emoji" />
   </button>
   <button
     type="button"
     [class.active]="currentMessageEmoji.emojiId == 6"
     data-emojiid="6"
   >
-    <img src="../../assets/images/emoji/emoji6.png" alt="emoji" />
+    <img src="../../assets/images/emoji/emoji6.svg" alt="emoji" />
   </button>
 </div>

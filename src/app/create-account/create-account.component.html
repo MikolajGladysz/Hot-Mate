@@ -1,281 +1,339 @@
-<form class="con" (ngSubmit)="onSubmit(f.value)" #f="ngForm">
-  <h1>Create Account</h1>
-  <section class="flex-row">
-    <div>
-      <label for="userName">Name</label>
-      <div class="input-field">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="800px"
-          height="800px"
-          viewBox="0 0 24 24"
-        >
-          <circle cx="12" cy="8" r="4" />
-          <path
-            d="M5.33788 17.3206C5.99897 14.5269 8.77173 13 11.6426 13H12.3574C15.2283 13 18.001 14.5269 18.6621 17.3206C18.79 17.8611 18.8917 18.4268 18.9489 19.0016C19.0036 19.5512 18.5523 20 18 20H6C5.44772 20 4.99642 19.5512 5.0511 19.0016C5.1083 18.4268 5.20997 17.8611 5.33788 17.3206Z"
-          />
-        </svg>
-        <input
-          type="text"
-          name="userName"
-          placeholder="Name"
-          class="input-text"
-          ngModel
-          required
-        />
-      </div>
-      <label>Birth date</label>
-      <fieldset class="flex-row" ngModelGroup="birthDate">
-        <input
-          type="number"
-          required
-          placeholder="DD"
-          name="birthDay"
-          required
-          max="31"
-          min="1"
-          ngModel
-        />
-        <input
-          type="number"
-          required
-          placeholder="MM"
-          name="birthMonth"
-          max="12"
-          min="1"
-          required
-          ngModel
-        />
-        <input
-          type="number"
-          required
-          placeholder="YYYY"
-          name="birthYear"
-          required
-          min="1923"
-          max="2005"
-          ngModel
-        />
-      </fieldset>
-
-      <label for="gender">Gender</label>
-
-      <div class="flex-row">
-        <label
-          for="male"
-          class="radio-label"
-          [class.active]="radioActive == 0"
-          (click)="radioActive = 0"
-        >
-          <input
-            id="male"
-            type="radio"
-            name="gender"
-            ngModel
-            required
-            value="male"
-          />Male
-        </label>
-        <label
-          for="female"
-          class="radio-label"
-          [class.active]="radioActive == 1"
-          (click)="radioActive = 1"
-        >
-          <input
-            id="female"
-            type="radio"
-            name="gender"
-            required
-            ngModel
-            value="female"
-          />Female
-        </label>
-        <label
-          for="other"
-          class="radio-label"
-          [class.active]="radioActive == 2"
-          (click)="radioActive = 2"
-        >
-          <input
-            id="other"
-            type="radio"
-            name="gender"
-            required
-            ngModel
-            value="other"
-          />Other
-        </label>
-      </div>
-
-      <label for="sexuality">Sexual orientation</label>
-      <div class="flex-row" #sexualityInput data-value="-1">
-        <button type="button" disabled>Heterosexual</button>
-        <button type="button" disabled>Homosexual</button>
-        <button
-          type="button"
-          [class.active]="chessSexuality.dataset['active'] == 'true'"
-          (click)="chessSexuality.dataset['active'] = 'true'"
-          #chessSexuality
-        >
-          Chess
-        </button>
-      </div>
-
-      <label for="email"> E-mail address</label>
-      <div class="input-field">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-          height="800px"
-          width="800px"
-          version="1.1"
-          id="_x32_"
-          viewBox="0 0 512 512"
-          xml:space="preserve"
-        >
-          <g>
-            <path
-              class="st0"
-              d="M440.917,67.925H71.083C31.827,67.925,0,99.752,0,139.008v233.984c0,39.256,31.827,71.083,71.083,71.083   h369.834c39.255,0,71.083-31.827,71.083-71.083V139.008C512,99.752,480.172,67.925,440.917,67.925z M178.166,321.72l-99.54,84.92   c-7.021,5.992-17.576,5.159-23.567-1.869c-5.992-7.021-5.159-17.576,1.87-23.567l99.54-84.92c7.02-5.992,17.574-5.159,23.566,1.87   C186.027,305.174,185.194,315.729,178.166,321.72z M256,289.436c-13.314-0.033-26.22-4.457-36.31-13.183l0.008,0.008l-0.032-0.024   c0.008,0.008,0.017,0.008,0.024,0.016L66.962,143.694c-6.98-6.058-7.723-16.612-1.674-23.583c6.057-6.98,16.612-7.723,23.582-1.674   l152.771,132.592c3.265,2.906,8.645,5.004,14.359,4.971c5.706,0.017,10.995-2.024,14.44-5.028l0.074-0.065l152.615-132.469   c6.971-6.049,17.526-5.306,23.583,1.674c6.048,6.97,5.306,17.525-1.674,23.583l-152.77,132.599   C282.211,284.929,269.322,289.419,256,289.436z M456.948,404.771c-5.992,7.028-16.547,7.861-23.566,1.869l-99.54-84.92   c-7.028-5.992-7.861-16.546-1.869-23.566c5.991-7.029,16.546-7.861,23.566-1.87l99.54,84.92   C462.107,387.195,462.94,397.75,456.948,404.771z"
-            />
-          </g>
-        </svg>
-        <input
-          required
-          email
-          type="email"
-          name="email"
-          placeholder="E-mail"
-          ngModel
-          class="input-text"
-        />
-      </div>
-    </div>
-    <div class="height-100">
-      <label> Profile pictures</label>
-      <div class="grid">
-        <div class="photo-con">
-          <div class="button-add">+</div>
-        </div>
-        <div class="photo-con">
-          <div class="button-add">+</div>
-        </div>
-        <div class="photo-con">
-          <div class="button-add">+</div>
-        </div>
-        <div class="photo-con">
-          <div class="button-add">+</div>
-        </div>
-        <div class="photo-con">
-          <div class="button-add">+</div>
-        </div>
-        <div class="photo-con">
-          <div class="button-add">+</div>
-        </div>
-      </div>
-      <span class="text-small">Add at least two photos to move forward</span>
-    </div>
-  </section>
-  <section class="section-2">
-    <span class="line">
-      <h2>Optional</h2>
-    </span>
-    <span class="label">Chess personality</span>
-    <div class="flex-row">
-      <button
-        type="button"
-        (click)="
-          selectedItemsInput = selectedChessPersonalities;
-          modalValue = 0;
-          dataToDisplay = { tagsNames: chessPersonalities }
-        "
-      >
-        + Add chess personality
-      </button>
-      <div
-        class="tag"
-        *ngFor="let tag of getTagsString(selectedChessPersonalities, 0)"
-      >
-        {{ tag }}
-      </div>
-    </div>
-    <span class="label">Favorite openings</span>
-    <div class="flex-row">
-      <button
-        type="button"
-        (click)="
-          selectedItemsInput = selectedFavoriteOpenings;
-          modalValue = 1;
-          dataToDisplay = { tagsNames: favoriteOpenings }
-        "
-      >
-        +Add favorite openings
-      </button>
-      <div
-        class="tag"
-        *ngFor="let tag of getTagsString(selectedFavoriteOpenings, 1)"
-      >
-        {{ tag }}
-      </div>
-    </div>
-
-    <span class="label">Your top games</span>
-    <div class="flex-row wrap reverse">
-      <div
-        class="photo-con chess-con"
-        *ngFor="let game of favoriteGames; let i = index"
-        (click)="
-          selectedItemsInput = game;
-          dataToDisplay = { chessGame: true };
-          modalValue = 3 + i
-        "
-      >
-        <app-chess-board
-          [fenCode]="[game.fenCode, game.moves.at(-1)]"
-          [flipBoard]="game.playedAsBlack"
-          [gamePreview]="true"
-        ></app-chess-board>
-        <div class="button-edit button-chess">
+<div class="btn-con flex-row" *ngIf="editProfile">
+  <button [class.active]="!preview" type="button" (click)="preview = false">
+    Edit
+  </button>
+  <button [class.active]="preview" type="button" (click)="preview = true">
+    Preview
+  </button>
+</div>
+<!-- <img [src]="src" /> -->
+<!-- <input type="file" (change)="test($event)" /> -->
+<form
+  class="con"
+  (ngSubmit)="onSubmit(f.value)"
+  #f="ngForm"
+  [class.edit]="editProfile"
+  *ngIf="!editProfile || (editProfile && !preview)"
+>
+  <div class="scroll">
+    <h1>{{ editProfile ? "Edit Profile" : "Create Account" }}</h1>
+    <section class="flex-row" [class.edit]="editProfile">
+      <div [class.edit]="editProfile">
+        <label for="userName">Name</label>
+        <div class="input-field">
           <svg
-            style="margin-top: 3px; margin-left: 3px"
             xmlns="http://www.w3.org/2000/svg"
             width="800px"
             height="800px"
             viewBox="0 0 24 24"
           >
-            <g id="style=fill">
-              <g id="edit">
-                <path
-                  id="Subtract"
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M18.9405 3.12087L21.0618 5.24219C22.2334 6.41376 22.2334 8.31326 21.0618 9.48483L19.2586 11.288L12.8947 4.92403L14.6978 3.12087C15.8694 1.94929 17.7689 1.94929 18.9405 3.12087ZM11.834 5.98469L3.70656 14.1121C3.22329 14.5954 2.91952 15.2292 2.84552 15.9086L2.45151 19.5264C2.31313 20.7969 3.38571 21.8695 4.65629 21.7311L8.27401 21.3371C8.95345 21.2631 9.58725 20.9594 10.0705 20.4761L18.1979 12.3486L11.834 5.98469Z"
-                />
-              </g>
+            <circle cx="12" cy="8" r="4" />
+            <path
+              d="M5.33788 17.3206C5.99897 14.5269 8.77173 13 11.6426 13H12.3574C15.2283 13 18.001 14.5269 18.6621 17.3206C18.79 17.8611 18.8917 18.4268 18.9489 19.0016C19.0036 19.5512 18.5523 20 18 20H6C5.44772 20 4.99642 19.5512 5.0511 19.0016C5.1083 18.4268 5.20997 17.8611 5.33788 17.3206Z"
+            />
+          </svg>
+          <input
+            type="text"
+            name="userName"
+            [placeholder]="localUser.name ? localUser.name : 'name'"
+            class="input-text"
+            ngModel
+            required
+          />
+        </div>
+        <label *ngIf="!editProfile">Birth date</label>
+        <fieldset
+          class="flex-row"
+          ngModelGroup="birthDate"
+          *ngIf="!editProfile"
+        >
+          <input
+            type="number"
+            required
+            placeholder="DD"
+            name="birthDay"
+            required
+            max="31"
+            min="1"
+            ngModel
+          />
+          <input
+            type="number"
+            required
+            placeholder="MM"
+            name="birthMonth"
+            max="12"
+            min="1"
+            required
+            ngModel
+          />
+          <input
+            type="number"
+            required
+            placeholder="YYYY"
+            name="birthYear"
+            required
+            min="1923"
+            max="2005"
+            ngModel
+          />
+        </fieldset>
+
+        <label for="gender">Gender</label>
+
+        <div class="flex-row">
+          <label
+            for="male"
+            class="radio-label"
+            [class.active]="radioActive == 0"
+            (click)="radioActive = 0"
+          >
+            <input
+              id="male"
+              type="radio"
+              name="gender"
+              ngModel
+              required
+              value="male"
+            />Male
+          </label>
+          <label
+            for="female"
+            class="radio-label"
+            [class.active]="radioActive == 1"
+            (click)="radioActive = 1"
+          >
+            <input
+              id="female"
+              type="radio"
+              name="gender"
+              required
+              ngModel
+              value="female"
+            />Female
+          </label>
+          <label
+            for="other"
+            class="radio-label"
+            [class.active]="radioActive == 2"
+            (click)="radioActive = 2"
+          >
+            <input
+              id="other"
+              type="radio"
+              name="gender"
+              required
+              ngModel
+              value="other"
+            />Other
+          </label>
+        </div>
+
+        <label for="sexuality">Sexual orientation</label>
+        <div class="flex-row" #sexualityInput data-value="-1">
+          <button type="button" disabled>Heterosexual</button>
+          <button type="button" disabled>Homosexual</button>
+          <button
+            type="button"
+            [class.active]="chessSexuality.dataset['active'] == 'true'"
+            (click)="chessSexuality.dataset['active'] = 'true'"
+            #chessSexuality
+          >
+            Chess
+          </button>
+        </div>
+
+        <label for="email"> E-mail address</label>
+        <div class="input-field">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:xlink="http://www.w3.org/1999/xlink"
+            height="800px"
+            width="800px"
+            version="1.1"
+            id="_x32_"
+            viewBox="0 0 512 512"
+            xml:space="preserve"
+          >
+            <g>
+              <path
+                class="st0"
+                d="M440.917,67.925H71.083C31.827,67.925,0,99.752,0,139.008v233.984c0,39.256,31.827,71.083,71.083,71.083   h369.834c39.255,0,71.083-31.827,71.083-71.083V139.008C512,99.752,480.172,67.925,440.917,67.925z M178.166,321.72l-99.54,84.92   c-7.021,5.992-17.576,5.159-23.567-1.869c-5.992-7.021-5.159-17.576,1.87-23.567l99.54-84.92c7.02-5.992,17.574-5.159,23.566,1.87   C186.027,305.174,185.194,315.729,178.166,321.72z M256,289.436c-13.314-0.033-26.22-4.457-36.31-13.183l0.008,0.008l-0.032-0.024   c0.008,0.008,0.017,0.008,0.024,0.016L66.962,143.694c-6.98-6.058-7.723-16.612-1.674-23.583c6.057-6.98,16.612-7.723,23.582-1.674   l152.771,132.592c3.265,2.906,8.645,5.004,14.359,4.971c5.706,0.017,10.995-2.024,14.44-5.028l0.074-0.065l152.615-132.469   c6.971-6.049,17.526-5.306,23.583,1.674c6.048,6.97,5.306,17.525-1.674,23.583l-152.77,132.599   C282.211,284.929,269.322,289.419,256,289.436z M456.948,404.771c-5.992,7.028-16.547,7.861-23.566,1.869l-99.54-84.92   c-7.028-5.992-7.861-16.546-1.869-23.566c5.991-7.029,16.546-7.861,23.566-1.87l99.54,84.92   C462.107,387.195,462.94,397.75,456.948,404.771z"
+              />
             </g>
           </svg>
+          <input
+            name="email"
+            [placeholder]="userEmail"
+            disabled
+            class="input-text"
+          />
         </div>
-        <div class="button-delete button-chess" (click)="deleteGame(i)">-</div>
-        <span class="game-name" *ngIf="game.name">{{ game.name }}</span>
       </div>
-      <div class="photo-con" *ngIf="favoriteGames.length < 4">
-        <div
-          class="button-add"
+      <div class="height-100">
+        <label> Profile pictures</label>
+        <div class="grid" [class.edit]="editProfile">
+          <div
+            class="photo-con"
+            *ngFor="let i of [0, 1, 2, 3, 4, 5]"
+            [class.photo]="i <= userPhotos.length - 1"
+          >
+            <div class="overlay" (click)="uploadFile(i)"></div>
+            <img
+              *ngIf="userPhotos[i]"
+              [src]="userPhotos[i]"
+              [alt]="'user ' + i + ' profile picture'"
+              class="user-pfp"
+            />
+            <div
+              class="button-add"
+              [class.button-remove-photo]="userPhotos[i]"
+              (click)="userPhotos[i] ? uploadFile(-i - 1) : uploadFile(i)"
+            >
+              +
+            </div>
+            <!-- <input type="file" class="photo-input" /> -->
+          </div>
+        </div>
+        <span class="text-small">Add at least two photos to move forward</span>
+      </div>
+    </section>
+    <section class="section-2">
+      <span class="line">
+        <h2>Optional</h2>
+      </span>
+      <div class="edit-profile-info" *ngIf="editProfile">
+        <span class="label">More about {{ localUser.name }}</span>
+        <textarea
+          name="description"
+          id="description"
+          cols="20"
+          rows="6"
+          ngModel
+          name="description"
+          [placeholder]="localUser.description ? localUser.description : ''"
+        ></textarea>
+
+        <label for="chessTitle">Your chess title</label>
+        <input
+          type="text"
+          ngModel
+          name="chessTitle"
+          id="chessTitle"
+          ngModel
+          [placeholder]="localUser.chessTitle ? localUser.chessTitle : ''"
+        />
+      </div>
+
+      <span class="label">Chess personality</span>
+      <div class="flex-row wrap">
+        <button
+          type="button"
           (click)="
-            dataToDisplay = { chessGame: true };
-            modalValue = 2;
-            selectedItemsInput = null
+            selectedItemsInput = selectedChessPersonalities;
+            modalValue = 0;
+            dataToDisplay = { tagsNames: chessPersonalities }
           "
         >
-          +
+          + Add chess personality
+        </button>
+        <div
+          class="tag"
+          *ngFor="let tag of getTagsString(selectedChessPersonalities, 0)"
+        >
+          {{ tag }}
         </div>
       </div>
-    </div>
-  </section>
-  <button type="button" class="next-btn" type="submit" [disabled]="!f.valid">
-    Next
-  </button>
+      <span class="label">Favorite openings</span>
+      <div class="flex-row wrap">
+        <button
+          type="button"
+          (click)="
+            selectedItemsInput = selectedFavoriteOpenings;
+            modalValue = 1;
+            dataToDisplay = { tagsNames: favoriteOpenings }
+          "
+        >
+          +Add favorite openings
+        </button>
+        <div
+          class="tag"
+          *ngFor="let tag of getTagsString(selectedFavoriteOpenings, 1)"
+        >
+          {{ tag }}
+        </div>
+      </div>
+
+      <span class="label">Your top games</span>
+      <div
+        class="flex-row wrap reverse fav-games-con"
+        [class.edit]="editProfile"
+      >
+        <div
+          class="photo-con chess-con"
+          [class.edit]="editProfile"
+          *ngFor="let game of favoriteGames; let i = index"
+          (click)="
+            selectedItemsInput = game;
+            dataToDisplay = { chessGame: true };
+            modalValue = 3 + i
+          "
+        >
+          <app-chess-board
+            [fenCode]="[game.fenCode, game.moves.at(-1)]"
+            [flipBoard]="game.playedAsBlack"
+            [gamePreview]="true"
+          ></app-chess-board>
+          <div class="button-edit button-chess">
+            <svg
+              style="margin-top: 3px; margin-left: 3px"
+              xmlns="http://www.w3.org/2000/svg"
+              width="800px"
+              height="800px"
+              viewBox="0 0 24 24"
+            >
+              <g id="style=fill">
+                <g id="edit">
+                  <path
+                    id="Subtract"
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M18.9405 3.12087L21.0618 5.24219C22.2334 6.41376 22.2334 8.31326 21.0618 9.48483L19.2586 11.288L12.8947 4.92403L14.6978 3.12087C15.8694 1.94929 17.7689 1.94929 18.9405 3.12087ZM11.834 5.98469L3.70656 14.1121C3.22329 14.5954 2.91952 15.2292 2.84552 15.9086L2.45151 19.5264C2.31313 20.7969 3.38571 21.8695 4.65629 21.7311L8.27401 21.3371C8.95345 21.2631 9.58725 20.9594 10.0705 20.4761L18.1979 12.3486L11.834 5.98469Z"
+                  />
+                </g>
+              </g>
+            </svg>
+          </div>
+          <div class="button-delete button-chess" (click)="deleteGame(i)">
+            -
+          </div>
+          <span class="game-name" *ngIf="game.name">{{ game.name }}</span>
+        </div>
+        <div class="photo-con" *ngIf="favoriteGames?.length < 4">
+          <div
+            class="button-add"
+            (click)="
+              dataToDisplay = { chessGame: true };
+              modalValue = 2;
+              selectedItemsInput = null
+            "
+          >
+            +
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <button
+      type="button"
+      class="next-btn"
+      type="submit"
+      [disabled]="!f.valid && !editProfile"
+      [class.edit]="editProfile"
+    >
+      {{ editProfile ? "Save" : "Next" }}
+    </button>
+  </div>
 </form>
 <app-modal
   (getSelectedItems)="getSelectedItems($event)"
@@ -283,3 +341,7 @@
   [selectedItemsInput]="selectedItemsInput"
   *ngIf="dataToDisplay"
 ></app-modal>
+<app-detail
+  *ngIf="editProfile && preview"
+  [loadUserEditProfile]="localUser"
+></app-detail>

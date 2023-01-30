@@ -13,6 +13,7 @@ import { User } from '../shared/models/user.model';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { MessageService } from '../shared/message.service';
 import { Messages } from '../shared/models/message.model';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-message',
@@ -21,7 +22,7 @@ import { Messages } from '../shared/models/message.model';
 })
 export class MessageComponent implements OnInit, OnChanges {
   matchedUser: User;
-  currentUser: User;
+  localUser: User;
   messages: Messages;
   gamesWindow: boolean = false;
   newGameWindow: boolean = false;
@@ -34,6 +35,7 @@ export class MessageComponent implements OnInit, OnChanges {
   reactTo: { target: string; id: string };
   constructor(
     private cardService: CardService,
+    private authService: AuthService,
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService
@@ -48,15 +50,16 @@ export class MessageComponent implements OnInit, OnChanges {
       this.matchedUser = this.cardService.users.find(
         (user) => user.id === params['id']
       );
-      this.currentUser = this.cardService.currentUser;
+      this.localUser = this.authService.user.getValue();
       if (!this.matchedUser) {
         this.closeMessageWindow();
       }
       this.messages = this.messageService.findMessage([
-        this.currentUser.id,
+        this.localUser.id,
         this.matchedUser.id,
       ]);
     });
+    console.log(this.messages);
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.reactTo = changes['reaction'].currentValue;
@@ -70,7 +73,7 @@ export class MessageComponent implements OnInit, OnChanges {
   createGame(whiteId: string, blackId: string) {
     if (!this.messages)
       this.messages = this.messageService.createNewMessageThread([
-        this.currentUser.id,
+        this.localUser.id,
         this.matchedUser.id,
       ]);
     this.messageService.createGame(whiteId, blackId);
@@ -85,15 +88,15 @@ export class MessageComponent implements OnInit, OnChanges {
     };
   }
   closeMessageWindow() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/app']);
   }
   sendMessage(
     message: string,
-    from = this.currentUser.id,
+    from = this.localUser.id,
     reactionMessage = this.reactTo
   ) {
     this.messageService.createMessage(
-      [this.currentUser.id, this.matchedUser.id],
+      [this.localUser.id, this.matchedUser.id],
       from,
       message,
       reactionMessage ? reactionMessage['target'] : null
@@ -103,9 +106,16 @@ export class MessageComponent implements OnInit, OnChanges {
     this.messageInput = '';
     this.reactTo = null;
     this.messages = this.messageService.findMessage([
-      this.currentUser.id,
+      this.localUser.id,
       this.matchedUser.id,
     ]);
+
+    if (Math.floor(Math.random() * 3) + 1 > 1 && from == this.localUser.id) {
+      this.sendMessage(
+        'Sorry i dont speak england, lets play chess ;)',
+        this.matchedUser.id
+      );
+    }
   }
   openGamesWindow() {
     this.gamesWindow = true;
@@ -128,14 +138,29 @@ export class MessageComponent implements OnInit, OnChanges {
     this.loadGamePreview.emit(gameId);
     this.gamesWindow = false;
   }
-  test(ev: MouseEvent, message) {
-    const rect = (ev.target as HTMLElement)
-      .closest('button')
-      .getBoundingClientRect();
-    this.showEmojiOffset = [rect.top - 46, rect.left - 513];
+  showEmoji(ev, id) {
+    console.dir(ev.target.closest('.show-emoji-button'));
+    function getOffset(el) {
+      const rect = el.getBoundingClientRect();
+      return {
+        left: rect.left + window.scrollX,
+        top: rect.top + window.scrollY,
+      };
+    }
+    const offset = getOffset(ev.target.closest('.show-emoji-button'));
 
-    this.currentMessageEmoji = message;
+    console.log('foff', offset);
+
+    // this.showEmojiOffset = [offset.left + 236, offset.top - 44];
+    this.showEmojiOffset = [offset.left - 140, offset.top - 44];
+    if (window.innerWidth < this.showEmojiOffset[0] + 307) {
+      this.showEmojiOffset[0] -=
+        this.showEmojiOffset[0] + 307 - window.innerWidth;
+    }
+
+    this.currentMessageEmoji = this.messages.content[id];
   }
+
   sendEmoji(ev) {
     const emojiBtn = ev.target.closest('button');
     if (!emojiBtn) return;

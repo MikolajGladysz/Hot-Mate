@@ -2,7 +2,8 @@
   background-color: black;
   width: 1000px;
 
-  height: 100vh;
+  display: flex;
+  align-items: center;
   padding: 50px;
 }
 .edit {

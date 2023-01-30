@@ -1,4 +1,7 @@
-<div class="card-drag-con" [class.message-detail]="messageDetail">
+<div
+  class="card-drag-con"
+  [class.message-detail]="messageDetail && !loadUserEditProfile"
+>
   <div class="card-con-scroll">
     <!-- prettier-ignore -->
     <div
@@ -100,15 +103,22 @@
         <p class="description">
           {{ currUser.description }}
         </p>
-        <div class="tags">
-          <div class="tag" *ngFor="let tag of currUser.tags">{{ tag }}</div>
+        <div class="tags" *ngIf="getChessPersonalities(currUser.tags)">
+          <div
+            class="tag"
+            *ngFor="let tag of getChessPersonalities(currUser.tags)"
+          >
+            {{ tag }}
+          </div>
         </div>
       </section>
 
-      <section>
+      <section *ngIf="getOpenings(currUser.favOpening)">
         <h5 class="white sectionTitle">Favorite Openings</h5>
         <div class="tags">
-          <div class="tag">{{ getOpenings(currUser.favOpening) }}</div>
+          <div class="tag" *ngFor="let tag of getOpenings(currUser.favOpening)">
+            {{ tag }}
+          </div>
         </div>
       </section>
 
