@@ -45,6 +45,7 @@ export class MessageComponent implements OnInit, OnChanges {
   messageInput;
 
   ngOnInit(): void {
+    // On url change, get id from url and find user
     this.route.params.subscribe((params: Params) => {
       this.newGameWindow = false;
       this.matchedUser = this.cardService.users.find(
@@ -59,7 +60,6 @@ export class MessageComponent implements OnInit, OnChanges {
         this.matchedUser.id,
       ]);
     });
-    console.log(this.messages);
   }
   ngOnChanges(changes: SimpleChanges): void {
     this.reactTo = changes['reaction'].currentValue;
@@ -149,8 +149,6 @@ export class MessageComponent implements OnInit, OnChanges {
     }
     const offset = getOffset(ev.target.closest('.show-emoji-button'));
 
-    console.log('foff', offset);
-
     // this.showEmojiOffset = [offset.left + 236, offset.top - 44];
     this.showEmojiOffset = [offset.left - 140, offset.top - 44];
     if (window.innerWidth < this.showEmojiOffset[0] + 307) {
@@ -167,6 +165,5 @@ export class MessageComponent implements OnInit, OnChanges {
 
     const emojiId = emojiBtn.dataset.emojiid;
     this.currentMessageEmoji.emojiId = emojiId;
-    console.log(this.currentMessageEmoji);
   }
 }

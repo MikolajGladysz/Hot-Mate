@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -73,9 +74,11 @@ export class ChessComponent implements OnInit, OnDestroy {
   ) {}
   turn: number;
 
+  mobileWindow: boolean;
+
   ngOnInit(): void {
     this.localUser = this.authService.user.getValue();
-
+    this.onResize();
     if (this.gameEdit) {
       this.moves = [];
       this.fenCodes = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR'];
@@ -135,6 +138,15 @@ export class ChessComponent implements OnInit, OnDestroy {
 
     this.currentGame.fenCode = fenCode;
     this.currentGame.moves = this.moves;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (window.innerWidth > 1200) {
+      this.mobileWindow = false;
+    } else {
+      this.mobileWindow = true;
+    }
   }
 
   moveInfo(move: [number, number]) {

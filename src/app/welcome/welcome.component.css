@@ -29,12 +29,13 @@ button:hover {
 .login-btn {
   background: white;
   border: none;
+  min-width: 100px;
   color: var(--bg-main);
   font-size: 1rem;
   height: fit-content;
 }
 .app-title {
-  font-size: 2rem;
+  font-size: 1.5rem;
 }
 h1 {
   font-weight: 700;
@@ -51,7 +52,6 @@ main {
   background: var(--red-gradient);
   color: white;
   font-size: 1.4rem;
-  width: 41%;
 }
 img {
   width: 50px;
@@ -72,9 +72,11 @@ img {
 }
 .modal-con {
   position: fixed;
-  top: 20vh;
-  left: 35%;
+  top: 15vh;
+  left: 0;
+  margin: 0 auto;
+  max-width: 375px;
   z-index: 21;
-  right: 35%;
+  right: 0;
   background-color: var(--bg-main);
 }

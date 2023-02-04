@@ -26,7 +26,10 @@ export class AppComponent implements OnInit {
     if (!!this.authService.user.getValue()) {
       this.router.navigate['/create-account'];
     }
-    if (!!this.authService.user.getValue().name) {
+    if (
+      this.authService.user.getValue() &&
+      !!this.authService.user.getValue().name
+    ) {
       this.router.navigate(['/app']);
     }
   }

@@ -330,10 +330,12 @@ input:focus {
 .games-window {
   position: fixed;
   top: 20vh;
-  left: 35vw;
-  right: 30vw;
+  left: 50%;
+  right: 0;
+  max-width: 1000px;
+  left: 0;
   background: var(--bg-main);
-  bottom: 20vh;
+  margin: 0 auto;
   overflow: hidden;
   z-index: 300;
   border-radius: 10px;
@@ -354,7 +356,10 @@ input:focus {
   transition: background 0.3s;
   cursor: pointer;
   padding: 5px 15px;
+  display: flex;
+  justify-content: center;
   border-radius: 14px;
+  align-items: center;
 }
 
 .top-bar-left:hover {
@@ -388,4 +393,38 @@ input:focus {
 .button-black {
   border-top-right-radius: 30px;
   border-bottom-right-radius: 30px;
+}
+@media only screen and (max-width: 600px) {
+  .con.chess-game {
+    display: grid;
+    grid-auto-rows: 1fr auto;
+  }
+  :host {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+  .main-con {
+    margin-right: 0;
+  }
+  .chess-game .main-con {
+    margin-right: 0;
+    height: auto;
+  }
+  .messages {
+    padding: 12px;
+  }
+  .chess-game .top-bar {
+    display: none;
+  }
+  .chess-game .main-con .messages {
+    height: auto;
+  }
+  .chess-game .main-con {
+    height: auto;
+  }
+  .chess-game .bottom-bar {
+    height: 60px;
+  }
 }

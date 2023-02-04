@@ -9,17 +9,23 @@
   z-index: 999999999;
   align-items: center;
   display: flex;
+  right: 0;
+  top: 10%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 20px;
+  left: 0;
+  overflow: auto;
+  max-height: 80vh;
   flex-direction: column;
-  inset: 20%;
   background: var(--bg-main);
   justify-content: space-between;
-  padding: 30px;
+  padding: 20px 0;
 }
-.chess {
-  top: 5%;
-  bottom: 5%;
-  left: 10%;
+.chess-con {
+  max-width: 500px;
 }
+
 button {
   background: none;
   border: solid 2px var(--bs-body-color);
@@ -53,9 +59,7 @@ button:disabled {
   background: var(--red-gradient);
   border: none;
 }
-.chess-con > div {
-  margin-top: -20px;
-}
+
 svg {
   fill: var(--bs-body-color);
   width: 30px;
@@ -71,6 +75,7 @@ svg {
   margin-right: 10px;
   align-items: center;
   color: white;
+  margin-bottom: 10px;
 }
 .input-text {
   border-radius: 10px;
@@ -81,6 +86,7 @@ svg {
   align-items: center;
   width: 100%;
   border: none;
+  margin-bottom: 10px;
   background: transparent;
   color: white;
 }

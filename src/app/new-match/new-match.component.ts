@@ -16,7 +16,6 @@ export class NewMatchComponent implements OnInit {
   displayBoard = false;
   move: string = '';
   game;
-  i = 0;
   activeBtn: boolean = false;
 
   private localUser: User;
@@ -26,24 +25,25 @@ export class NewMatchComponent implements OnInit {
     private messageService: MessageService
   ) {}
   @HostListener('document:click', ['$event'])
-  closeWindow(e) {
+  closeWindowOnClick(e) {
     if (
       !e.target.closest('.new-match-con') &&
       !e.target.closest('.chess-board')
     ) {
-      this._closeWindow();
+      this.closeWindow();
     }
   }
 
   ngOnInit(): void {
-    this.user = this.cardService.users[this.cardService.users.length - 1];
+    // TODO: get user from api
+    this.user = this.cardService.users.at(-1);
     this.localUser = this.authService.user.getValue();
     this.messageService.createNewMessageThread([
       this.localUser.id,
       this.user.id,
     ]);
   }
-  _changePhoto(i: number) {
+  changePhoto(i: number) {
     if (
       this.currPhoto + i > 0 &&
       this.currPhoto + i <= this.user.photos.length
@@ -51,10 +51,10 @@ export class NewMatchComponent implements OnInit {
       this.currPhoto = this.currPhoto + i;
     }
   }
-  _goToPage(i: number) {
+  goToPage(i: number) {
     this.currPhoto = i + 1;
   }
-  _closeWindow() {
+  closeWindow() {
     if (this.activeBtn || this.move) {
       this.messageService.createMessage(
         [this.user.id, this.localUser.id],
@@ -64,8 +64,6 @@ export class NewMatchComponent implements OnInit {
       this.messageService.createGame(this.game[0], this.game[1]);
 
       if (this.move) {
-        this.i++;
-
         this.messageService.updateGame(
           [this.user.id, this.localUser.id],
           this.move
@@ -76,7 +74,7 @@ export class NewMatchComponent implements OnInit {
     }
     this.cardService.newMatch(null);
   }
-  _sendMessage() {
+  sendMessage() {
     if (this.messageInput) {
       this.messageService.createMessage(
         [this.user.id, this.localUser.id],
@@ -86,14 +84,11 @@ export class NewMatchComponent implements OnInit {
     }
 
     this.cardService.emitUsersObs();
-    this._closeWindow();
+    this.closeWindow();
   }
-  _createGame(color: string) {
+  createGame(color: string) {
     const whiteId = color == 'w' ? this.localUser.id : this.user.id;
     const blackId = color == 'w' ? this.user.id : this.localUser.id;
     this.game = [whiteId, blackId];
-  }
-  log(e) {
-    console.log(e);
   }
 }

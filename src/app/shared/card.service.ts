@@ -369,10 +369,10 @@ export class CardService {
       const distance = random(1, 200);
 
       const photo = new Set();
-      Array(random(1, 8))
+      Array(random(1, 9))
         .fill('')
         .forEach(() => {
-          photo.add(photos[random(0, photos.length - 1)]);
+          photo.add('../../assets/images/userPfp/pfp' + random(1, 9) + '.jpg');
         });
       const photoArr: string[] = <string[]>Array.from(photo);
       const id = Math.random().toString(36).slice(2, 10);

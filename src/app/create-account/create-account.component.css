@@ -102,7 +102,6 @@ section.flex-row > div {
 }
 
 input[type="number"] {
-  width: 15%;
   text-align: center;
 }
 .flex-row > button {
@@ -129,12 +128,13 @@ button:disabled {
   margin-bottom: 10px;
 }
 .photo-con {
-  height: 250px;
+  /* height: 250px; */
   border: solid 5px var(--bs-gray);
   border-style: dashed;
   position: relative;
   cursor: pointer;
   display: flex;
+  aspect-ratio: 2/3;
   align-items: flex-end;
   justify-content: flex-end;
   margin: 0;
@@ -180,9 +180,8 @@ button:disabled {
 .flex-row > .photo-con {
   width: 200px;
   height: 200px;
-
   margin-right: 26px;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
 }
 .flex-row > .photo-con:hover .button-chess {
   opacity: 1;
@@ -195,6 +194,7 @@ button:disabled {
   font-size: 2rem;
   background: var(--red-gradient);
   border: none;
+  margin-right: 0;
   box-shadow: 5px 5px 8px 0px black;
 }
 .line {
@@ -387,4 +387,12 @@ section.flex-row.edit {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+@media screen and (max-width: 1000px) {
+  .scroll {
+    margin-right: 0;
+  }
+  .flex-row > .photo-con {
+    margin-right: 0;
+  }
 }

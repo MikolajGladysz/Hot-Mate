@@ -27,3 +27,10 @@ app-create-account {
   align-items: center;
   justify-content: center;
 }
+@media screen and (max-width: 1600px) {
+  .sidebar {
+    width: 0;
+    z-index: 999999;
+    min-width: 0;
+  }
+}

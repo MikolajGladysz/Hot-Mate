@@ -41,6 +41,7 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
   private copySubscription;
 
   private _startOffset: number[];
+  private _lastClickedPieceIndex: number;
 
   constructor(private chessRulesService: ChessRulesService) {
     this._legalMoves = [];
@@ -94,9 +95,24 @@ export class ChessBoardComponent implements OnInit, OnDestroy {
 
   @HostListener('document:click', ['$event.target.closest(".chess-tile")'])
   highlightTile(event) {
-    if (!event) return;
+    if (!event) {
+      this._lastClickedPieceIndex = null;
+      return;
+    }
 
+    if (this._legalMoves.includes(+event.dataset['index'])) {
+      this.moveInfo.emit([
+        +this._lastClickedPieceIndex,
+        +event.dataset['index'],
+      ]);
+      this._lastClickedPieceIndex = null;
+
+      return;
+    }
+
+    // this._legalMoves = [];
     this.pieceInfo.emit(+event.dataset['index']);
+    this._lastClickedPieceIndex = +event.dataset['index'];
   }
 
   _resetPieceImg(pieceImg: HTMLElement) {

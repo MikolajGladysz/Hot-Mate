@@ -7,16 +7,16 @@
     >
       <div class="card-overlay">
         <div class="card-change" *ngIf="user.photos.length > 1">
-          <div (click)="_changePhoto(-1)" ></div>
+          <div (click)="changePhoto(-1)" ></div>
 
-          <div (click)="_changePhoto(1)"></div>
+          <div (click)="changePhoto(1)"></div>
         </div>
         <div class="card-page-con" *ngIf="user.photos.length > 1">
           <div
             class="card-page"
             *ngFor="let photo of user.photos; let i = index"
             [class.active]="i + 1 == currPhoto"
-            (click)="_goToPage(i)"
+            (click)="goToPage(i)"
           ></div>
         </div>
 
@@ -26,7 +26,7 @@
           <div class="arrow-right" *ngIf="currPhoto < user.photos.length"></div>
         </div>
 
-        <button class="close-btn" (click)="_closeWindow()">
+        <button class="close-btn" (click)="closeWindow()">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -69,7 +69,7 @@
             </g>
           </svg>
           <span class="user-name"> {{ user.name }} likes you too! </span>
-          <form (ngSubmit)="_sendMessage()">
+          <form (ngSubmit)="sendMessage()">
             <input
               type="text"
               placeholder="Say something nice!"
@@ -84,8 +84,8 @@
           <span *ngIf="this.activeBtn || this.move" class="invitation-text">Invitation sent!</span>
 
           <div class="chess-btns">
-            <button class="play-white" [class.active]="move" (click)="displayBoard=true; log(move)">Make a first move</button>
-            <button class="play-black"  [class.active]="!move && activeBtn" (click)="_createGame('b'); move = ''; activeBtn=!activeBtn">Invite them to move first</button>
+            <button class="play-white" [class.active]="move" (click)="displayBoard=true">Make a first move</button>
+            <button class="play-black"  [class.active]="!move && activeBtn" (click)="createGame('b'); move = ''; activeBtn=!activeBtn">Invite them to move first</button>
           </div>
         </div>
         <div class="new-match-text-con">
@@ -95,28 +95,29 @@
       </div>
     </div>
   </div>
-  <div class="backdrop" *ngIf="displayBoard"></div>
-  <div class="chess-board" *ngIf="displayBoard">
-    <app-chess
-      [firstMove]="true"
-      [nextMove]="move"
-      [userMatch]="user"
-      (newFirstMove)="move = $event ? $event[0] : null"
-    ></app-chess>
-    <div class="buttons">
-      <button
-        class="approve"
-        [disabled]="!move"
-        (click)="_createGame('w'); displayBoard = false; activeBtn = false"
-      >
-        Confirm
-      </button>
-      <button
-        class="close"
-        (click)="displayBoard = false; move = null; activeBtn = false"
-      >
-        Close
-      </button>
+  <div class="backdrop" *ngIf="displayBoard">
+    <div class="chess-board">
+      <app-chess
+        [firstMove]="true"
+        [nextMove]="move"
+        [userMatch]="user"
+        (newFirstMove)="move = $event ? $event[0] : null"
+      ></app-chess>
+      <div class="buttons">
+        <button
+          class="approve"
+          [disabled]="!move"
+          (click)="createGame('w'); displayBoard = false; activeBtn = false"
+        >
+          Confirm
+        </button>
+        <button
+          class="close"
+          (click)="displayBoard = false; move = null; activeBtn = false"
+        >
+          Close
+        </button>
+      </div>
     </div>
   </div>
 </div>

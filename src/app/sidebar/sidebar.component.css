@@ -179,3 +179,99 @@ img.edit:hover {
   opacity: 0.7;
   transform: scale(1.1);
 }
+
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 8;
+}
+.con.mobile-screen {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 99;
+  width: 375px;
+  max-width: 80%;
+}
+
+.close {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  z-index: 9;
+  border: none;
+  background-color: transparent;
+  justify-content: center;
+  transition: all 0.3s;
+}
+.close:hover {
+  background: rgba(110, 110, 110, 0.8);
+}
+
+.hamburger-con {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  width: 90px;
+  background: var(--red-gradient);
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 0 20px 20px 0;
+  z-index: 9;
+}
+.hamburger {
+  width: 30px;
+  position: relative;
+  height: 3px;
+  background-color: white;
+}
+.hamburger::after,
+.hamburger::before {
+  content: "";
+  width: 30px;
+  height: 3px;
+  background-color: white;
+  position: absolute;
+  left: 0;
+}
+.hamburger::after {
+  top: -10px;
+}
+.hamburger::before {
+  top: 10px;
+}
+.arrow-close {
+  position: absolute;
+  right: 20px;
+  top: 24px;
+}
+
+.arrow {
+  width: 30px;
+  height: 4px;
+  position: relative;
+  background-color: white;
+}
+.arrow::before {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  top: -8px;
+  transform: rotate(45deg);
+  content: "";
+  border-bottom: white solid 4px;
+  border-left: white solid 4px;
+}
+@media only screen and (max-width: 600px) {
+  .matches-con {
+    margin: 0;
+  }
+  .matches {
+    grid-template-columns: auto auto;
+  }
+}

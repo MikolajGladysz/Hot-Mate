@@ -6,8 +6,11 @@ import { Messages } from './models/message.model';
   providedIn: 'root',
 })
 export class MessageService {
+  //  Messages and also saved games between users.
+
   public messages: Messages[] = [];
 
+  // =====Message functionality ======================================
   public createMessage(
     usersId: [string, string],
     from: string,
@@ -15,11 +18,13 @@ export class MessageService {
     reactionTo: string = null,
     fakeMessage = null
   ) {
+    // create message, add date to message, create message thread if needed
+
     const date = fakeMessage
       ? new Date().getTime() - fakeMessage
       : new Date().getTime();
-    let findMessage = this.findMessage(usersId);
 
+    let findMessage = this.findMessage(usersId);
     if (!findMessage) {
       this.createNewMessageThread(usersId);
       findMessage = this.findMessage(usersId);
@@ -44,9 +49,15 @@ export class MessageService {
     );
   }
 
+  private _sortMessages(usersId: [string, string]) {
+    this.findMessage(usersId).content.sort((a, b) => a.date - b.date);
+  }
+  // ==================================================================================
+  // ======= games functionality ====================================================
   public updateGame(userId: [string, string], move: string) {
     const messageThread = this.findMessage(userId);
 
+    // get latest game and update moves
     const game = messageThread.games.at(-1);
     if (!game.moves) game.moves = [];
     game.moves.push(move);
@@ -58,7 +69,7 @@ export class MessageService {
     if (!messageThread)
       messageThread = this.createNewMessageThread([whiteId, blackId]);
 
-    if (!messageThread?.games) messageThread.games = [];
+    if (!messageThread.games) messageThread.games = [];
 
     const date = new Date().getTime();
 
@@ -74,11 +85,11 @@ export class MessageService {
     const messageThread = this.findMessage(userId);
 
     if (!messageThread?.games) this.createGame(userId[0], userId[1]);
-    // console.log(messageThread.games);
 
     return messageThread.games[messageThread.games.length - 1];
   }
 
+  // ONLY IN PRODUCTION
   public generateFakeMessages(usersId: [string, string]) {
     this.createNewMessageThread(usersId);
 
@@ -107,8 +118,5 @@ export class MessageService {
     this._sortMessages(usersId);
   }
 
-  _sortMessages(usersId: [string, string]) {
-    this.findMessage(usersId).content.sort((a, b) => a.date - b.date);
-  }
   constructor() {}
 }

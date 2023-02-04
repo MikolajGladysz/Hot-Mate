@@ -18,7 +18,6 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: SwipeCardComponent },
-      // TOOOOOOOOOOOOO
       { path: 'profile', component: DetailComponent },
       { path: 'messages/:id', component: MessageComponent },
       { path: 'messages/:id/game', component: ChessComponent },

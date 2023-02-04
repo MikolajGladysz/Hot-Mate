@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router, Event, NavigationStart } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { CardService } from '../shared/card.service';
@@ -20,6 +20,9 @@ export class SidebarComponent implements OnInit {
   selectedUser: User;
   editMode: boolean = false;
 
+  collapse: boolean = false;
+  showSidebar: boolean = true;
+
   constructor(
     private cardService: CardService,
     private router: Router,
@@ -28,14 +31,18 @@ export class SidebarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // TODO: get user from account data
     this.users = this.cardService.users;
     this.localUser = this.authService.user.getValue();
+    this.onResize();
+    // update ui every time url is changed
     this.router.events.subscribe((ev: Event) => {
       if (ev instanceof NavigationStart) {
         if (!ev.url.startsWith('/messages')) {
           this.selectedUser = null;
         }
 
+        // Change top icon in edit mode
         if (ev.url.includes('edit-profile')) {
           this.editMode = true;
         } else {
@@ -43,20 +50,33 @@ export class SidebarComponent implements OnInit {
         }
       }
     });
+
+    // update ui every time new user is emitted
     this.cardService.usersObs.subscribe(() => {
       this.users = this.cardService.users;
-      console.log(this.users);
 
-      this._addUsers();
+      this.addUsers();
     });
 
-    this._addUsers();
+    this.addUsers();
   }
 
-  _addUsers() {
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    if (window.innerWidth < 1600) {
+      this.collapse = true;
+      this.showSidebar = false;
+    } else {
+      this.collapse = false;
+      this.showSidebar = true;
+    }
+  }
+
+  addUsers() {
     this.usersMatch = [];
     this.usersMessage = [];
 
+    // Add user without messages to match tab, with messages to messages tab
     this.users.forEach((user) => {
       const message = this.messageService.findMessage([
         this.localUser.id,
@@ -69,7 +89,8 @@ export class SidebarComponent implements OnInit {
       }
     });
   }
-  _getLastMessage(id: string) {
+  getLastMessage(id: string) {
+    // display latest message with user
     return this.messageService.findMessage([id, this.localUser.id]).content[
       this.messageService.findMessage([id, this.localUser.id]).content.length -
         1

@@ -112,8 +112,6 @@ export class AuthService {
     this.tokenExpirationTimer = null;
   }
   autoLogout(expirationDurationMS: number) {
-    console.log(expirationDurationMS);
-
     this.tokenExpirationTimer = setTimeout(() => {
       this.logout();
     }, expirationDurationMS);
@@ -150,7 +148,6 @@ export class AuthService {
 
   private handleError(errorRes: HttpErrorResponse) {
     let errorMsg = 'An unknown error occurred!';
-    console.log(errorRes);
 
     if (!errorRes.error || !errorRes.error.error) {
       return throwError(errorMsg);

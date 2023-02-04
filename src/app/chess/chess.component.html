@@ -1,6 +1,6 @@
 <div class="con" [class.edit]="gameEdit">
   <div class="main">
-    <div class="chess-board">
+    <div class="chess-board" [class.edit]="gameEdit">
       <app-chess-board
         [style.pointerEvents]="
           gamePreviewMoves || gameResult != 0 ? 'none' : 'all'
@@ -54,8 +54,15 @@
         </button>
       </div>
     </div>
-    <div class="side-bar">
+    <div class="side-bar" *ngIf="!gameEdit">
       <div class="moves-con">
+        <button
+          class="backward mobile-btn"
+          (click)="_changePreviewMove(-1)"
+          *ngIf="mobileWindow"
+        >
+          <
+        </button>
         <div
           class="move"
           *ngFor="
@@ -78,8 +85,15 @@
             >{{ moves[i * 2 + 1] }}</span
           >
         </div>
+        <button
+          class="forward mobile-btn"
+          (click)="_changePreviewMove(1)"
+          *ngIf="mobileWindow"
+        >
+          >
+        </button>
       </div>
-      <div class="side-bar-bottom">
+      <div class="side-bar-bottom" *ngIf="!mobileWindow">
         <div class="buttons">
           <button class="backward" (click)="_changePreviewMove(-1)"><</button>
           <button class="forward" (click)="_changePreviewMove(1)">></button>

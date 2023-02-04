@@ -141,7 +141,6 @@ export class CreateAccountComponent implements OnInit {
       this.userPhotos = [' ../../assets/images/default_pfp.png'];
     }
     const user = this.authService.user.getValue();
-    console.log(formValue);
 
     if (formValue.userName) user.name = formValue.userName;
 
@@ -162,8 +161,6 @@ export class CreateAccountComponent implements OnInit {
     this.router.navigate(['/app']);
   }
   uploadFile(id: number) {
-    console.log(id + 1);
-
     if (id < 0) {
       this.userPhotos.splice(-id - 1, 1);
       return;

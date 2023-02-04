@@ -22,15 +22,15 @@
       >
         <div class="card-overlay" *ngIf="dummy[0].photos.length > 1">
           <div class="card-change">
-            <div (click)="_changePhoto(-1)"></div>
-            <div (click)="_changePhoto(1)"></div>
+            <div (click)="changePhoto(-1)"></div>
+            <div (click)="changePhoto(1)"></div>
           </div>
           <div class="card-page-con">
             <div
               class="card-page"
               *ngFor="let photo of dummy[0].photos; let i = index"
               [class.active]="i + 1 == currPhoto"
-              (click)="_goToPage(i)"
+              (click)="goToPage(i)"
             ></div>
           </div>
           <div class="card-arrows">
@@ -194,7 +194,7 @@
   </div>
 
   <div class="card-bottom">
-    <div class="icon-nope" #iconNope (click)="_resetCard(cardCon, 1.5)">
+    <div class="icon-nope" #iconNope (click)="resetCard(cardCon, 1.5)">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -213,7 +213,7 @@
         </g>
       </svg>
     </div>
-    <div class="icon-yeah" #iconYeah (click)="_resetCard(cardCon, -1.5)">
+    <div class="icon-yeah" #iconYeah (click)="resetCard(cardCon, -1.5)">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink"

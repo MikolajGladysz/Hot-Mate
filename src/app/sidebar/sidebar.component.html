@@ -1,4 +1,30 @@
-<div class="con">
+<div class="hamburger-con">
+  <button
+    class="close"
+    *ngIf="!showSidebar && collapse"
+    (click)="showSidebar = true"
+  >
+    <div class="hamburger"></div>
+  </button>
+</div>
+
+<div
+  class="backdrop"
+  *ngIf="showSidebar && collapse"
+  (click)="showSidebar = false"
+></div>
+<div
+  class="con"
+  *ngIf="!collapse || (showSidebar && collapse)"
+  [class.mobile-screen]="collapse"
+>
+  <button
+    *ngIf="collapse"
+    class="arrow-close close"
+    (click)="showSidebar = false"
+  >
+    <div class="arrow"></div>
+  </button>
   <div class="sidebar-top">
     <div
       class="profile-con"
@@ -30,7 +56,7 @@
         <div
           class="user-item"
           *ngFor="let user of usersMatch"
-          (click)="selectedUser = user"
+          (click)="selectedUser = user; showSidebar = false"
           [routerLink]="['messages', user.id]"
           [class.inactive]="selectedUser && selectedUser != user"
         >
@@ -43,14 +69,14 @@
           class="user-message-item"
           *ngFor="let user of usersMessage"
           [routerLink]="['messages', user.id]"
-          (click)="selectedUser = user"
+          (click)="selectedUser = user; showSidebar = false"
           [class.inactive]="selectedUser && selectedUser != user"
           [class.active]="selectedUser && selectedUser == user"
         >
           <img src="{{ user.photos[0] }}" />
           <div class="item-right">
             <span class="name">{{ user.name }}</span>
-            <span class="last-message">{{ _getLastMessage(user.id) }}</span>
+            <span class="last-message">{{ getLastMessage(user.id) }}</span>
           </div>
         </div>
       </div>

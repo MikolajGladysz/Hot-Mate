@@ -46,8 +46,6 @@ export class DetailComponent implements OnInit {
     }
   }
   _goToGame(i: number) {
-    console.log(this.gamesCards);
-
     this.currCard = i + 1;
   }
   _detailSwipe(direction: number) {
@@ -60,8 +58,6 @@ export class DetailComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.loadUserEditProfile) {
-      console.log(this.loadUserEditProfile);
-
       this.messageDetail = true;
       this.currUser = this.loadUserEditProfile;
     } else {

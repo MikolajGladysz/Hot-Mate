@@ -55,13 +55,13 @@ export class SwipeCardComponent implements OnInit {
       this.dummy = this.cardService.dummyUser;
     }
 
-    this._resetCard(this.cardCon);
+    this.resetCard(this.cardCon);
 
     this.swipeOnInit = this.cardService.swipeOnInit;
 
     if (this.swipeOnInit) {
       setTimeout(() => {
-        this._resetCard(this.cardCon, this.swipeOnInit);
+        this.resetCard(this.cardCon, this.swipeOnInit);
         this.swipeOnInit = null;
       }, 0);
     }
@@ -71,19 +71,19 @@ export class SwipeCardComponent implements OnInit {
   @HostListener('document:mouseup')
   onMouseUp() {
     //reset bottom icons size and background
-    this._resetIcon();
+    this.resetIcon();
     this.mouseDown = false;
 
     //decide if card is dragged enough to consider swipe (if drag>350px from origin)
     if (this.transformX > 350) {
-      this._resetCard(this.cardCon, 1);
+      this.resetCard(this.cardCon, 1);
       return;
     }
     if (this.transformX < -350) {
-      this._resetCard(this.cardCon, -1);
+      this.resetCard(this.cardCon, -1);
       return;
     } else {
-      this._resetCard(this.cardCon);
+      this.resetCard(this.cardCon);
       return;
     }
   }
@@ -114,18 +114,18 @@ export class SwipeCardComponent implements OnInit {
 
       //after moving card eathier left or right, update bottom icon size
       if (this.transformX > 10) {
-        this._setIcon(this.iconNope, size);
+        this.setIcon(this.iconNope, size);
         this.swipeNope = true;
         this.opacity = clampNumber(this.transformX / 400, 0, 1);
       }
       if (this.transformX < -10) {
-        this._setIcon(this.iconYeah, size);
+        this.setIcon(this.iconYeah, size);
         this.swipeYeah = true;
         this.opacity = clampNumber(Math.abs(this.transformX) / 400, 0, 1);
       }
       //reset bottom icon size when changing drag direction
       if (this.transformX > -10 && this.transformX < 10) {
-        this._resetIcon();
+        this.resetIcon();
         this.swipeNope = false;
         this.swipeYeah = false;
       }
@@ -147,7 +147,7 @@ export class SwipeCardComponent implements OnInit {
 
   constructor(private cardService: CardService) {}
 
-  _changePhoto(i: number) {
+  changePhoto(i: number) {
     if (
       this.currPhoto + i > 0 &&
       this.currPhoto + i <= this.dummy[0].photos.length
@@ -156,7 +156,7 @@ export class SwipeCardComponent implements OnInit {
     }
   }
 
-  _resetCard(cardDrag: ElementRef, swipe?: number) {
+  resetCard(cardDrag: ElementRef, swipe?: number) {
     cardDrag.nativeElement.classList.remove('disable-pointer-event');
     this.oldX = 0;
     this.oldY = 0;
@@ -188,10 +188,7 @@ export class SwipeCardComponent implements OnInit {
         //after swipe animation end, reset 1st card posiotin, swap 2nd user in user arr with 1st, so new user is displayed TODO:get new user from server, after swap in arr
 
         if (swipe < 0) {
-          console.log('pre', this.cardService.users.length);
           this.cardService.newMatch(this.dummy[0]);
-
-          // this.cardService.addUser(this.dummy[0])
         }
         this.dummy[0] = this.dummy[1];
         this.dummy[1] = this.cardService.generateUsers(1, true);
@@ -215,13 +212,13 @@ export class SwipeCardComponent implements OnInit {
   }
 
   //changing bottom icons look
-  _setIcon(icon: ElementRef, size: number) {
+  setIcon(icon: ElementRef, size: number) {
     icon.nativeElement.style.width = size + 'px';
     icon.nativeElement.style.height = size + 'px';
   }
 
   //reseting bottom icons
-  _resetIcon() {
+  resetIcon() {
     this.swipeNope = false;
     this.swipeYeah = false;
 
@@ -231,7 +228,7 @@ export class SwipeCardComponent implements OnInit {
     this.iconYeah.nativeElement.style.width = '70px';
     this.iconYeah.nativeElement.style.height = '70px';
   }
-  _goToPage(i: number) {
+  goToPage(i: number) {
     this.currPhoto = i + 1;
   }
 

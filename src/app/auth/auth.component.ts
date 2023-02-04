@@ -35,20 +35,16 @@ export class AuthComponent implements OnInit {
 
     authObs.subscribe(
       (res) => {
-        console.log(res);
         this.loading = false;
         this.router.navigate(['/create-account']);
       },
       (errorMessage) => {
-        console.log(errorMessage);
         this.errorMsg = errorMessage;
         this.loading = false;
       }
     );
   }
   testCorrectPassword(f) {
-    console.log(f.value);
-
     if (f.value.repeat != f.value.password && f.value.repeat && !this.login) {
       f.form.controls['repeat'].setErrors({ incorrect: true });
       this.errorMsg = 'Passwords have to be the same';
