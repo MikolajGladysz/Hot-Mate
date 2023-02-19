@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, Subject, tap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 import { User } from '../shared/models/user.model';
 
 export interface ResponseData {
@@ -58,6 +58,24 @@ export class AuthService {
         tap((resData) => {
           this.handleAuthentication(
             resData.email,
+            resData.localId,
+            resData.idToken,
+            +resData.expiresIn
+          );
+        })
+      );
+  }
+  singInAnonymously() {
+    return this.http
+      .post<ResponseData>(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyCMKudyy28emmaHnhhnhJTfKE0iBR2mvpY',
+        { returnSecureToken: true }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap((resData) => {
+          this.handleAuthentication(
+            'anonymous',
             resData.localId,
             resData.idToken,
             +resData.expiresIn

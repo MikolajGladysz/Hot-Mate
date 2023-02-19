@@ -64,6 +64,10 @@
     <button type="submit" class="submit-btn" [disabled]="!f.valid">
       Submit
     </button>
+
+    <button type="button" class="submit-btn anon" (click)="onSubmit(f, true)">
+      Log In anonymously
+    </button>
   </form>
   <app-spinner *ngIf="loading"></app-spinner>
 </div>

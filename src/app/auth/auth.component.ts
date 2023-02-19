@@ -18,19 +18,22 @@ export class AuthComponent implements OnInit {
   loading = false;
 
   ngOnInit(): void {}
-  onSubmit(f: NgForm) {
-    if (!f.valid) return;
-
-    const email = f.value.email;
-    const password = f.value.password;
-
+  onSubmit(f: NgForm, anon = false) {
     let authObs: Observable<ResponseData>;
-
     this.loading = true;
-    if (this.login) {
-      authObs = this.authService.login(email, password);
+    if (anon) {
+      authObs = this.authService.singInAnonymously();
     } else {
-      authObs = this.authService.signup(email, password);
+      if (!f.valid) return;
+
+      const email = f.value.email;
+      const password = f.value.password;
+
+      if (this.login) {
+        authObs = this.authService.login(email, password);
+      } else {
+        authObs = this.authService.signup(email, password);
+      }
     }
 
     authObs.subscribe(
@@ -55,4 +58,5 @@ export class AuthComponent implements OnInit {
   closeModal() {
     this.onCloseModal.next(false);
   }
+  anon() {}
 }
