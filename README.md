@@ -4,7 +4,6 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Hot Mate  is a dating app specifically designed for chess players. It allows users to connect with other players and find dates. 
 
-The app is currently in alpha stage and is only available on the Android platform. It supports authentication so users can create an account and log in securely.
 
 Using the app, users can't view other players' profiles yet, only bots account. 
 
